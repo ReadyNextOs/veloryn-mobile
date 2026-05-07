@@ -1,5 +1,5 @@
 import '@/lib/i18n'; // i18next init — musi być przed renderowaniem
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { AppState, type AppStateStatus } from 'react-native';
 import { Stack, router } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
@@ -27,6 +27,19 @@ export default function RootLayout() {
 const LOCK_TIMEOUT_MS = 5 * 60 * 1000; // 5 min
 
 function AppShell() {
+  // Czekaj na zakończenie hydratacji Zustand persist (SecureStore jest async).
+  // Bez tej gwarancji isPaired może być false w pierwszym renderze mimo zapisanego stanu,
+  // co prowadzi do błędnego przekierowania na pair screen oraz API calls bez Bearer tokenu.
+  const [hasHydrated, setHasHydrated] = useState(
+    () => useAuthStore.persist.hasHydrated(),
+  );
+
+  useEffect(() => {
+    if (!hasHydrated) {
+      return useAuthStore.persist.onFinishHydration(() => setHasHydrated(true));
+    }
+  }, [hasHydrated]);
+
   const resetAuth = useAuthStore((s) => s.resetAuth);
   const isPaired = useAuthStore((s) => s.isPaired);
   const isUnlocked = useAuthStore((s) => s.isUnlocked);
@@ -63,6 +76,12 @@ function AppShell() {
     });
     return () => sub.remove();
   }, [isPaired, isAvailable, lastBackgroundedAt, setLastBackgroundedAt, setUnlocked]);
+
+  // Nie renderuj nic przed zakończeniem hydratacji — zapobiega błędnym przekierowaniom
+  // i API calls bez tokenu Bearer gdy SecureStore jeszcze czyta stan.
+  if (!hasHydrated) {
+    return null;
+  }
 
   // Jeśli sparowany + biometria dostępna + nie odblokowany → locked screen
   if (isPaired && isAvailable && !isUnlocked) {
