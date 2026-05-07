@@ -71,6 +71,15 @@
         {
           "cameraPermission": "Veloryn potrzebuje dostępu do kamery, aby zeskanować kod QR parowania urządzenia."
         }
+      ],
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/icon.png",
+          "color": "#1976d2",
+          "sounds": [],
+          "iosDisplayInForeground": true
+        }
       ]
     ],
     "experiments": {

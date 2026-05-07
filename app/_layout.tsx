@@ -1,6 +1,7 @@
 import '@/lib/i18n'; // i18next init — musi być przed renderowaniem
 import { useEffect, useState } from 'react';
 import { AppState, type AppStateStatus } from 'react-native';
+import * as Notifications from 'expo-notifications';
 import { Stack, router } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -8,6 +9,18 @@ import { authLogoutEmitter } from '@/lib/authEvents';
 import { useAuthStore } from '@/store/auth';
 import { useBiometricUnlock } from '@/hooks/useBiometricUnlock';
 import { clearMailCache } from '@/lib/db';
+import { usePushRegistration } from '@/hooks/usePushRegistration';
+
+// Konfiguracja obsługi powiadomień w foreground
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: true,
+    shouldShowBanner: true,
+    shouldShowList: true,
+  }),
+});
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -40,6 +53,9 @@ function AppShell() {
     }
     return undefined;
   }, [hasHydrated]);
+
+  // Push registration — po sparowaniu rejestruje Expo Push Token
+  usePushRegistration();
 
   const resetAuth = useAuthStore((s) => s.resetAuth);
   const isPaired = useAuthStore((s) => s.isPaired);
