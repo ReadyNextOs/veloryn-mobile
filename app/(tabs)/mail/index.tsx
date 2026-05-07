@@ -49,12 +49,15 @@ export default function MailIndex() {
     void refetchFolders();
   }, [refetchAccounts, refetchFolders]);
 
-  function getFolderLabel(folder: MailFolder): string {
-    if (folder.type !== 'custom') {
-      return t(`mail.folders.${folder.type}`);
-    }
-    return folder.name;
-  }
+  const getFolderLabel = useCallback(
+    (folder: MailFolder): string => {
+      if (folder.type !== 'custom') {
+        return t(`mail.folders.${folder.type}`);
+      }
+      return folder.name;
+    },
+    [t],
+  );
 
   const handleFolderPress = useCallback(
     (folder: MailFolder) => {
@@ -68,7 +71,20 @@ export default function MailIndex() {
         },
       });
     },
-    [firstAccountId],
+    [firstAccountId, t, getFolderLabel],
+  );
+
+  const keyExtractor = useCallback((item: MailFolder) => item.id, []);
+
+  const renderItem = useCallback(
+    ({ item }: { item: MailFolder }) => (
+      <MailFolderRow
+        folder={item}
+        folderLabel={getFolderLabel(item)}
+        onPress={() => handleFolderPress(item)}
+      />
+    ),
+    [getFolderLabel, handleFolderPress],
   );
 
   if (isLoading) {
@@ -94,14 +110,8 @@ export default function MailIndex() {
     <View style={styles.container}>
       <FlatList
         data={visibleFolders}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <MailFolderRow
-            folder={item}
-            folderLabel={getFolderLabel(item)}
-            onPress={() => handleFolderPress(item)}
-          />
-        )}
+        keyExtractor={keyExtractor}
+        renderItem={renderItem}
         refreshControl={
           <RefreshControl refreshing={isLoading} onRefresh={onRefresh} />
         }
