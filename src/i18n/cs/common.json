@@ -8,7 +8,9 @@
       "qrExpired": "QR kód vypršel. Vygenerujte nový v panelu Veloryn.",
       "invalidQr": "Neplatný QR kód.",
       "pairing": "Párování...",
-      "success": "Spárováno!"
+      "success": "Spárováno!",
+      "grantCameraAccess": "Povolit přístup ke kameře",
+      "openSettings": "Otevřít nastavení"
     },
     "biometric": {
       "prompt": "Odemkněte Veloryn",

@@ -60,7 +60,7 @@ export default function PairScreen() {
           <Text style={styles.title}>{t('auth.pair.title')}</Text>
           <Text style={styles.subtitle}>{t('auth.pair.permissionDenied')}</Text>
           <TouchableOpacity style={styles.permissionButton} onPress={requestPermission}>
-            <Text style={styles.permissionButtonText}>Daj dostęp do kamery</Text>
+            <Text style={styles.permissionButtonText}>{t('auth.pair.grantCameraAccess')}</Text>
           </TouchableOpacity>
         </View>
       </SafeAreaView>

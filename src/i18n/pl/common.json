@@ -8,7 +8,9 @@
       "qrExpired": "Kod QR wygasł. Wygeneruj nowy w panelu Veloryn.",
       "invalidQr": "Nieprawidłowy kod QR.",
       "pairing": "Parowanie...",
-      "success": "Sparowano!"
+      "success": "Sparowano!",
+      "grantCameraAccess": "Daj dostęp do kamery",
+      "openSettings": "Otwórz ustawienia"
     },
     "biometric": {
       "prompt": "Odblokuj Veloryn",

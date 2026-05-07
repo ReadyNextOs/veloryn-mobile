@@ -8,7 +8,9 @@
       "qrExpired": "El código QR ha caducado. Genere uno nuevo en el panel de Veloryn.",
       "invalidQr": "Código QR inválido.",
       "pairing": "Vinculando...",
-      "success": "¡Vinculado!"
+      "success": "¡Vinculado!",
+      "grantCameraAccess": "Permitir acceso a la cámara",
+      "openSettings": "Abrir configuración"
     },
     "biometric": {
       "prompt": "Desbloquear Veloryn",

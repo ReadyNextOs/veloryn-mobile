@@ -8,7 +8,9 @@
       "qrExpired": "QR-код застарів. Згенеруйте новий у панелі Veloryn.",
       "invalidQr": "Недійсний QR-код.",
       "pairing": "Прив'язка...",
-      "success": "Прив'язано!"
+      "success": "Прив'язано!",
+      "grantCameraAccess": "Надати доступ до камери",
+      "openSettings": "Відкрити налаштування"
     },
     "biometric": {
       "prompt": "Розблокуйте Veloryn",
