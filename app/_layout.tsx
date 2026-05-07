@@ -7,6 +7,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { authLogoutEmitter } from '@/lib/authEvents';
 import { useAuthStore } from '@/store/auth';
 import { useBiometricUnlock } from '@/hooks/useBiometricUnlock';
+import { clearMailCache } from '@/lib/db';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -38,6 +39,7 @@ function AppShell() {
   useEffect(() => {
     return authLogoutEmitter.on(() => {
       resetAuth(); // zeruje też isUnlocked + lastBackgroundedAt
+      clearMailCache().catch(console.error); // wyczysć cache — nie blokuj logout przy błędzie
       router.replace('/(auth)/pair');
     });
   }, [resetAuth]);
