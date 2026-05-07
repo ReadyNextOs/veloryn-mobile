@@ -43,6 +43,10 @@
           ],
           "autoVerify": true
         }
+      ],
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
       ]
     },
     "web": {
@@ -62,9 +66,12 @@
       ],
       "expo-secure-store",
       "expo-localization",
-      ["expo-camera", {
-        "cameraPermission": "Veloryn potrzebuje dostępu do kamery, aby zeskanować kod QR parowania urządzenia."
-      }]
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Veloryn potrzebuje dostępu do kamery, aby zeskanować kod QR parowania urządzenia."
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true
@@ -74,8 +81,9 @@
         "origin": false
       },
       "eas": {
-        "projectId": "TODO-set-after-eas-init"
+        "projectId": "a2e8c0b4-0eea-4167-b902-76144ad6be6f"
       }
-    }
+    },
+    "owner": "milocha"
   }
 }
