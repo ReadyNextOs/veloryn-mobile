@@ -4,6 +4,7 @@
 import { useCallback, useEffect, useRef } from 'react';
 import { AppState, type AppStateStatus } from 'react-native';
 import { useQueryClient } from '@tanstack/react-query';
+import { z } from 'zod';
 import { getEcho } from '@/lib/echo';
 import { useAuthStore } from '@/store/auth';
 import { useMessengerStore } from '@/store/messenger';
@@ -24,11 +25,58 @@ type EchoChannel = {
 
 const BACKGROUND_DISCONNECT_DELAY_MS = 30_000;
 
+// ---------------------------------------------------------------------------
+// Zod schema for Reverb broadcast events — prevents malformed payloads from
+// corrupting the TanStack Query cache.
+// ---------------------------------------------------------------------------
+
+const MessageSchema = z.object({
+  id: z.string(),
+  thread_id: z.string(),
+  author_id: z.string(),
+  author: z
+    .object({
+      id: z.string(),
+      display_name: z.string(),
+      avatar_url: z.string().nullable().optional(),
+    })
+    .optional(),
+  type: z.enum(['text', 'system', 'call', 'file']),
+  body: z.string(),
+  body_html: z.string().nullable(),
+  is_question: z.boolean(),
+  is_edited: z.boolean(),
+  is_deleted: z.boolean(),
+  reply_to_id: z.string().nullable(),
+  reactions: z.array(z.unknown()),
+  attachments: z.array(z.unknown()),
+  mentions: z.array(z.string()),
+  created_at: z.string(),
+  updated_at: z.string(),
+});
+
+const MessengerBroadcastEventSchema = z.discriminatedUnion('event', [
+  z.object({ event: z.literal('message.created'), thread_id: z.string(), message: MessageSchema }),
+  z.object({ event: z.literal('message.updated'), thread_id: z.string(), message: MessageSchema }),
+  z.object({ event: z.literal('message.deleted'), thread_id: z.string(), message_id: z.string() }),
+  z.object({ event: z.literal('thread.read'), thread_id: z.string(), user_id: z.string(), last_read_at: z.string() }),
+  z.object({
+    event: z.union([z.literal('reaction.added'), z.literal('reaction.removed')]),
+    thread_id: z.string(),
+    message_id: z.string(),
+    emoji: z.string(),
+    user_id: z.string(),
+  }),
+  z.object({ event: z.literal('typing'), thread_id: z.string(), user_id: z.string(), expires_at: z.string() }),
+]);
+
 function parseEvent(raw: unknown): MessengerBroadcastEvent | null {
-  if (typeof raw !== 'object' || raw === null) return null;
-  const data = raw as Record<string, unknown>;
-  if (typeof data['event'] !== 'string') return null;
-  return data as unknown as MessengerBroadcastEvent;
+  const result = MessengerBroadcastEventSchema.safeParse(raw);
+  if (!result.success) {
+    console.warn('[Echo] Invalid Reverb event payload:', result.error.issues);
+    return null;
+  }
+  return result.data as MessengerBroadcastEvent;
 }
 
 export function useMessengerSocket(threadId: string | null): void {
