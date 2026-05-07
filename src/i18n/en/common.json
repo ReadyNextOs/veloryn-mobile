@@ -27,5 +27,45 @@
     "error": "Error",
     "retry": "Try again",
     "cancel": "Cancel"
+  },
+  "mail": {
+    "folders": {
+      "inbox": "Inbox",
+      "sent": "Sent",
+      "drafts": "Drafts",
+      "archive": "Archive",
+      "trash": "Trash",
+      "spam": "Spam",
+      "custom": "Folder",
+      "all": "All"
+    },
+    "list": {
+      "empty": "No messages",
+      "unread": "Unread",
+      "starred": "Starred",
+      "attachments": "With attachments",
+      "refresh": "Refresh",
+      "searchPlaceholder": "Search messages..."
+    },
+    "detail": {
+      "markUnread": "Mark as unread",
+      "star": "Star",
+      "unstar": "Unstar",
+      "download": "Download",
+      "share": "Share",
+      "from": "From",
+      "to": "To",
+      "cc": "CC",
+      "bcc": "BCC"
+    },
+    "errors": {
+      "loadFailed": "Failed to load messages",
+      "downloadFailed": "Failed to download attachment"
+    },
+    "actions": {
+      "markRead": "Mark as read",
+      "markUnread": "Mark as unread",
+      "toggleStar": "Toggle star"
+    }
   }
 }

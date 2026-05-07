@@ -27,5 +27,45 @@
     "error": "Błąd",
     "retry": "Spróbuj ponownie",
     "cancel": "Anuluj"
+  },
+  "mail": {
+    "folders": {
+      "inbox": "Skrzynka odbiorcza",
+      "sent": "Wysłane",
+      "drafts": "Szkice",
+      "archive": "Archiwum",
+      "trash": "Kosz",
+      "spam": "Spam",
+      "custom": "Folder",
+      "all": "Wszystkie"
+    },
+    "list": {
+      "empty": "Brak wiadomości",
+      "unread": "Nieprzeczytane",
+      "starred": "Z gwiazdką",
+      "attachments": "Z załącznikami",
+      "refresh": "Odśwież",
+      "searchPlaceholder": "Szukaj wiadomości..."
+    },
+    "detail": {
+      "markUnread": "Oznacz jako nieprzeczytane",
+      "star": "Dodaj gwiazdkę",
+      "unstar": "Usuń gwiazdkę",
+      "download": "Pobierz",
+      "share": "Udostępnij",
+      "from": "Od",
+      "to": "Do",
+      "cc": "DW",
+      "bcc": "UDW"
+    },
+    "errors": {
+      "loadFailed": "Nie udało się załadować wiadomości",
+      "downloadFailed": "Nie udało się pobrać załącznika"
+    },
+    "actions": {
+      "markRead": "Oznacz jako przeczytane",
+      "markUnread": "Oznacz jako nieprzeczytane",
+      "toggleStar": "Dodaj/usuń gwiazdkę"
+    }
   }
 }

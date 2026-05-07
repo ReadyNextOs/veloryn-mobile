@@ -27,5 +27,45 @@
     "error": "Error",
     "retry": "Intentar de nuevo",
     "cancel": "Cancelar"
+  },
+  "mail": {
+    "folders": {
+      "inbox": "Bandeja de entrada",
+      "sent": "Enviados",
+      "drafts": "Borradores",
+      "archive": "Archivo",
+      "trash": "Papelera",
+      "spam": "Spam",
+      "custom": "Carpeta",
+      "all": "Todos"
+    },
+    "list": {
+      "empty": "Sin mensajes",
+      "unread": "No leídos",
+      "starred": "Destacados",
+      "attachments": "Con adjuntos",
+      "refresh": "Actualizar",
+      "searchPlaceholder": "Buscar mensajes..."
+    },
+    "detail": {
+      "markUnread": "Marcar como no leído",
+      "star": "Destacar",
+      "unstar": "Quitar destacado",
+      "download": "Descargar",
+      "share": "Compartir",
+      "from": "De",
+      "to": "Para",
+      "cc": "CC",
+      "bcc": "CCO"
+    },
+    "errors": {
+      "loadFailed": "Error al cargar los mensajes",
+      "downloadFailed": "Error al descargar el adjunto"
+    },
+    "actions": {
+      "markRead": "Marcar como leído",
+      "markUnread": "Marcar como no leído",
+      "toggleStar": "Alternar destacado"
+    }
   }
 }

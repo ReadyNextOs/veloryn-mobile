@@ -27,5 +27,45 @@
     "error": "Chyba",
     "retry": "Zkuste znovu",
     "cancel": "Zrušit"
+  },
+  "mail": {
+    "folders": {
+      "inbox": "Doručená pošta",
+      "sent": "Odesláno",
+      "drafts": "Koncepty",
+      "archive": "Archiv",
+      "trash": "Koš",
+      "spam": "Spam",
+      "custom": "Složka",
+      "all": "Vše"
+    },
+    "list": {
+      "empty": "Žádné zprávy",
+      "unread": "Nepřečtené",
+      "starred": "Označené hvězdičkou",
+      "attachments": "S přílohami",
+      "refresh": "Obnovit",
+      "searchPlaceholder": "Hledat zprávy..."
+    },
+    "detail": {
+      "markUnread": "Označit jako nepřečtené",
+      "star": "Přidat hvězdičku",
+      "unstar": "Odebrat hvězdičku",
+      "download": "Stáhnout",
+      "share": "Sdílet",
+      "from": "Od",
+      "to": "Komu",
+      "cc": "Kopie",
+      "bcc": "Skrytá kopie"
+    },
+    "errors": {
+      "loadFailed": "Zprávy se nepodařilo načíst",
+      "downloadFailed": "Přílohu se nepodařilo stáhnout"
+    },
+    "actions": {
+      "markRead": "Označit jako přečtené",
+      "markUnread": "Označit jako nepřečtené",
+      "toggleStar": "Přepnout hvězdičku"
+    }
   }
 }
