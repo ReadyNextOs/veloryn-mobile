@@ -38,7 +38,7 @@ export async function getEcho(): Promise<unknown> {
       wsPort: 443,
       wssPort: 443,
       forceTLS: true,
-      enabledTransports: ['ws', 'wss'],
+      enabledTransports: ['wss'],
       authorizer: (channel: { name: string }) => ({
         authorize: (socketId: string, callback: (error: Error | null, authData: { auth: string; channel_data?: string; shared_secret?: string } | null) => void): void => {
           void (async () => {
