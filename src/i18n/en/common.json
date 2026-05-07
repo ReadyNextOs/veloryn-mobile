@@ -28,14 +28,16 @@
     "loading": "Loading...",
     "error": "Error",
     "retry": "Try again",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "yesterday": "yesterday"
   },
   "messenger": {
     "threads": {
       "empty": "No threads",
       "emptySubtitle": "Your conversations will appear here",
       "searchPlaceholder": "Search conversations...",
-      "dmLabel": "Direct message"
+      "dmLabel": "Direct message",
+      "defaultName": "Conversation"
     },
     "thread": {
       "mute": "Mute",
@@ -87,7 +89,8 @@
       "revoke": "Remove",
       "revokeConfirm": "Are you sure you want to remove this device?",
       "revokeConfirmYes": "Remove",
-      "empty": "No other paired devices"
+      "empty": "No other paired devices",
+      "defaultName": "Device"
     },
     "language": {
       "title": "Language",

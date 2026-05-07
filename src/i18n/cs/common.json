@@ -28,14 +28,16 @@
     "loading": "Načítání...",
     "error": "Chyba",
     "retry": "Zkuste znovu",
-    "cancel": "Zrušit"
+    "cancel": "Zrušit",
+    "yesterday": "včera"
   },
   "messenger": {
     "threads": {
       "empty": "Žádná vlákna",
       "emptySubtitle": "Zde se zobrazí vaše konverzace",
       "searchPlaceholder": "Hledat konverzace...",
-      "dmLabel": "Přímá zpráva"
+      "dmLabel": "Přímá zpráva",
+      "defaultName": "Konverzace"
     },
     "thread": {
       "mute": "Ztlumit",
@@ -87,7 +89,8 @@
       "revoke": "Odebrat",
       "revokeConfirm": "Opravdu chcete toto zařízení odebrat?",
       "revokeConfirmYes": "Odebrat",
-      "empty": "Žádná další spárovaná zařízení"
+      "empty": "Žádná další spárovaná zařízení",
+      "defaultName": "Zařízení"
     },
     "language": {
       "title": "Jazyk",

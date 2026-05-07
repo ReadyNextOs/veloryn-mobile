@@ -28,14 +28,16 @@
     "loading": "Ładowanie...",
     "error": "Błąd",
     "retry": "Spróbuj ponownie",
-    "cancel": "Anuluj"
+    "cancel": "Anuluj",
+    "yesterday": "wczoraj"
   },
   "messenger": {
     "threads": {
       "empty": "Brak wątków",
       "emptySubtitle": "Tutaj pojawią się Twoje rozmowy",
       "searchPlaceholder": "Szukaj rozmów...",
-      "dmLabel": "Wiadomość bezpośrednia"
+      "dmLabel": "Wiadomość bezpośrednia",
+      "defaultName": "Rozmowa"
     },
     "thread": {
       "mute": "Wycisz",
@@ -87,7 +89,8 @@
       "revoke": "Usuń",
       "revokeConfirm": "Czy na pewno chcesz usunąć to urządzenie?",
       "revokeConfirmYes": "Usuń",
-      "empty": "Brak innych sparowanych urządzeń"
+      "empty": "Brak innych sparowanych urządzeń",
+      "defaultName": "Urządzenie"
     },
     "language": {
       "title": "Język",

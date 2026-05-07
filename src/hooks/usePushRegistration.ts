@@ -123,10 +123,9 @@ export function usePushRegistration(): void {
       (notification) => {
         // When app is in foreground, backend already distributed via Echo.
         // We could show an in-app toast here in Sprint 4.
-        const data = notification.request.content.data as NotificationData | undefined;
-        if (data?.type) {
-          // Silently received — Echo handles real-time UI updates
-        }
+        // Silently received — Echo handles real-time UI updates
+        // (NotificationDataSchema.safeParse available if Sprint 4 needs in-app toast)
+        void notification;
       },
     );
 

@@ -92,7 +92,7 @@ export function DevicesList() {
           />
           <View style={styles.info}>
             <Text style={styles.deviceName} numberOfLines={1}>
-              {token.device_name ?? token.platform ?? 'Urządzenie'}
+              {token.device_name ?? token.platform ?? t('settings.devices.defaultName')}
             </Text>
             {token.last_used_at ? (
               <Text style={styles.lastUsed} numberOfLines={1}>

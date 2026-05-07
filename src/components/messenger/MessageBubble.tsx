@@ -1,8 +1,8 @@
 import React, { useCallback } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { formatDistance } from 'date-fns';
-import { pl as dateFnsPl } from 'date-fns/locale';
 import { useTranslation } from 'react-i18next';
+import { getDateFnsLocale } from '@/lib/dateFnsLocale';
 import { useAuthStore } from '@/store/auth';
 import { useToggleReaction } from '@/hooks/messenger';
 import type { Message, Reaction } from '@/types/messenger';
@@ -33,22 +33,12 @@ function getInitials(name: string | undefined): string {
   return name.trim().slice(0, 2).toUpperCase();
 }
 
-function formatMsgDate(iso: string): string {
-  try {
-    return formatDistance(new Date(iso), new Date(), {
-      addSuffix: false,
-      locale: dateFnsPl,
-    });
-  } catch {
-    return '';
-  }
-}
-
 const isOptimistic = (id: string): boolean => id.startsWith('__optimistic_');
 const isFailed = (id: string): boolean => id.includes('__failed');
 
 export const MessageBubble = React.memo(function MessageBubble({ message, threadId }: Props) {
-  const { t } = useTranslation('common');
+  const { t, i18n } = useTranslation('common');
+  const locale = getDateFnsLocale(i18n.language);
   const currentUserId = useAuthStore((s) => s.user?.id);
   const toggleReaction = useToggleReaction();
   const [showEmojiPicker, setShowEmojiPicker] = React.useState(false);
@@ -60,7 +50,16 @@ export const MessageBubble = React.memo(function MessageBubble({ message, thread
   const authorName = message.author?.display_name ?? t('common.error');
   const avatarColor = getAvatarColor(message.author_id);
   const initials = getInitials(message.author?.display_name);
-  const dateStr = formatMsgDate(message.created_at);
+
+  let dateStr = '';
+  try {
+    dateStr = formatDistance(new Date(message.created_at), new Date(), {
+      addSuffix: false,
+      locale,
+    });
+  } catch {
+    dateStr = '';
+  }
 
   const handleLongPress = useCallback(() => {
     if (!isPending && !isSendFailed) {

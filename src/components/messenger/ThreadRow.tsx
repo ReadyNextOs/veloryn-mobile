@@ -1,7 +1,8 @@
 import React, { useCallback } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { formatDistance } from 'date-fns';
-import { pl as dateFnsPl } from 'date-fns/locale';
+import { useTranslation } from 'react-i18next';
+import { getDateFnsLocale } from '@/lib/dateFnsLocale';
 import type { Thread } from '@/types/messenger';
 import { ThreadAvatar } from './ThreadAvatar';
 
@@ -11,26 +12,9 @@ interface Props {
   onLongPress: (thread: Thread) => void;
 }
 
-function formatRelativeDate(iso: string): string {
-  try {
-    const date = new Date(iso);
-    const now = new Date();
-    const diffMs = now.getTime() - date.getTime();
-    const diffDays = diffMs / (1000 * 60 * 60 * 24);
-
-    if (diffDays < 1) {
-      return formatDistance(date, now, { addSuffix: false, locale: dateFnsPl });
-    }
-    if (diffDays < 2) return 'wczoraj';
-    const day = date.getDate();
-    const monthNames = ['sty', 'lut', 'mar', 'kwi', 'maj', 'cze', 'lip', 'sie', 'wrz', 'paź', 'lis', 'gru'];
-    return `${day} ${monthNames[date.getMonth()] ?? ''}`;
-  } catch {
-    return '';
-  }
-}
-
 export const ThreadRow = React.memo(function ThreadRow({ thread, onPress, onLongPress }: Props) {
+  const { t, i18n } = useTranslation('common');
+  const locale = getDateFnsLocale(i18n.language);
   const hasUnread = thread.unread_count > 0;
 
   const handlePress = useCallback(() => onPress(thread), [onPress, thread]);
@@ -38,7 +22,26 @@ export const ThreadRow = React.memo(function ThreadRow({ thread, onPress, onLong
 
   const displayName = thread.name
     ?? (thread.type === 'direct' && thread.participants?.[0]?.user.display_name)
-    ?? 'Rozmowa';
+    ?? t('messenger.threads.defaultName');
+
+  function formatRelativeDate(iso: string): string {
+    try {
+      const date = new Date(iso);
+      const now = new Date();
+      const diffMs = now.getTime() - date.getTime();
+      const diffDays = diffMs / (1000 * 60 * 60 * 24);
+
+      if (diffDays < 1) {
+        return formatDistance(date, now, { addSuffix: false, locale });
+      }
+      if (diffDays < 2) return t('common.yesterday');
+      const day = date.getDate();
+      const monthNames = ['sty', 'lut', 'mar', 'kwi', 'maj', 'cze', 'lip', 'sie', 'wrz', 'paź', 'lis', 'gru'];
+      return `${day} ${monthNames[date.getMonth()] ?? ''}`;
+    } catch {
+      return '';
+    }
+  }
 
   const lastMsg = thread.last_message;
   const previewText = lastMsg
