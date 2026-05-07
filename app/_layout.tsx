@@ -1,3 +1,4 @@
+import '@/lib/i18n'; // i18next init — musi być przed renderowaniem
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 

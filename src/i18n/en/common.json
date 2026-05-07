@@ -1,0 +1,31 @@
+{
+  "auth": {
+    "pair": {
+      "title": "Pair with Veloryn",
+      "subtitle": "Open Veloryn in your browser, go to Profile → Mobile Devices and scan the generated QR code.",
+      "scanInstructions": "Point the camera at the QR code",
+      "permissionDenied": "Camera access denied. Enable it in system settings.",
+      "qrExpired": "QR code expired. Generate a new one in the Veloryn panel.",
+      "invalidQr": "Invalid QR code.",
+      "pairing": "Pairing...",
+      "success": "Paired!"
+    },
+    "biometric": {
+      "prompt": "Unlock Veloryn",
+      "usePin": "Use PIN",
+      "lockedTitle": "App locked",
+      "retry": "Try again"
+    }
+  },
+  "tabs": {
+    "mail": "Mail",
+    "messenger": "Messenger",
+    "settings": "Settings"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "retry": "Try again",
+    "cancel": "Cancel"
+  }
+}

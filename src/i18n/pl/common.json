@@ -1,0 +1,31 @@
+{
+  "auth": {
+    "pair": {
+      "title": "Sparuj z Veloryn",
+      "subtitle": "Otwórz Veloryn w przeglądarce, przejdź do Profil → Urządzenia mobilne i zeskanuj wygenerowany kod QR.",
+      "scanInstructions": "Wyceluj kamerę w kod QR",
+      "permissionDenied": "Brak dostępu do kamery. Włącz w ustawieniach systemu.",
+      "qrExpired": "Kod QR wygasł. Wygeneruj nowy w panelu Veloryn.",
+      "invalidQr": "Nieprawidłowy kod QR.",
+      "pairing": "Parowanie...",
+      "success": "Sparowano!"
+    },
+    "biometric": {
+      "prompt": "Odblokuj Veloryn",
+      "usePin": "Użyj PIN",
+      "lockedTitle": "Aplikacja zablokowana",
+      "retry": "Spróbuj ponownie"
+    }
+  },
+  "tabs": {
+    "mail": "Poczta",
+    "messenger": "Komunikator",
+    "settings": "Ustawienia"
+  },
+  "common": {
+    "loading": "Ładowanie...",
+    "error": "Błąd",
+    "retry": "Spróbuj ponownie",
+    "cancel": "Anuluj"
+  }
+}

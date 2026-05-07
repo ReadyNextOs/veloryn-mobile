@@ -1,0 +1,31 @@
+{
+  "auth": {
+    "pair": {
+      "title": "Vincular con Veloryn",
+      "subtitle": "Abra Veloryn en el navegador, vaya a Perfil → Dispositivos móviles y escanee el código QR generado.",
+      "scanInstructions": "Apunte la cámara al código QR",
+      "permissionDenied": "Acceso a la cámara denegado. Habilítelo en la configuración del sistema.",
+      "qrExpired": "El código QR ha caducado. Genere uno nuevo en el panel de Veloryn.",
+      "invalidQr": "Código QR inválido.",
+      "pairing": "Vinculando...",
+      "success": "¡Vinculado!"
+    },
+    "biometric": {
+      "prompt": "Desbloquear Veloryn",
+      "usePin": "Usar PIN",
+      "lockedTitle": "Aplicación bloqueada",
+      "retry": "Intentar de nuevo"
+    }
+  },
+  "tabs": {
+    "mail": "Correo",
+    "messenger": "Mensajero",
+    "settings": "Configuración"
+  },
+  "common": {
+    "loading": "Cargando...",
+    "error": "Error",
+    "retry": "Intentar de nuevo",
+    "cancel": "Cancelar"
+  }
+}

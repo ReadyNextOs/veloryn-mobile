@@ -1,0 +1,31 @@
+{
+  "auth": {
+    "pair": {
+      "title": "Spárujte s Veloryn",
+      "subtitle": "Otevřete Veloryn v prohlížeči, přejděte do Profil → Mobilní zařízení a naskenujte vygenerovaný QR kód.",
+      "scanInstructions": "Namiřte kameru na QR kód",
+      "permissionDenied": "Přístup ke kameře odepřen. Povolte jej v nastavení systému.",
+      "qrExpired": "QR kód vypršel. Vygenerujte nový v panelu Veloryn.",
+      "invalidQr": "Neplatný QR kód.",
+      "pairing": "Párování...",
+      "success": "Spárováno!"
+    },
+    "biometric": {
+      "prompt": "Odemkněte Veloryn",
+      "usePin": "Použít PIN",
+      "lockedTitle": "Aplikace je zamčena",
+      "retry": "Zkuste znovu"
+    }
+  },
+  "tabs": {
+    "mail": "Pošta",
+    "messenger": "Komunikátor",
+    "settings": "Nastavení"
+  },
+  "common": {
+    "loading": "Načítání...",
+    "error": "Chyba",
+    "retry": "Zkuste znovu",
+    "cancel": "Zrušit"
+  }
+}
