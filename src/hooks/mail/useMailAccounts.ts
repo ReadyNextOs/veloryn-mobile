@@ -6,7 +6,8 @@ import type { MailAccount } from '@/types/mail';
 export type MailAccountsErrorCode =
   | 'MAIL_NOT_CONFIGURED'
   | 'NO_MAIL_ACCOUNTS'
-  | 'NETWORK_ERROR';
+  | 'NETWORK_ERROR'
+  | 'UNKNOWN_ERROR';
 
 export interface UseMailAccountsResult {
   data: MailAccount[] | undefined;
@@ -39,7 +40,7 @@ export function useMailAccounts(): UseMailAccountsResult {
     ) {
       derivedError = 'NETWORK_ERROR';
     } else {
-      derivedError = 'MAIL_NOT_CONFIGURED'; // bezpieczny fallback
+      derivedError = 'UNKNOWN_ERROR';
     }
   } else if (query.data !== undefined && query.data.length === 0) {
     derivedError = 'NO_MAIL_ACCOUNTS';

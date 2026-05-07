@@ -102,11 +102,14 @@ export default function MailIndex() {
         ? t('mail.errors.notConfigured')
         : derivedError === 'NO_MAIL_ACCOUNTS'
           ? t('mail.errors.noAccounts')
-          : t('mail.errors.networkError');
+          : derivedError === 'NETWORK_ERROR'
+            ? t('mail.errors.networkError')
+            : t('mail.errors.unknownError');
+    const showRetry = derivedError === 'NETWORK_ERROR' || derivedError === 'UNKNOWN_ERROR';
     return (
       <View style={styles.center}>
         <Text style={styles.errorText}>{errorMessage}</Text>
-        {derivedError === 'NETWORK_ERROR' && (
+        {showRetry && (
           <Text style={styles.retryText} onPress={onRefresh}>
             {t('common.retry')}
           </Text>

@@ -66,7 +66,8 @@
       "downloadFailed": "Nie udało się pobrać załącznika",
       "notConfigured": "Konto pocztowe nie jest skonfigurowane. Skonfiguruj na webie.",
       "noAccounts": "Nie masz jeszcze sparowanych skrzynek pocztowych.",
-      "networkError": "Brak połączenia z serwerem. Spróbuj ponownie."
+      "networkError": "Brak połączenia z serwerem. Spróbuj ponownie.",
+      "unknownError": "Coś poszło nie tak. Spróbuj ponownie."
     },
     "actions": {
       "markRead": "Oznacz jako przeczytane",

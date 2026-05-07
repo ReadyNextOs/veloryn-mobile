@@ -66,7 +66,8 @@
       "downloadFailed": "Failed to download attachment",
       "notConfigured": "Mail account is not configured. Set it up on the web.",
       "noAccounts": "You have no paired mailboxes yet.",
-      "networkError": "Cannot connect to server. Please try again."
+      "networkError": "Cannot connect to server. Please try again.",
+      "unknownError": "Something went wrong. Please try again."
     },
     "actions": {
       "markRead": "Mark as read",

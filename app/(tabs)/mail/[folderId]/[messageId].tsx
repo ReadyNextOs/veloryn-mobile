@@ -16,10 +16,19 @@ import { useToggleFlag } from '@/hooks/mail/useToggleFlag';
 import { AttachmentRow } from '@/components/mail/AttachmentRow';
 import type { EmailAddress } from '@/types/mail';
 
-function formatFullDate(iso: string): string {
+const I18N_TO_BCP47: Record<string, string> = {
+  pl: 'pl-PL',
+  en: 'en-US',
+  cs: 'cs-CZ',
+  uk: 'uk-UA',
+  es: 'es-ES',
+};
+
+function formatFullDate(iso: string, language: string): string {
   try {
     const d = new Date(iso);
-    return d.toLocaleString('pl-PL', {
+    const locale = I18N_TO_BCP47[language] ?? language;
+    return d.toLocaleString(locale, {
       day: '2-digit',
       month: 'short',
       year: 'numeric',
@@ -45,7 +54,7 @@ function AddressLine({ label, addresses }: { label: string; addresses: EmailAddr
 }
 
 export default function MessageDetailScreen() {
-  const { t } = useTranslation('common');
+  const { t, i18n } = useTranslation('common');
   const { folderId, messageId, accountId, subject } = useLocalSearchParams<{
     folderId: string;
     messageId: string;
@@ -149,7 +158,7 @@ export default function MessageDetailScreen() {
           </Text>
           <Text style={styles.senderEmail}>{`<${message.from.email}>`}</Text>
         </View>
-        <Text style={styles.dateText}>{formatFullDate(message.received_at)}</Text>
+        <Text style={styles.dateText}>{formatFullDate(message.received_at, i18n.language)}</Text>
       </View>
 
       {/* Recipients (collapsible) */}
