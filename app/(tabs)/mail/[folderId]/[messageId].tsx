@@ -94,14 +94,14 @@ export default function MessageDetailScreen() {
           </View>
         ) : null,
     });
-  }, [navigation, subject, message]);
+  }, [navigation, subject, message, handleToggleStar, handleMarkUnread]);
 
   // Auto mark as read on mount
   useEffect(() => {
     if (message && !message.is_read && accountId && folderId) {
       markRead({ accountId, folderId, messageIds: [message.id], isRead: true });
     }
-  }, [message?.id, message?.is_read]);
+  }, [message?.id, message?.is_read, markRead, accountId, folderId]);
 
   const handleMarkUnread = useCallback(() => {
     if (!message || !accountId || !folderId) return;
