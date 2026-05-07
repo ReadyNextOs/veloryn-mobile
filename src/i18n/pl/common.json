@@ -63,7 +63,10 @@
     },
     "errors": {
       "loadFailed": "Nie udało się załadować wiadomości",
-      "downloadFailed": "Nie udało się pobrać załącznika"
+      "downloadFailed": "Nie udało się pobrać załącznika",
+      "notConfigured": "Konto pocztowe nie jest skonfigurowane. Skonfiguruj na webie.",
+      "noAccounts": "Nie masz jeszcze sparowanych skrzynek pocztowych.",
+      "networkError": "Brak połączenia z serwerem. Spróbuj ponownie."
     },
     "actions": {
       "markRead": "Oznacz jako przeczytane",

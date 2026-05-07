@@ -63,7 +63,10 @@
     },
     "errors": {
       "loadFailed": "Error al cargar los mensajes",
-      "downloadFailed": "Error al descargar el adjunto"
+      "downloadFailed": "Error al descargar el adjunto",
+      "notConfigured": "La cuenta de correo no está configurada. Configúrala en la web.",
+      "noAccounts": "Aún no tienes buzones vinculados.",
+      "networkError": "No hay conexión con el servidor. Inténtalo de nuevo."
     },
     "actions": {
       "markRead": "Marcar como leído",

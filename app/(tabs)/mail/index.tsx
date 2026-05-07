@@ -21,6 +21,7 @@ export default function MailIndex() {
     data: accounts,
     isLoading: isLoadingAccounts,
     isError: isErrorAccounts,
+    derivedError,
     refetch: refetchAccounts,
   } = useMailAccounts();
 
@@ -91,6 +92,25 @@ export default function MailIndex() {
     return (
       <View style={styles.container}>
         <MailFolderSkeleton />
+      </View>
+    );
+  }
+
+  if (derivedError) {
+    const errorMessage =
+      derivedError === 'MAIL_NOT_CONFIGURED'
+        ? t('mail.errors.notConfigured')
+        : derivedError === 'NO_MAIL_ACCOUNTS'
+          ? t('mail.errors.noAccounts')
+          : t('mail.errors.networkError');
+    return (
+      <View style={styles.center}>
+        <Text style={styles.errorText}>{errorMessage}</Text>
+        {derivedError === 'NETWORK_ERROR' && (
+          <Text style={styles.retryText} onPress={onRefresh}>
+            {t('common.retry')}
+          </Text>
+        )}
       </View>
     );
   }

@@ -63,7 +63,10 @@
     },
     "errors": {
       "loadFailed": "Zprávy se nepodařilo načíst",
-      "downloadFailed": "Přílohu se nepodařilo stáhnout"
+      "downloadFailed": "Přílohu se nepodařilo stáhnout",
+      "notConfigured": "Poštovní účet není nakonfigurován. Nastavte ho na webu.",
+      "noAccounts": "Zatím nemáte žádné spárované schránky.",
+      "networkError": "Nelze se připojit k serveru. Zkuste to znovu."
     },
     "actions": {
       "markRead": "Označit jako přečtené",
