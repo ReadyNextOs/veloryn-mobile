@@ -1,14 +1,7 @@
-// Wrapper na expo-secure-store dla tokena Sanctum + payload sparowanego urzadzenia.
+// Wrapper na expo-secure-store dla tokena Sanctum + payload sparowanego urządzenia.
 // Klucze przechowywane w Keychain (iOS) / Keystore (Android), zaszyfrowane przez OS.
-//
-// TODO Sprint 1 (RN-006): zainstalowac expo-secure-store i podlaczyc realne wywolania.
-//   npx expo install expo-secure-store
-//
-// Tymczasowo eksport stub'ow zeby app.tsx skompilowal sie bez instalacji deps.
 
-const STUB_WARN = '[secureStorage] expo-secure-store nie jest jeszcze zainstalowany — skutek: in-memory store, dane gina przy restarcie.';
-
-const memory = new Map<string, string>();
+import * as SecureStore from 'expo-secure-store';
 
 export const SECURE_KEYS = {
   apiToken: 'veloryn.api_token',
@@ -20,20 +13,17 @@ export const SECURE_KEYS = {
 export type SecureKey = (typeof SECURE_KEYS)[keyof typeof SECURE_KEYS];
 
 export async function setSecure(key: SecureKey, value: string): Promise<void> {
-  if (__DEV__) console.warn(STUB_WARN);
-  memory.set(key, value);
+  await SecureStore.setItemAsync(key, value);
 }
 
 export async function getSecure(key: SecureKey): Promise<string | null> {
-  return memory.get(key) ?? null;
+  return SecureStore.getItemAsync(key);
 }
 
 export async function deleteSecure(key: SecureKey): Promise<void> {
-  memory.delete(key);
+  await SecureStore.deleteItemAsync(key);
 }
 
 export async function clearAllSecure(): Promise<void> {
-  for (const key of Object.values(SECURE_KEYS)) {
-    memory.delete(key);
-  }
+  await Promise.all(Object.values(SECURE_KEYS).map((key) => SecureStore.deleteItemAsync(key)));
 }

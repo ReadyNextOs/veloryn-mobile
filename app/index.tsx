@@ -1,8 +1,7 @@
 import { Redirect } from 'expo-router';
+import { useAuthStore } from '@/store/auth';
 
-// TODO Sprint 1: czytaj sparowany token z expo-secure-store i przekieruj
-// odpowiednio do (auth)/pair albo (tabs)/messenger.
 export default function Index() {
-  const isPaired = false;
+  const isPaired = useAuthStore((s) => s.isPaired);
   return <Redirect href={isPaired ? '/(tabs)/messenger' : '/(auth)/pair'} />;
 }
