@@ -60,7 +60,11 @@
           "backgroundColor": "#1976d2"
         }
       ],
-      "expo-secure-store"
+      "expo-secure-store",
+      "expo-localization",
+      ["expo-camera", {
+        "cameraPermission": "Veloryn potrzebuje dostępu do kamery, aby zeskanować kod QR parowania urządzenia."
+      }]
     ],
     "experiments": {
       "typedRoutes": true
