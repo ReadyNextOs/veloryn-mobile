@@ -42,6 +42,7 @@ async function buildClient(): Promise<AxiosInstance> {
     (response) => response,
     async (error: unknown) => {
       if (error instanceof AxiosError && error.response?.status === 401) {
+        resetClient(); // zeruj singleton PRZED clearAllSecure — brak stale tokenu
         await clearAllSecure();
         authLogoutEmitter.emit('auth:logout');
       }
