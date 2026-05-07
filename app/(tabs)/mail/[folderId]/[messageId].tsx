@@ -16,39 +16,6 @@ import { useToggleFlag } from '@/hooks/mail/useToggleFlag';
 import { AttachmentRow } from '@/components/mail/AttachmentRow';
 import type { EmailAddress } from '@/types/mail';
 
-const BODY_CSS = `
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      font-family: -apple-system, sans-serif;
-      font-size: 16px;
-      color: #212121;
-      margin: 0;
-      padding: 12px;
-      word-break: break-word;
-    }
-    img { max-width: 100%; height: auto; display: block; }
-    a { color: #1976d2; }
-    pre, code { overflow-x: auto; }
-    table { max-width: 100%; }
-  </style>
-`;
-
-const HEIGHT_SCRIPT = `
-  (function() {
-    function postHeight() {
-      window.ReactNativeWebView.postMessage(
-        JSON.stringify({ type: 'height', value: document.body.scrollHeight })
-      );
-    }
-    postHeight();
-    var observer = new MutationObserver(postHeight);
-    observer.observe(document.body, { childList: true, subtree: true, attributes: true });
-    window.addEventListener('load', postHeight);
-  })();
-  true;
-`;
-
 function formatFullDate(iso: string): string {
   try {
     const d = new Date(iso);
@@ -96,7 +63,6 @@ export default function MessageDetailScreen() {
   const { mutate: markRead } = useMarkRead();
   const { mutate: toggleFlag } = useToggleFlag();
 
-  const [webViewHeight, setWebViewHeight] = useState(200);
   const [recipientsExpanded, setRecipientsExpanded] = useState(false);
 
   useLayoutEffect(() => {
@@ -211,26 +177,27 @@ export default function MessageDetailScreen() {
       )}
 
       {/* Body */}
+      {/* Fixed height z scroll wewnątrz WebView — auto-height wymagałby JS, co
+          łamie security spec (D5: javaScriptEnabled=false). Sprint 3+ rozważy
+          react-native-render-html dla parsed HTML bez WebView. */}
       <View style={styles.bodyContainer}>
         {message.body_html ? (
           <WebView
-            source={{ html: BODY_CSS + message.body_html }}
-            style={{ height: webViewHeight }}
+            source={{
+              html: `<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width, initial-scale=1"><style>
+  * { box-sizing: border-box; }
+  body { font-family: -apple-system, system-ui, sans-serif; font-size: 16px; line-height: 1.5; padding: 12px; margin: 0; color: #212121; word-wrap: break-word; }
+  img { max-width: 100%; height: auto; display: block; }
+  a { color: #1976d2; }
+  table { max-width: 100%; }
+  pre, code { white-space: pre-wrap; word-wrap: break-word; overflow-x: auto; }
+</style></head><body>${message.body_html}</body></html>`,
+            }}
+            originWhitelist={['http://*', 'https://*']}
             javaScriptEnabled={false}
             mixedContentMode="never"
-            originWhitelist={['*']}
-            scrollEnabled={false}
-            injectedJavaScript={HEIGHT_SCRIPT}
-            onMessage={(e) => {
-              try {
-                const parsed = JSON.parse(e.nativeEvent.data) as { type: string; value: number };
-                if (parsed.type === 'height' && parsed.value > 0) {
-                  setWebViewHeight(parsed.value + 24);
-                }
-              } catch {
-                // ignore
-              }
-            }}
+            scrollEnabled={true}
+            style={styles.webView}
           />
         ) : (
           <Text style={styles.bodyText}>{message.body_text ?? ''}</Text>
@@ -341,6 +308,11 @@ const styles = StyleSheet.create({
     borderTopWidth: StyleSheet.hairlineWidth,
     borderTopColor: 'rgba(0,0,0,0.1)',
     marginTop: 4,
+    height: 600,
+  },
+  webView: {
+    height: 600,
+    backgroundColor: 'white',
   },
   bodyText: {
     fontSize: 15,
