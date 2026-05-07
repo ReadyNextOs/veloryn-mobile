@@ -1,27 +1,93 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { useRef, useState } from 'react';
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { CameraView, useCameraPermissions } from 'expo-camera';
+import { useTranslation } from 'react-i18next';
+import { isQrExpired, parseQrPayload } from '@/lib/qrSchema';
+import { usePairing } from '@/hooks/usePairing';
 
-// TODO Sprint 1 (RN-005, RN-006):
-// - integracja expo-camera (CameraView z barcodeScannerSettings)
-// - parsowanie QrPayloadV1, walidacja schema (Zod)
-// - GET /api/me z Bearer tokenem
-// - zapis tokenu w expo-secure-store
-// - rejestracja Expo Push tokenu na backendzie
-// - redirect do (tabs)/messenger
 export default function PairScreen() {
+  const { t } = useTranslation('common');
+  const [permission, requestPermission] = useCameraPermissions();
+  const scanLockRef = useRef(false);
+  const [isPairingInProgress, setIsPairingInProgress] = useState(false);
+
+  const { mutateAsync: pair } = usePairing();
+
+  async function handleBarCodeScanned({ data }: { data: string }): Promise<void> {
+    // Throttle: ignoruj skanowanie podczas trwającego pair lub po pierwszym sukcesie
+    if (scanLockRef.current || isPairingInProgress) return;
+    scanLockRef.current = true;
+
+    try {
+      const payload = parseQrPayload(data);
+
+      if (isQrExpired(payload)) {
+        Alert.alert(t('common.error'), t('auth.pair.qrExpired'));
+        return;
+      }
+
+      setIsPairingInProgress(true);
+      await pair(payload);
+      // Nawigacja do (tabs)/messenger jest wewnątrz usePairing
+    } catch (err: unknown) {
+      const isJsonError =
+        err instanceof SyntaxError ||
+        (err instanceof Error && err.name === 'ZodError');
+      if (isJsonError) {
+        Alert.alert(t('common.error'), t('auth.pair.invalidQr'));
+      } else if (err instanceof Error && err.message.includes('MOBILE_TOKEN_QR_EXPIRED')) {
+        Alert.alert(t('common.error'), t('auth.pair.qrExpired'));
+      } else {
+        Alert.alert(t('common.error'), err instanceof Error ? err.message : t('common.error'));
+      }
+      setIsPairingInProgress(false);
+      // Zwolnij lock po błędzie żeby user mógł spróbować ponownie
+      setTimeout(() => {
+        scanLockRef.current = false;
+      }, 2000);
+    }
+  }
+
+  if (!permission) {
+    return <View style={styles.container} />;
+  }
+
+  if (!permission.granted) {
+    return (
+      <SafeAreaView style={styles.container} edges={['bottom']}>
+        <View style={styles.content}>
+          <Text style={styles.title}>{t('auth.pair.title')}</Text>
+          <Text style={styles.subtitle}>{t('auth.pair.permissionDenied')}</Text>
+          <TouchableOpacity style={styles.permissionButton} onPress={requestPermission}>
+            <Text style={styles.permissionButtonText}>Daj dostęp do kamery</Text>
+          </TouchableOpacity>
+        </View>
+      </SafeAreaView>
+    );
+  }
+
   return (
     <SafeAreaView style={styles.container} edges={['bottom']}>
       <View style={styles.content}>
-        <Text style={styles.title}>Sparuj z Veloryn</Text>
-        <Text style={styles.subtitle}>
-          Otworz Veloryn w przegladarce, przejdz do Profil → Urzadzenia mobilne
-          i zeskanuj wygenerowany kod QR.
-        </Text>
-        <View style={styles.placeholder}>
-          <Text style={styles.placeholderText}>
-            [TODO] Tu pojawi sie podglad kamery (expo-camera)
-          </Text>
+        <Text style={styles.title}>{t('auth.pair.title')}</Text>
+        <Text style={styles.subtitle}>{t('auth.pair.subtitle')}</Text>
+
+        <View style={styles.cameraWrapper}>
+          {isPairingInProgress ? (
+            <View style={styles.pairingOverlay}>
+              <Text style={styles.pairingText}>{t('auth.pair.pairing')}</Text>
+            </View>
+          ) : (
+            <CameraView
+              style={styles.camera}
+              barcodeScannerSettings={{ barcodeTypes: ['qr'] }}
+              onBarcodeScanned={handleBarCodeScanned}
+            />
+          )}
         </View>
+
+        <Text style={styles.instructions}>{t('auth.pair.scanInstructions')}</Text>
       </View>
     </SafeAreaView>
   );
@@ -44,19 +110,41 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     lineHeight: 20,
   },
-  placeholder: {
+  cameraWrapper: {
     aspectRatio: 1,
+    borderRadius: 12,
+    overflow: 'hidden',
     borderWidth: 2,
     borderColor: '#1976d2',
-    borderStyle: 'dashed',
-    borderRadius: 12,
+  },
+  camera: { flex: 1 },
+  pairingOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(25, 118, 210, 0.15)',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  placeholderText: {
-    color: 'rgba(0, 0, 0, 0.6)',
-    fontSize: 12,
-    paddingHorizontal: 16,
+  pairingText: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#1976d2',
+  },
+  instructions: {
+    marginTop: 16,
+    fontSize: 13,
+    color: 'rgba(0, 0, 0, 0.5)',
     textAlign: 'center',
+  },
+  permissionButton: {
+    backgroundColor: '#1976d2',
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 8,
+    alignSelf: 'center',
+  },
+  permissionButtonText: {
+    color: '#ffffff',
+    fontSize: 15,
+    fontWeight: '600',
   },
 });
