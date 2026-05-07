@@ -65,6 +65,21 @@ export default function MessageDetailScreen() {
 
   const [recipientsExpanded, setRecipientsExpanded] = useState(false);
 
+  const handleMarkUnread = useCallback(() => {
+    if (!message || !accountId || !folderId) return;
+    markRead({ accountId, folderId, messageIds: [message.id], isRead: false });
+  }, [message, accountId, folderId, markRead]);
+
+  const handleToggleStar = useCallback(() => {
+    if (!message || !accountId || !folderId) return;
+    toggleFlag({
+      accountId,
+      folderId,
+      messageIds: [message.id],
+      newStarred: !message.is_starred,
+    });
+  }, [message, accountId, folderId, toggleFlag]);
+
   useLayoutEffect(() => {
     navigation.setOptions({
       title: subject ?? message?.subject ?? '',
@@ -102,21 +117,6 @@ export default function MessageDetailScreen() {
       markRead({ accountId, folderId, messageIds: [message.id], isRead: true });
     }
   }, [message?.id, message?.is_read, markRead, accountId, folderId]);
-
-  const handleMarkUnread = useCallback(() => {
-    if (!message || !accountId || !folderId) return;
-    markRead({ accountId, folderId, messageIds: [message.id], isRead: false });
-  }, [message, accountId, folderId, markRead]);
-
-  const handleToggleStar = useCallback(() => {
-    if (!message || !accountId || !folderId) return;
-    toggleFlag({
-      accountId,
-      folderId,
-      messageIds: [message.id],
-      newStarred: !message.is_starred,
-    });
-  }, [message, accountId, folderId, toggleFlag]);
 
   if (isLoading) {
     return (

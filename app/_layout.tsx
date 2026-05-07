@@ -38,6 +38,7 @@ function AppShell() {
     if (!hasHydrated) {
       return useAuthStore.persist.onFinishHydration(() => setHasHydrated(true));
     }
+    return undefined;
   }, [hasHydrated]);
 
   const resetAuth = useAuthStore((s) => s.resetAuth);
