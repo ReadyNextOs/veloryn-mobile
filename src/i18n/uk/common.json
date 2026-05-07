@@ -30,6 +30,84 @@
     "retry": "Спробувати знову",
     "cancel": "Скасувати"
   },
+  "messenger": {
+    "threads": {
+      "empty": "Немає розмов",
+      "emptySubtitle": "Тут з'являться ваші розмови",
+      "searchPlaceholder": "Пошук розмов...",
+      "dmLabel": "Особисте повідомлення"
+    },
+    "thread": {
+      "mute": "Вимкнути звук",
+      "unmute": "Увімкнути звук",
+      "subscribeAll": "Усі сповіщення",
+      "subscribeMentions": "Лише згадки",
+      "subscribeOff": "Вимкнено",
+      "online": "Онлайн",
+      "typing": "друкує...",
+      "typingMultiple": "друкують...",
+      "typingPlaceholder": "{{names}} {{verb}}",
+      "typingOthers": "і ще {{count}}",
+      "noMessages": "У цій розмові немає повідомлень",
+      "loadOlder": "Завантажити старіші"
+    },
+    "message": {
+      "inputPlaceholder": "Написати повідомлення...",
+      "send": "Надіслати",
+      "edited": "(відредаговано)",
+      "deleted": "Повідомлення видалено",
+      "retry": "Спробувати знову",
+      "sendFailed": "Не вдалося надіслати",
+      "reactions": "Реакції"
+    },
+    "errors": {
+      "loadFailed": "Не вдалося завантажити повідомлення",
+      "sendFailed": "Не вдалося надіслати повідомлення",
+      "threadNotFound": "Розмову не знайдено"
+    }
+  },
+  "settings": {
+    "account": {
+      "title": "Акаунт",
+      "logout": "Вийти",
+      "logoutConfirm": "Ви впевнені, що хочете вийти?",
+      "logoutConfirmYes": "Вийти"
+    },
+    "notifications": {
+      "title": "Сповіщення",
+      "mail": "Пошта",
+      "messages": "Повідомлення",
+      "mentions": "Згадки",
+      "system": "Системні",
+      "permissionHint": "Щоб отримувати сповіщення, увімкніть дозволи в системних налаштуваннях."
+    },
+    "devices": {
+      "title": "Мобільні пристрої",
+      "currentDevice": "Цей пристрій",
+      "revoke": "Видалити",
+      "revokeConfirm": "Ви впевнені, що хочете видалити цей пристрій?",
+      "revokeConfirmYes": "Видалити",
+      "empty": "Немає інших прив'язаних пристроїв"
+    },
+    "language": {
+      "title": "Мова",
+      "pl": "Polski",
+      "en": "English",
+      "cs": "Čeština",
+      "uk": "Українська",
+      "es": "Español"
+    },
+    "biometric": {
+      "title": "Біометрія",
+      "toggle": "Вимагати біометрію",
+      "unavailable": "Біометрія недоступна на цьому пристрої"
+    },
+    "about": {
+      "title": "Про застосунок",
+      "version": "Версія",
+      "privacyPolicy": "Політика конфіденційності"
+    }
+  },
   "mail": {
     "folders": {
       "inbox": "Вхідні",

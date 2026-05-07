@@ -30,6 +30,84 @@
     "retry": "Intentar de nuevo",
     "cancel": "Cancelar"
   },
+  "messenger": {
+    "threads": {
+      "empty": "Sin conversaciones",
+      "emptySubtitle": "Aquí aparecerán tus conversaciones",
+      "searchPlaceholder": "Buscar conversaciones...",
+      "dmLabel": "Mensaje directo"
+    },
+    "thread": {
+      "mute": "Silenciar",
+      "unmute": "Activar",
+      "subscribeAll": "Todas las notificaciones",
+      "subscribeMentions": "Solo menciones",
+      "subscribeOff": "Silenciado",
+      "online": "En línea",
+      "typing": "está escribiendo...",
+      "typingMultiple": "están escribiendo...",
+      "typingPlaceholder": "{{names}} {{verb}}",
+      "typingOthers": "y {{count}} más",
+      "noMessages": "No hay mensajes en esta conversación",
+      "loadOlder": "Cargar más antiguos"
+    },
+    "message": {
+      "inputPlaceholder": "Escribe un mensaje...",
+      "send": "Enviar",
+      "edited": "(editado)",
+      "deleted": "Mensaje eliminado",
+      "retry": "Reintentar",
+      "sendFailed": "Error al enviar",
+      "reactions": "Reacciones"
+    },
+    "errors": {
+      "loadFailed": "Error al cargar los mensajes",
+      "sendFailed": "Error al enviar el mensaje",
+      "threadNotFound": "Conversación no encontrada"
+    }
+  },
+  "settings": {
+    "account": {
+      "title": "Cuenta",
+      "logout": "Cerrar sesión",
+      "logoutConfirm": "¿Estás seguro de que deseas cerrar sesión?",
+      "logoutConfirmYes": "Cerrar sesión"
+    },
+    "notifications": {
+      "title": "Notificaciones",
+      "mail": "Correo",
+      "messages": "Mensajes",
+      "mentions": "Menciones",
+      "system": "Sistema",
+      "permissionHint": "Para recibir notificaciones, habilita los permisos en la configuración del sistema."
+    },
+    "devices": {
+      "title": "Dispositivos móviles",
+      "currentDevice": "Este dispositivo",
+      "revoke": "Eliminar",
+      "revokeConfirm": "¿Estás seguro de que deseas eliminar este dispositivo?",
+      "revokeConfirmYes": "Eliminar",
+      "empty": "Sin otros dispositivos vinculados"
+    },
+    "language": {
+      "title": "Idioma",
+      "pl": "Polski",
+      "en": "English",
+      "cs": "Čeština",
+      "uk": "Українська",
+      "es": "Español"
+    },
+    "biometric": {
+      "title": "Biometría",
+      "toggle": "Requerir biometría",
+      "unavailable": "Biometría no disponible en este dispositivo"
+    },
+    "about": {
+      "title": "Acerca de",
+      "version": "Versión",
+      "privacyPolicy": "Política de privacidad"
+    }
+  },
   "mail": {
     "folders": {
       "inbox": "Bandeja de entrada",

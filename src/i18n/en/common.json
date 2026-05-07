@@ -30,6 +30,84 @@
     "retry": "Try again",
     "cancel": "Cancel"
   },
+  "messenger": {
+    "threads": {
+      "empty": "No threads",
+      "emptySubtitle": "Your conversations will appear here",
+      "searchPlaceholder": "Search conversations...",
+      "dmLabel": "Direct message"
+    },
+    "thread": {
+      "mute": "Mute",
+      "unmute": "Unmute",
+      "subscribeAll": "All notifications",
+      "subscribeMentions": "Mentions only",
+      "subscribeOff": "Muted",
+      "online": "Online",
+      "typing": "is typing...",
+      "typingMultiple": "are typing...",
+      "typingPlaceholder": "{{names}} {{verb}}",
+      "typingOthers": "and {{count}} others",
+      "noMessages": "No messages in this conversation",
+      "loadOlder": "Load older"
+    },
+    "message": {
+      "inputPlaceholder": "Write a message...",
+      "send": "Send",
+      "edited": "(edited)",
+      "deleted": "Message deleted",
+      "retry": "Retry",
+      "sendFailed": "Failed to send",
+      "reactions": "Reactions"
+    },
+    "errors": {
+      "loadFailed": "Failed to load messages",
+      "sendFailed": "Failed to send message",
+      "threadNotFound": "Thread not found"
+    }
+  },
+  "settings": {
+    "account": {
+      "title": "Account",
+      "logout": "Log out",
+      "logoutConfirm": "Are you sure you want to log out?",
+      "logoutConfirmYes": "Log out"
+    },
+    "notifications": {
+      "title": "Notifications",
+      "mail": "Mail",
+      "messages": "Messages",
+      "mentions": "Mentions",
+      "system": "System",
+      "permissionHint": "To receive notifications, enable permissions in system settings."
+    },
+    "devices": {
+      "title": "Mobile devices",
+      "currentDevice": "This device",
+      "revoke": "Remove",
+      "revokeConfirm": "Are you sure you want to remove this device?",
+      "revokeConfirmYes": "Remove",
+      "empty": "No other paired devices"
+    },
+    "language": {
+      "title": "Language",
+      "pl": "Polski",
+      "en": "English",
+      "cs": "Čeština",
+      "uk": "Українська",
+      "es": "Español"
+    },
+    "biometric": {
+      "title": "Biometrics",
+      "toggle": "Require biometrics",
+      "unavailable": "Biometrics not available on this device"
+    },
+    "about": {
+      "title": "About",
+      "version": "Version",
+      "privacyPolicy": "Privacy policy"
+    }
+  },
   "mail": {
     "folders": {
       "inbox": "Inbox",

@@ -30,6 +30,84 @@
     "retry": "Spróbuj ponownie",
     "cancel": "Anuluj"
   },
+  "messenger": {
+    "threads": {
+      "empty": "Brak wątków",
+      "emptySubtitle": "Tutaj pojawią się Twoje rozmowy",
+      "searchPlaceholder": "Szukaj rozmów...",
+      "dmLabel": "Wiadomość bezpośrednia"
+    },
+    "thread": {
+      "mute": "Wycisz",
+      "unmute": "Odcisz",
+      "subscribeAll": "Wszystkie powiadomienia",
+      "subscribeMentions": "Tylko wzmianki",
+      "subscribeOff": "Wyciszone",
+      "online": "Online",
+      "typing": "pisze...",
+      "typingMultiple": "piszą...",
+      "typingPlaceholder": "{{names}} {{verb}}",
+      "typingOthers": "i {{count}} innych",
+      "noMessages": "Brak wiadomości w tej rozmowie",
+      "loadOlder": "Załaduj starsze"
+    },
+    "message": {
+      "inputPlaceholder": "Napisz wiadomość...",
+      "send": "Wyślij",
+      "edited": "(edytowano)",
+      "deleted": "Wiadomość usunięta",
+      "retry": "Spróbuj ponownie",
+      "sendFailed": "Nie udało się wysłać",
+      "reactions": "Reakcje"
+    },
+    "errors": {
+      "loadFailed": "Nie udało się załadować wiadomości",
+      "sendFailed": "Nie udało się wysłać wiadomości",
+      "threadNotFound": "Wątek nie istnieje"
+    }
+  },
+  "settings": {
+    "account": {
+      "title": "Konto",
+      "logout": "Wyloguj",
+      "logoutConfirm": "Czy na pewno chcesz się wylogować?",
+      "logoutConfirmYes": "Wyloguj"
+    },
+    "notifications": {
+      "title": "Powiadomienia",
+      "mail": "Poczta",
+      "messages": "Wiadomości",
+      "mentions": "Wzmianki",
+      "system": "Systemowe",
+      "permissionHint": "Aby otrzymywać powiadomienia, włącz uprawnienia w ustawieniach systemu."
+    },
+    "devices": {
+      "title": "Urządzenia mobilne",
+      "currentDevice": "To urządzenie",
+      "revoke": "Usuń",
+      "revokeConfirm": "Czy na pewno chcesz usunąć to urządzenie?",
+      "revokeConfirmYes": "Usuń",
+      "empty": "Brak innych sparowanych urządzeń"
+    },
+    "language": {
+      "title": "Język",
+      "pl": "Polski",
+      "en": "English",
+      "cs": "Čeština",
+      "uk": "Українська",
+      "es": "Español"
+    },
+    "biometric": {
+      "title": "Biometria",
+      "toggle": "Wymagaj biometrii",
+      "unavailable": "Biometria niedostępna na tym urządzeniu"
+    },
+    "about": {
+      "title": "O aplikacji",
+      "version": "Wersja",
+      "privacyPolicy": "Polityka prywatności"
+    }
+  },
   "mail": {
     "folders": {
       "inbox": "Skrzynka odbiorcza",

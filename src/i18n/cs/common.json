@@ -30,6 +30,84 @@
     "retry": "Zkuste znovu",
     "cancel": "Zrušit"
   },
+  "messenger": {
+    "threads": {
+      "empty": "Žádná vlákna",
+      "emptySubtitle": "Zde se zobrazí vaše konverzace",
+      "searchPlaceholder": "Hledat konverzace...",
+      "dmLabel": "Přímá zpráva"
+    },
+    "thread": {
+      "mute": "Ztlumit",
+      "unmute": "Zapnout zvuk",
+      "subscribeAll": "Všechna oznámení",
+      "subscribeMentions": "Pouze zmínky",
+      "subscribeOff": "Ztlumeno",
+      "online": "Online",
+      "typing": "píše...",
+      "typingMultiple": "píší...",
+      "typingPlaceholder": "{{names}} {{verb}}",
+      "typingOthers": "a {{count}} dalších",
+      "noMessages": "V této konverzaci nejsou žádné zprávy",
+      "loadOlder": "Načíst starší"
+    },
+    "message": {
+      "inputPlaceholder": "Napište zprávu...",
+      "send": "Odeslat",
+      "edited": "(upraveno)",
+      "deleted": "Zpráva smazána",
+      "retry": "Zkuste znovu",
+      "sendFailed": "Odeslání se nezdařilo",
+      "reactions": "Reakce"
+    },
+    "errors": {
+      "loadFailed": "Zprávy se nepodařilo načíst",
+      "sendFailed": "Zprávu se nepodařilo odeslat",
+      "threadNotFound": "Vlákno neexistuje"
+    }
+  },
+  "settings": {
+    "account": {
+      "title": "Účet",
+      "logout": "Odhlásit",
+      "logoutConfirm": "Opravdu se chcete odhlásit?",
+      "logoutConfirmYes": "Odhlásit"
+    },
+    "notifications": {
+      "title": "Oznámení",
+      "mail": "Pošta",
+      "messages": "Zprávy",
+      "mentions": "Zmínky",
+      "system": "Systémová",
+      "permissionHint": "Chcete-li dostávat oznámení, povolte je v nastavení systému."
+    },
+    "devices": {
+      "title": "Mobilní zařízení",
+      "currentDevice": "Toto zařízení",
+      "revoke": "Odebrat",
+      "revokeConfirm": "Opravdu chcete toto zařízení odebrat?",
+      "revokeConfirmYes": "Odebrat",
+      "empty": "Žádná další spárovaná zařízení"
+    },
+    "language": {
+      "title": "Jazyk",
+      "pl": "Polski",
+      "en": "English",
+      "cs": "Čeština",
+      "uk": "Українська",
+      "es": "Español"
+    },
+    "biometric": {
+      "title": "Biometrie",
+      "toggle": "Vyžadovat biometrii",
+      "unavailable": "Biometrie není na tomto zařízení dostupná"
+    },
+    "about": {
+      "title": "O aplikaci",
+      "version": "Verze",
+      "privacyPolicy": "Zásady ochrany osobních údajů"
+    }
+  },
   "mail": {
     "folders": {
       "inbox": "Doručená pošta",
