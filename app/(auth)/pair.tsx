@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { CameraView, useCameraPermissions } from 'expo-camera';
 import { useTranslation } from 'react-i18next';
@@ -59,9 +59,15 @@ export default function PairScreen() {
         <View style={styles.content}>
           <Text style={styles.title}>{t('auth.pair.title')}</Text>
           <Text style={styles.subtitle}>{t('auth.pair.permissionDenied')}</Text>
-          <TouchableOpacity style={styles.permissionButton} onPress={requestPermission}>
-            <Text style={styles.permissionButtonText}>{t('auth.pair.grantCameraAccess')}</Text>
-          </TouchableOpacity>
+          {!permission.canAskAgain ? (
+            <TouchableOpacity style={styles.permissionButton} onPress={() => Linking.openSettings()}>
+              <Text style={styles.permissionButtonText}>{t('auth.pair.openSettings')}</Text>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity style={styles.permissionButton} onPress={requestPermission}>
+              <Text style={styles.permissionButtonText}>{t('auth.pair.grantCameraAccess')}</Text>
+            </TouchableOpacity>
+          )}
         </View>
       </SafeAreaView>
     );
