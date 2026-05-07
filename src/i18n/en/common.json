@@ -56,7 +56,8 @@
       "from": "From",
       "to": "To",
       "cc": "CC",
-      "bcc": "BCC"
+      "bcc": "BCC",
+      "attachmentsTitle": "Attachments ({{count}})"
     },
     "errors": {
       "loadFailed": "Failed to load messages",

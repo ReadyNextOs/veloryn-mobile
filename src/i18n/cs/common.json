@@ -56,7 +56,8 @@
       "from": "Od",
       "to": "Komu",
       "cc": "Kopie",
-      "bcc": "Skrytá kopie"
+      "bcc": "Skrytá kopie",
+      "attachmentsTitle": "Přílohy ({{count}})"
     },
     "errors": {
       "loadFailed": "Zprávy se nepodařilo načíst",

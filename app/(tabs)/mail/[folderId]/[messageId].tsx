@@ -208,7 +208,7 @@ export default function MessageDetailScreen() {
       {nonInlineAttachments.length > 0 && (
         <View style={styles.attachmentsSection}>
           <Text style={styles.attachmentsTitle}>
-            {`Załączniki (${nonInlineAttachments.length})`}
+            {t('mail.detail.attachmentsTitle', { count: nonInlineAttachments.length })}
           </Text>
           {nonInlineAttachments.map((att) => (
             <AttachmentRow key={att.id} attachment={att} />

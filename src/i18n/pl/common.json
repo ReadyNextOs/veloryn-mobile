@@ -56,7 +56,8 @@
       "from": "Od",
       "to": "Do",
       "cc": "DW",
-      "bcc": "UDW"
+      "bcc": "UDW",
+      "attachmentsTitle": "Załączniki ({{count}})"
     },
     "errors": {
       "loadFailed": "Nie udało się załadować wiadomości",

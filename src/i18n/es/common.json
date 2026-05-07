@@ -56,7 +56,8 @@
       "from": "De",
       "to": "Para",
       "cc": "CC",
-      "bcc": "CCO"
+      "bcc": "CCO",
+      "attachmentsTitle": "Archivos adjuntos ({{count}})"
     },
     "errors": {
       "loadFailed": "Error al cargar los mensajes",
