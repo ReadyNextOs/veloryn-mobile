@@ -1,5 +1,5 @@
 // Hook logiki parowania QR.
-// Flow: zapisuje credentials → wywołuje pair API → ustawia auth state → navigate.
+// Flow: wywołuje pair API → po sukcesie zapisuje credentials → ustawia auth state → navigate.
 
 import { Platform } from 'react-native';
 import Constants from 'expo-constants';
@@ -28,20 +28,17 @@ export function usePairing() {
   return useMutation({
     mutationFn: async (payload: QrPayloadV1) => {
       const deviceInfo = getDeviceInfo();
-
-      // Zapisz credentials do secure store PRZED pair API
-      // (klient axios potrzebuje hosta/tokenu dla kolejnych requestów)
+      // pairDevice używa własnego axios.create() z tokenem w body — nie potrzebuje SecureStore
+      return pairDevice(payload, deviceInfo);
+    },
+    onSuccess: async (data, payload) => {
+      // Zapisz credentials DOPIERO po potwierdzonym sparowaniu
       await setSecure(SECURE_KEYS.apiHost, payload.host);
       await setSecure(SECURE_KEYS.apiToken, payload.token);
       await setSecure(SECURE_KEYS.tenantId, payload.tenant_id);
       await setSecure(SECURE_KEYS.userEmail, payload.user_email);
-
-      // Reset klienta axios żeby pobrał nowe credentials
+      // Reset klienta axios żeby pobrał nowe credentials przy następnym requeście
       resetClient();
-
-      return pairDevice(payload, deviceInfo);
-    },
-    onSuccess: (data) => {
       setAuthState({
         isPaired: true,
         user: data.user,
@@ -51,8 +48,8 @@ export function usePairing() {
       router.replace('/(tabs)/messenger');
     },
     onError: async (err) => {
-      // Wyczyść credentials przy błędzie — user musi zeskanować ponownie
-      await clearAllSecure();
+      // Nic nie zostało zapisane do SecureStore — czyszczenie nie jest potrzebne
+      // Reset klienta na wypadek gdyby był zanieczyszczony
       resetClient();
       setAuthState({ isPaired: false, user: null, tenant: null, apiHost: null });
 
