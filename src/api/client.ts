@@ -1,82 +1,111 @@
-// HTTP client dla mobile API.
-//
-// TODO Sprint 1 (RN-003): zainstalowac axios i zastapic fetch.
-//   npx expo install axios
-//
-// Tymczasowo prosty fetch-wrapper: trzyma host + Bearer + X-Tenant-Id w module
-// state, eksportuje get/post/del/put.
+// HTTP client — axios z Sanctum Bearer + X-Tenant-Id.
+// Credentials czytane z expo-secure-store (via secureStorage module).
+// 401 interceptor: czyści storage i emituje 'auth:logout' przez AuthEventEmitter.
 
-import { getSecure, SECURE_KEYS } from '@/lib/secureStorage';
-
-let cachedHost: string | null = null;
-let cachedToken: string | null = null;
-let cachedTenantId: string | null = null;
-
-async function loadCreds(): Promise<void> {
-  if (cachedToken !== null) return;
-  cachedHost = await getSecure(SECURE_KEYS.apiHost);
-  cachedToken = await getSecure(SECURE_KEYS.apiToken);
-  cachedTenantId = await getSecure(SECURE_KEYS.tenantId);
-}
-
-export function clearApiCreds(): void {
-  cachedHost = null;
-  cachedToken = null;
-  cachedTenantId = null;
-}
-
-export interface ApiRequestOptions {
-  method?: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
-  body?: unknown;
-  query?: Record<string, string | number | boolean | undefined>;
-  signal?: AbortSignal;
-}
+import axios, { AxiosError, type AxiosInstance, type AxiosRequestConfig } from 'axios';
+import { clearAllSecure, getSecure, SECURE_KEYS } from '@/lib/secureStorage';
+import { authLogoutEmitter } from '@/lib/authEvents';
 
 export class ApiError extends Error {
-  constructor(
-    public readonly status: number,
-    public readonly payload: unknown,
-    message?: string,
-  ) {
-    super(message ?? `API ${status}`);
+  readonly status: number;
+  readonly code: string | null;
+
+  constructor(status: number, message: string, code?: string) {
+    super(message);
     this.name = 'ApiError';
+    this.status = status;
+    this.code = code ?? null;
   }
 }
 
-export async function apiRequest<T>(path: string, options: ApiRequestOptions = {}): Promise<T> {
-  await loadCreds();
+let _client: AxiosInstance | null = null;
 
-  if (!cachedHost) {
-    throw new ApiError(0, null, 'Host API nie jest ustawiony — wymagane sparowanie QR.');
-  }
+async function buildClient(): Promise<AxiosInstance> {
+  const apiHost = await getSecure(SECURE_KEYS.apiHost);
+  const apiToken = await getSecure(SECURE_KEYS.apiToken);
+  const tenantId = await getSecure(SECURE_KEYS.tenantId);
 
-  const url = new URL(path.startsWith('http') ? path : `${cachedHost}${path}`);
-  if (options.query) {
-    for (const [key, value] of Object.entries(options.query)) {
-      if (value !== undefined) url.searchParams.set(key, String(value));
-    }
-  }
+  const baseURL = apiHost ?? (process.env['EXPO_PUBLIC_API_URL'] ?? 'https://dev.veloryn.pl');
 
-  const headers: Record<string, string> = {
-    Accept: 'application/json',
-    'Content-Type': 'application/json',
-  };
-  if (cachedToken) headers.Authorization = `Bearer ${cachedToken}`;
-  if (cachedTenantId) headers['X-Tenant-Id'] = cachedTenantId;
-
-  const response = await fetch(url.toString(), {
-    method: options.method ?? 'GET',
-    headers,
-    body: options.body !== undefined ? JSON.stringify(options.body) : undefined,
-    signal: options.signal,
+  const instance = axios.create({
+    baseURL,
+    timeout: 15_000,
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      ...(apiToken ? { Authorization: `Bearer ${apiToken}` } : {}),
+      ...(tenantId ? { 'X-Tenant-Id': tenantId } : {}),
+    },
   });
 
-  const isJson = response.headers.get('content-type')?.includes('application/json');
-  const payload = isJson ? await response.json() : await response.text();
+  instance.interceptors.response.use(
+    (response) => response,
+    async (error: unknown) => {
+      if (error instanceof AxiosError && error.response?.status === 401) {
+        await clearAllSecure();
+        authLogoutEmitter.emit('auth:logout');
+      }
+      if (error instanceof AxiosError && error.response) {
+        const data = error.response.data as Record<string, unknown> | undefined;
+        const message =
+          typeof data?.['message'] === 'string'
+            ? data['message']
+            : `HTTP ${error.response.status}`;
+        const code =
+          typeof data?.['code'] === 'string' ? data['code'] : undefined;
+        throw new ApiError(error.response.status, message, code);
+      }
+      throw error;
+    },
+  );
 
-  if (!response.ok) {
-    throw new ApiError(response.status, payload);
+  return instance;
+}
+
+/** Pobiera (lub tworzy) klienta axios. Odtwarza przy każdym wywołaniu jeśli _client===null. */
+export async function getClient(): Promise<AxiosInstance> {
+  if (_client === null) {
+    _client = await buildClient();
   }
+  return _client;
+}
 
-  return payload as T;
+/** Wyczyść klienta (po logout / re-pair). */
+export function resetClient(): void {
+  _client = null;
+}
+
+export async function apiGet<T>(path: string, config?: AxiosRequestConfig): Promise<T> {
+  const client = await getClient();
+  const response = await client.get<T>(path, config);
+  return response.data;
+}
+
+export async function apiPost<T>(
+  path: string,
+  data?: unknown,
+  config?: AxiosRequestConfig,
+): Promise<T> {
+  const client = await getClient();
+  const response = await client.post<T>(path, data, config);
+  return response.data;
+}
+
+export async function apiPut<T>(
+  path: string,
+  data?: unknown,
+  config?: AxiosRequestConfig,
+): Promise<T> {
+  const client = await getClient();
+  const response = await client.put<T>(path, data, config);
+  return response.data;
+}
+
+export async function apiDelete<T = void>(
+  path: string,
+  config?: AxiosRequestConfig,
+): Promise<T> {
+  const client = await getClient();
+  const response = await client.delete<T>(path, config);
+  return response.data;
 }
