@@ -1,12 +1,14 @@
 // Hook do biometrycznego odblokowania aplikacji.
-// Sprawdza dostępność sprzętu, wywołuje LocalAuthentication i zarządza stanem isUnlocked.
+// Sprawdza dostępność sprzętu, wywołuje LocalAuthentication.
+// Stan isUnlocked jest globalny (Zustand) — używany przez _layout.tsx i locked.tsx.
 
 import { useCallback, useEffect, useState } from 'react';
 import * as LocalAuthentication from 'expo-local-authentication';
 import { useTranslation } from 'react-i18next';
+import { useAuthStore } from '@/store/auth';
 
 interface BiometricUnlockResult {
-  /** Czy aplikacja jest aktualnie odblokowana. */
+  /** Czy aplikacja jest aktualnie odblokowana (z Zustand — globalny). */
   isUnlocked: boolean;
   /** Wywołaj prompt biometryczny. */
   unlock: () => Promise<void>;
@@ -16,8 +18,11 @@ interface BiometricUnlockResult {
 
 export function useBiometricUnlock(): BiometricUnlockResult {
   const { t } = useTranslation('common');
+  // isUnlocked pochodzi z Zustand — shared między _layout i locked screen
+  const isUnlocked = useAuthStore((s) => s.isUnlocked);
+  const setUnlocked = useAuthStore((s) => s.setUnlocked);
+  // isAvailable to lokalny stan init — nie wymaga globalnego store
   const [isAvailable, setIsAvailable] = useState(false);
-  const [isUnlocked, setIsUnlocked] = useState(false);
 
   // Sprawdź dostępność biometrii przy mount
   useEffect(() => {
@@ -27,15 +32,15 @@ export function useBiometricUnlock(): BiometricUnlockResult {
       setIsAvailable(hasHardware && isEnrolled);
       // Jeśli biometria niedostępna → uznaj za odblokowane
       if (!hasHardware || !isEnrolled) {
-        setIsUnlocked(true);
+        setUnlocked(true);
       }
     }
     void checkAvailability();
-  }, []);
+  }, [setUnlocked]);
 
   const unlock = useCallback(async () => {
     if (!isAvailable) {
-      setIsUnlocked(true);
+      setUnlocked(true);
       return;
     }
     const result = await LocalAuthentication.authenticateAsync({
@@ -44,9 +49,9 @@ export function useBiometricUnlock(): BiometricUnlockResult {
       cancelLabel: t('common.cancel'),
     });
     if (result.success) {
-      setIsUnlocked(true);
+      setUnlocked(true);
     }
-  }, [isAvailable, t]);
+  }, [isAvailable, setUnlocked, t]);
 
   return { isUnlocked, unlock, isAvailable };
 }

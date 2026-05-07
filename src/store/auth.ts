@@ -24,10 +24,16 @@ export interface AuthState {
   user: User | null;
   tenant: Tenant | null;
   apiHost: string | null;
+  /** Czy sesja biometryczna jest aktywna (ephemeral — nie persystowane). */
+  isUnlocked: boolean;
+  /** Timestamp (ms) ostatniego przejścia do tła — do liczenia 5-min timeout (ephemeral). */
+  lastBackgroundedAt: number | null;
 }
 
 interface AuthStore extends AuthState {
   setAuthState: (patch: Partial<AuthState>) => void;
+  setUnlocked: (value: boolean) => void;
+  setLastBackgroundedAt: (ts: number | null) => void;
   resetAuth: () => void;
 }
 
@@ -36,6 +42,8 @@ const INITIAL_STATE: AuthState = {
   user: null,
   tenant: null,
   apiHost: null,
+  isUnlocked: false,
+  lastBackgroundedAt: null,
 };
 
 export const useAuthStore = create<AuthStore>()(
@@ -43,12 +51,14 @@ export const useAuthStore = create<AuthStore>()(
     (set) => ({
       ...INITIAL_STATE,
       setAuthState: (patch) => set((prev) => ({ ...prev, ...patch })),
+      setUnlocked: (value) => set({ isUnlocked: value }),
+      setLastBackgroundedAt: (ts) => set({ lastBackgroundedAt: ts }),
       resetAuth: () => set(INITIAL_STATE),
     }),
     {
       name: AUTH_STORE_KEY,
       storage: createJSONStorage(() => secureStoreStorage),
-      // Nie persystuj user/tenant — odświeżamy po starcie przez getMe()
+      // Nie persystuj user/tenant/isUnlocked/lastBackgroundedAt — ephemeral
       partialize: (state) => ({
         isPaired: state.isPaired,
         apiHost: state.apiHost,

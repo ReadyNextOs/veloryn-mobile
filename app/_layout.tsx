@@ -1,5 +1,5 @@
 import '@/lib/i18n'; // i18next init — musi być przed renderowaniem
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { AppState, type AppStateStatus } from 'react-native';
 import { Stack, router } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
@@ -23,17 +23,21 @@ export default function RootLayout() {
   );
 }
 
+const LOCK_TIMEOUT_MS = 5 * 60 * 1000; // 5 min
+
 function AppShell() {
   const resetAuth = useAuthStore((s) => s.resetAuth);
   const isPaired = useAuthStore((s) => s.isPaired);
-  const { isUnlocked, unlock, isAvailable } = useBiometricUnlock();
-  const backgroundedAt = useRef<number | null>(null);
-  const LOCK_TIMEOUT_MS = 5 * 60 * 1000; // 5 min
+  const isUnlocked = useAuthStore((s) => s.isUnlocked);
+  const setUnlocked = useAuthStore((s) => s.setUnlocked);
+  const lastBackgroundedAt = useAuthStore((s) => s.lastBackgroundedAt);
+  const setLastBackgroundedAt = useAuthStore((s) => s.setLastBackgroundedAt);
+  const { isAvailable } = useBiometricUnlock();
 
   // Obsługa logout z interceptora 401
   useEffect(() => {
     return authLogoutEmitter.on(() => {
-      resetAuth();
+      resetAuth(); // zeruje też isUnlocked + lastBackgroundedAt
       router.replace('/(auth)/pair');
     });
   }, [resetAuth]);
@@ -42,17 +46,21 @@ function AppShell() {
   useEffect(() => {
     const sub = AppState.addEventListener('change', (nextState: AppStateStatus) => {
       if (nextState === 'background' || nextState === 'inactive') {
-        backgroundedAt.current = Date.now();
-      } else if (nextState === 'active' && backgroundedAt.current !== null) {
-        const elapsed = Date.now() - backgroundedAt.current;
-        if (elapsed >= LOCK_TIMEOUT_MS && isPaired && isAvailable) {
-          void unlock();
+        setLastBackgroundedAt(Date.now());
+        // Natychmiastowe zablokowanie przy przejściu do tła
+        setUnlocked(false);
+      } else if (nextState === 'active' && lastBackgroundedAt !== null) {
+        const elapsed = Date.now() - lastBackgroundedAt;
+        if (elapsed < LOCK_TIMEOUT_MS) {
+          // Krótkie tło (< 5 min) — odblokuj bez biometrii
+          setUnlocked(true);
         }
-        backgroundedAt.current = null;
+        // Jeśli >= 5 min — zostaje locked (isUnlocked=false), locked screen pojawi się
+        setLastBackgroundedAt(null);
       }
     });
     return () => sub.remove();
-  }, [isPaired, isAvailable, unlock]);
+  }, [isPaired, isAvailable, lastBackgroundedAt, setLastBackgroundedAt, setUnlocked]);
 
   // Jeśli sparowany + biometria dostępna + nie odblokowany → locked screen
   if (isPaired && isAvailable && !isUnlocked) {
