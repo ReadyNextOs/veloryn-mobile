@@ -1,4 +1,4 @@
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, type InfiniteData } from '@tanstack/react-query';
 import { mailApi } from '@/api/mail';
 import type { MailListItem, MailListItemRaw, MailListParams } from '@/types/mail';
 import { getCachedMailMessages, cacheMailMessages } from '@/lib/db';
@@ -26,7 +26,7 @@ interface UseMailMessagesOptions {
 }
 
 export function useMailMessages({ accountId, folderId, filters }: UseMailMessagesOptions) {
-  return useInfiniteQuery<MailListItem[], Error, MailListItem[], unknown[], number>({
+  return useInfiniteQuery<MailListItem[], Error, InfiniteData<MailListItem[]>, unknown[], number>({
     queryKey: ['mail', 'messages', accountId, folderId, filters],
     queryFn: async ({ pageParam }) => {
       if (!accountId || !folderId) return [];
