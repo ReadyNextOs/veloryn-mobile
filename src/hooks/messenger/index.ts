@@ -5,3 +5,4 @@ export { useMarkThreadRead } from './useMarkThreadRead';
 export { useToggleReaction } from './useToggleReaction';
 export { useSubscription } from './useSubscription';
 export { useTyping } from './useTyping';
+export { useMessengerSocket } from './useMessengerSocket';
