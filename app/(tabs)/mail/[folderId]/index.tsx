@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   Alert,
   FlatList,
@@ -36,6 +36,15 @@ export default function MailFolderScreen() {
   const [filterAttachments, setFilterAttachments] = useState(false);
 
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Cleanup debounce timer na unmount — zapobiega state update po odmontowaniu
+  useEffect(() => {
+    return () => {
+      if (debounceRef.current) {
+        clearTimeout(debounceRef.current);
+      }
+    };
+  }, []);
 
   useLayoutEffect(() => {
     navigation.setOptions({ title: folderName ?? t('tabs.mail') });
