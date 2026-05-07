@@ -4,6 +4,7 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import { getLocales } from 'expo-localization';
+import * as SecureStore from 'expo-secure-store';
 
 import plCommon from '@/i18n/pl/common.json';
 import enCommon from '@/i18n/en/common.json';
@@ -13,6 +14,9 @@ import esCommon from '@/i18n/es/common.json';
 
 const SUPPORTED_LANGUAGES = ['pl', 'en', 'cs', 'uk', 'es'] as const;
 type SupportedLanguage = (typeof SUPPORTED_LANGUAGES)[number];
+
+/** Musi być identyczny z kluczem w LanguagePicker.tsx */
+const LANG_STORE_KEY = 'veloryn.language';
 
 function detectLanguage(): SupportedLanguage {
   try {
@@ -45,6 +49,22 @@ if (!i18n.isInitialized) {
       escapeValue: false, // React Native nie wymaga HTML escapowania
     },
   });
+
+  // Async: po synchronicznym init odczytaj zapisaną preferencję i przełącz
+  // jeśli różna od device locale (eliminuje utratę języka na cold start).
+  SecureStore.getItemAsync(LANG_STORE_KEY)
+    .then((stored) => {
+      if (
+        stored &&
+        stored !== i18n.language &&
+        (SUPPORTED_LANGUAGES as readonly string[]).includes(stored)
+      ) {
+        void i18n.changeLanguage(stored);
+      }
+    })
+    .catch(() => {
+      // silent — zostaje device locale jako fallback
+    });
 }
 
 export default i18n;
