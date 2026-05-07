@@ -3,6 +3,7 @@ import { messengerApi } from '@/api/messenger';
 import { getMessagesQueryKey } from '@/hooks/messenger/useMessages';
 import type { Message, SendMessageRequest } from '@/types/messenger';
 import { useAuthStore } from '@/store/auth';
+import { useMessengerStore } from '@/store/messenger';
 
 let _optimisticCounter = 0;
 
@@ -21,6 +22,7 @@ interface SendMessageVars {
 export function useSendMessage() {
   const queryClient = useQueryClient();
   const user = useAuthStore((s) => s.user);
+  const addRecentlySent = useMessengerStore((s) => s.addRecentlySent);
 
   return useMutation<Message, Error, SendMessageVars>({
     mutationFn: async ({ threadId, request }) => {
@@ -72,6 +74,9 @@ export function useSendMessage() {
     },
 
     onSuccess: (serverMessage, { threadId, tempId }) => {
+      // Register server ID so socket handler can skip the Reverb echo
+      addRecentlySent(serverMessage.id);
+
       const queryKey = getMessagesQueryKey(threadId);
       queryClient.setQueryData(queryKey, (old: ReturnType<typeof queryClient.getQueryData>) => {
         if (!old) return old;

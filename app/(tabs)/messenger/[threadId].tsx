@@ -38,8 +38,6 @@ export default function ThreadScreen() {
     hasNextPage,
     isFetchingNextPage,
     refetch,
-    appendOptimisticMessage,
-    replaceOptimisticMessage,
   } = useMessages(threadId ?? null);
 
   const markRead = useMarkThreadRead();
@@ -154,8 +152,6 @@ export default function ThreadScreen() {
         <MessageInput
           threadId={threadId}
           onSend={handleScrollToBottom}
-          appendOptimisticMessage={appendOptimisticMessage}
-          replaceOptimisticMessage={replaceOptimisticMessage}
         />
       </KeyboardAvoidingView>
     </>

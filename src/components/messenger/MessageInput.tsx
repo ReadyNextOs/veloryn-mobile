@@ -4,16 +4,13 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 import { useSendMessage, generateOptimisticId } from '@/hooks/messenger';
 import { useTyping } from '@/hooks/messenger/useTyping';
-import type { Message } from '@/types/messenger';
 
 interface Props {
   threadId: string;
   onSend?: () => void;
-  appendOptimisticMessage: (message: Message) => void;
-  replaceOptimisticMessage: (tempId: string, serverMessage: Message) => void;
 }
 
-export function MessageInput({ threadId, onSend, appendOptimisticMessage, replaceOptimisticMessage }: Props) {
+export function MessageInput({ threadId, onSend }: Props) {
   const { t } = useTranslation('common');
   const [text, setText] = useState('');
   const sendMessage = useSendMessage();
@@ -38,22 +35,15 @@ export function MessageInput({ threadId, onSend, appendOptimisticMessage, replac
 
     const tempId = generateOptimisticId();
 
-    sendMessage.mutate(
-      {
-        threadId,
-        request: { body: trimmed },
-        tempId,
-      },
-      {
-        onSuccess: (serverMessage) => {
-          replaceOptimisticMessage(tempId, serverMessage);
-          onSend?.();
-        },
-      },
-    );
+    // mutation hook owns optimistic insert + server replace — no onSuccess callback needed here
+    sendMessage.mutate({
+      threadId,
+      request: { body: trimmed },
+      tempId,
+    });
 
     onSend?.();
-  }, [cancelTyping, onSend, replaceOptimisticMessage, sendMessage, text, threadId]);
+  }, [cancelTyping, onSend, sendMessage, text, threadId]);
 
   const canSend = text.trim().length > 0 && !sendMessage.isPending;
 

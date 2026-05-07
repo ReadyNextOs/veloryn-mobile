@@ -16,10 +16,37 @@ interface MessengerStore {
   addTypingUser: (threadId: string, user: TypingUser) => void;
   removeExpiredTyping: (threadId: string) => void;
   clearTyping: (threadId: string) => void;
+
+  /**
+   * Server message IDs sent by this client in the last ~10 s.
+   * Used by useMessengerSocket to skip the Reverb echo of our own messages
+   * and prevent duplicate entries in the cache.
+   */
+  recentlySentByMe: Set<string>;
+  addRecentlySent: (messageId: string) => void;
 }
 
 export const useMessengerStore = create<MessengerStore>((set, get) => ({
   typingByThread: new Map(),
+
+  recentlySentByMe: new Set(),
+
+  addRecentlySent: (messageId: string) => {
+    set((state) => {
+      const next = new Set(state.recentlySentByMe);
+      next.add(messageId);
+      return { recentlySentByMe: next };
+    });
+    // Auto-cleanup after 10 s
+    setTimeout(() => {
+      set((state) => {
+        if (!state.recentlySentByMe.has(messageId)) return state;
+        const next = new Set(state.recentlySentByMe);
+        next.delete(messageId);
+        return { recentlySentByMe: next };
+      });
+    }, 10_000);
+  },
 
   setTypingUsers: (threadId, users) =>
     set((state) => {

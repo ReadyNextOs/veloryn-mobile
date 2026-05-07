@@ -49,7 +49,13 @@ export function useMessengerSocket(threadId: string | null): void {
     switch (event.event) {
       case 'message.created': {
         const msgQueryKey = getMessagesQueryKey(threadId);
-        // Append to messages cache
+
+        // Guard 1: skip echo of our own message (already in cache via onSuccess)
+        const recentlySentByMe = useMessengerStore.getState().recentlySentByMe;
+        if (recentlySentByMe.has(event.message.id)) {
+          break;
+        }
+
         queryClient.setQueryData(msgQueryKey, (old: unknown) => {
           if (!old) return old;
           const data = old as { pages: Array<{ messages: Message[] }>; pageParams: unknown[] };
@@ -57,9 +63,40 @@ export function useMessengerSocket(threadId: string | null): void {
           const lastIdx = data.pages.length - 1;
           const lastPage = data.pages[lastIdx];
           if (!lastPage) return old;
-          // Avoid duplicate if same id already exists (optimistic might have been replaced)
-          const exists = lastPage.messages.some((m) => m.id === event.message.id);
-          if (exists) return old;
+
+          // Guard 2: skip if message ID already present anywhere in cache
+          const existsAnywhere = data.pages.some((page) =>
+            page.messages.some((m) => m.id === event.message.id),
+          );
+          if (existsAnywhere) return old;
+
+          // Guard 3: if an optimistic message from the same author with same body
+          // arrived within 5 s, replace it instead of appending (Reverb before onSuccess race)
+          const optimisticMatch = data.pages
+            .flatMap((p) => p.messages)
+            .find(
+              (m) =>
+                m.id.startsWith('__optimistic_') &&
+                m.author_id === event.message.author_id &&
+                m.body === event.message.body &&
+                Math.abs(
+                  new Date(m.created_at).getTime() -
+                    new Date(event.message.created_at).getTime(),
+                ) < 5_000,
+            );
+
+          if (optimisticMatch) {
+            // Replace optimistic with server message
+            const updatedPages = data.pages.map((page) => ({
+              ...page,
+              messages: page.messages.map((m) =>
+                m.id === optimisticMatch.id ? event.message : m,
+              ),
+            }));
+            return { ...data, pages: updatedPages };
+          }
+
+          // Normal append
           const updatedPages = data.pages.map((page, idx) =>
             idx === lastIdx
               ? { ...page, messages: [...page.messages, event.message] }
