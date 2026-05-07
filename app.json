@@ -12,11 +12,15 @@
       "resizeMode": "contain",
       "backgroundColor": "#1976d2"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "bundleIdentifier": "pl.veloryn.app",
       "supportsTablet": true,
-      "associatedDomains": ["applinks:app.veloryn.pl"]
+      "associatedDomains": [
+        "applinks:app.veloryn.pl"
+      ]
     },
     "android": {
       "package": "pl.veloryn.app",
@@ -33,7 +37,10 @@
               "host": "app.veloryn.pl"
             }
           ],
-          "category": ["BROWSABLE", "DEFAULT"],
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ],
           "autoVerify": true
         }
       ]
@@ -52,7 +59,8 @@
           "resizeMode": "contain",
           "backgroundColor": "#1976d2"
         }
-      ]
+      ],
+      "expo-secure-store"
     ],
     "experiments": {
       "typedRoutes": true
