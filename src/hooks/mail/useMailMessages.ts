@@ -1,4 +1,4 @@
-import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { mailApi } from '@/api/mail';
 import type { MailListItem, MailListItemRaw, MailListParams } from '@/types/mail';
 import { getCachedMailMessages, cacheMailMessages } from '@/lib/db';
@@ -26,8 +26,6 @@ interface UseMailMessagesOptions {
 }
 
 export function useMailMessages({ accountId, folderId, filters }: UseMailMessagesOptions) {
-  const queryClient = useQueryClient();
-
   return useInfiniteQuery<MailListItem[], Error, MailListItem[], unknown[], number>({
     queryKey: ['mail', 'messages', accountId, folderId, filters],
     queryFn: async ({ pageParam }) => {
@@ -60,10 +58,6 @@ export function useMailMessages({ accountId, folderId, filters }: UseMailMessage
       return allPages.length + 1;
     },
     enabled: !!accountId && !!folderId,
-    placeholderData: () => {
-      // Try to get cached data synchronously (returns undefined — async cache loaded separately)
-      return undefined;
-    },
     staleTime: 60 * 1000, // 1 min
   });
 }
