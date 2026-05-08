@@ -31,13 +31,34 @@ function getDeviceInfo(): {
   };
 }
 
+/**
+ * Veloryn nginx domyślnie hostuje backend pod prefiksem `/backend/api/...`
+ * (alias w sites-enabled). Klient mobile akceptuje sam hostname (np.
+ * "https://prod.veloryn.pl") — auto-dopisujemy "/backend" jeśli URL nie
+ * ma jeszcze pathu, żeby user nie musiał o tym pamiętać.
+ *
+ * Reguły:
+ * - jeśli user wpisze pełny URL z pathem ("/backend", "/api", "/foo") — szanujemy go
+ * - jeśli user wpisze sam host (bez pathu lub z pojedynczym "/") — dodajemy "/backend"
+ */
 function normalizeHost(host: string): string {
   const trimmed = host.trim();
   if (!trimmed) {
     return trimmed;
   }
   const withProtocol = /^https?:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`;
-  return withProtocol.replace(/\/+$/, '');
+  const stripped = withProtocol.replace(/\/+$/, '');
+
+  try {
+    const url = new URL(stripped);
+    const hasPath = url.pathname && url.pathname !== '' && url.pathname !== '/';
+    if (!hasPath) {
+      return `${url.origin}/backend`;
+    }
+    return stripped;
+  } catch {
+    return stripped;
+  }
 }
 
 export function useLogin() {
