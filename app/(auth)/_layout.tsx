@@ -4,11 +4,25 @@ export default function AuthLayout() {
   return (
     <Stack
       screenOptions={{
-        headerShown: true,
         headerTitle: '',
       }}
     >
-      <Stack.Screen name="pair" options={{ title: 'Sparuj urzadzenie' }} />
+      <Stack.Screen
+        name="login"
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="pair"
+        options={{
+          title: '',
+          headerShown: true,
+          headerTransparent: true,
+          headerTintColor: '#1976d2',
+          headerBackTitle: '',
+        }}
+      />
     </Stack>
   );
 }

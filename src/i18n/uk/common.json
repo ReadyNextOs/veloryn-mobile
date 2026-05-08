@@ -1,5 +1,28 @@
 {
   "auth": {
+    "login": {
+      "title": "Увійдіть у свій обліковий запис",
+      "hostLabel": "Адреса сервера",
+      "hostPlaceholder": "https://firma.veloryn.pl",
+      "emailLabel": "E-mail",
+      "emailPlaceholder": "ivan@firma.ua",
+      "passwordLabel": "Пароль",
+      "passwordPlaceholder": "Ваш пароль",
+      "submit": "Увійти",
+      "orDivider": "або",
+      "qrFallback": "Увійти за QR-кодом",
+      "errors": {
+        "invalidCredentials": "Невірний e-mail або пароль.",
+        "inactiveAccount": "Обліковий запис неактивний. Зверніться до адміністратора.",
+        "invalidHost": "Введіть коректну адресу сервера.",
+        "invalidEmail": "Введіть коректний e-mail.",
+        "passwordRequired": "Введіть пароль.",
+        "networkError": "Немає з'єднання з сервером. Перевірте адресу та спробуйте знову.",
+        "serverError": "Помилка сервера. Спробуйте пізніше.",
+        "throttled": "Забагато спроб. Зачекайте хвилину та спробуйте ще раз.",
+        "validation": "Надані дані некоректні."
+      }
+    },
     "pair": {
       "title": "Пов'яжіть з Veloryn",
       "subtitle": "Відкрийте Veloryn у браузері, перейдіть до Профіль → Мобільні пристрої і відскануйте згенерований QR-код.",
@@ -10,7 +33,8 @@
       "pairing": "Прив'язка...",
       "success": "Прив'язано!",
       "grantCameraAccess": "Надати доступ до камери",
-      "openSettings": "Відкрити налаштування"
+      "openSettings": "Відкрити налаштування",
+      "backToLogin": "Повернутися до входу за паролем"
     },
     "biometric": {
       "prompt": "Розблокуйте Veloryn",

@@ -1,5 +1,28 @@
 {
   "auth": {
+    "login": {
+      "title": "Inicia sesión en tu cuenta",
+      "hostLabel": "Dirección del servidor",
+      "hostPlaceholder": "https://empresa.veloryn.pl",
+      "emailLabel": "Correo electrónico",
+      "emailPlaceholder": "juan@empresa.es",
+      "passwordLabel": "Contraseña",
+      "passwordPlaceholder": "Tu contraseña",
+      "submit": "Iniciar sesión",
+      "orDivider": "o",
+      "qrFallback": "Iniciar sesión con código QR",
+      "errors": {
+        "invalidCredentials": "Correo electrónico o contraseña incorrectos.",
+        "inactiveAccount": "La cuenta está inactiva. Contacta con el administrador.",
+        "invalidHost": "Introduce una dirección de servidor válida.",
+        "invalidEmail": "Introduce un correo electrónico válido.",
+        "passwordRequired": "Introduce tu contraseña.",
+        "networkError": "No se puede conectar con el servidor. Comprueba la dirección e inténtalo de nuevo.",
+        "serverError": "Error del servidor. Inténtalo de nuevo más tarde.",
+        "throttled": "Demasiados intentos. Espera un minuto e inténtalo de nuevo.",
+        "validation": "Los datos proporcionados no son válidos."
+      }
+    },
     "pair": {
       "title": "Vincular con Veloryn",
       "subtitle": "Abra Veloryn en el navegador, vaya a Perfil → Dispositivos móviles y escanee el código QR generado.",
@@ -10,7 +33,8 @@
       "pairing": "Vinculando...",
       "success": "¡Vinculado!",
       "grantCameraAccess": "Permitir acceso a la cámara",
-      "openSettings": "Abrir configuración"
+      "openSettings": "Abrir configuración",
+      "backToLogin": "Volver al inicio de sesión con contraseña"
     },
     "biometric": {
       "prompt": "Desbloquear Veloryn",

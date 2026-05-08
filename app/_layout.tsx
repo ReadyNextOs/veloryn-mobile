@@ -70,7 +70,7 @@ function AppShell() {
     return authLogoutEmitter.on(() => {
       resetAuth(); // zeruje też isUnlocked + lastBackgroundedAt
       clearMailCache().catch(console.error); // wyczysć cache — nie blokuj logout przy błędzie
-      router.replace('/(auth)/pair');
+      router.replace('/(auth)/login');
     });
   }, [resetAuth]);
 

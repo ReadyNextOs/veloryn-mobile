@@ -1,5 +1,28 @@
 {
   "auth": {
+    "login": {
+      "title": "Zaloguj się do swojego konta",
+      "hostLabel": "Adres serwera",
+      "hostPlaceholder": "https://firma.veloryn.pl",
+      "emailLabel": "E-mail",
+      "emailPlaceholder": "jan@firma.pl",
+      "passwordLabel": "Hasło",
+      "passwordPlaceholder": "Twoje hasło",
+      "submit": "Zaloguj się",
+      "orDivider": "lub",
+      "qrFallback": "Zaloguj kodem QR",
+      "errors": {
+        "invalidCredentials": "Nieprawidłowy e-mail lub hasło.",
+        "inactiveAccount": "Konto jest nieaktywne. Skontaktuj się z administratorem.",
+        "invalidHost": "Podaj prawidłowy adres serwera.",
+        "invalidEmail": "Podaj prawidłowy adres e-mail.",
+        "passwordRequired": "Wpisz hasło.",
+        "networkError": "Brak połączenia z serwerem. Sprawdź adres i spróbuj ponownie.",
+        "serverError": "Błąd serwera. Spróbuj ponownie później.",
+        "throttled": "Zbyt wiele prób. Odczekaj minutę i spróbuj ponownie.",
+        "validation": "Podane dane są nieprawidłowe."
+      }
+    },
     "pair": {
       "title": "Sparuj z Veloryn",
       "subtitle": "Otwórz Veloryn w przeglądarce, przejdź do Profil → Urządzenia mobilne i zeskanuj wygenerowany kod QR.",
@@ -10,7 +33,8 @@
       "pairing": "Parowanie...",
       "success": "Sparowano!",
       "grantCameraAccess": "Daj dostęp do kamery",
-      "openSettings": "Otwórz ustawienia"
+      "openSettings": "Otwórz ustawienia",
+      "backToLogin": "Wróć do logowania hasłem"
     },
     "biometric": {
       "prompt": "Odblokuj Veloryn",

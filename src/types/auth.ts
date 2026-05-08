@@ -59,3 +59,24 @@ export interface MobileDeviceRegistration {
   platform: 'ios' | 'android';
   app_version: string | null;
 }
+
+export interface MobileLoginRequest {
+  email: string;
+  password: string;
+  device_info: {
+    platform: string;
+    app_version: string | null;
+    device_name?: string | null;
+    device_model?: string | null;
+  };
+}
+
+export interface MobileLoginResponse {
+  token: string;
+  host: string;
+  user: User;
+  tenant: Tenant;
+  abilities: string[];
+  expires_at: IsoTimestamp | null;
+  paired_at: IsoTimestamp;
+}

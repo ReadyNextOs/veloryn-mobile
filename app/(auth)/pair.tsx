@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 import { Alert, Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { CameraView, useCameraPermissions } from 'expo-camera';
+import { router } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { isQrExpired, parseQrPayload } from '@/lib/qrSchema';
 import { usePairing } from '@/hooks/usePairing';
@@ -73,6 +74,14 @@ export default function PairScreen() {
     );
   }
 
+  function handleBackToLogin(): void {
+    if (router.canGoBack()) {
+      router.back();
+    } else {
+      router.replace('/(auth)/login');
+    }
+  }
+
   return (
     <SafeAreaView style={styles.container} edges={['bottom']}>
       <View style={styles.content}>
@@ -94,6 +103,15 @@ export default function PairScreen() {
         </View>
 
         <Text style={styles.instructions}>{t('auth.pair.scanInstructions')}</Text>
+
+        <TouchableOpacity
+          style={styles.backButton}
+          onPress={handleBackToLogin}
+          disabled={isPairingInProgress}
+          accessibilityRole="button"
+        >
+          <Text style={styles.backButtonText}>{t('auth.pair.backToLogin')}</Text>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
@@ -151,6 +169,16 @@ const styles = StyleSheet.create({
   permissionButtonText: {
     color: '#ffffff',
     fontSize: 15,
+    fontWeight: '600',
+  },
+  backButton: {
+    marginTop: 24,
+    paddingVertical: 10,
+    alignSelf: 'center',
+  },
+  backButtonText: {
+    color: '#1976d2',
+    fontSize: 14,
     fontWeight: '600',
   },
 });
