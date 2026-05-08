@@ -172,12 +172,108 @@
       "notConfigured": "Поштовий акаунт не налаштовано. Налаштуйте через вебінтерфейс.",
       "noAccounts": "У вас ще немає прив'язаних поштових скриньок.",
       "networkError": "Немає зв'язку з сервером. Спробуйте ще раз.",
-      "unknownError": "Щось пішло не так. Спробуйте ще раз."
+      "unknownError": "Щось пішло не так. Спробуйте ще раз.",
+      "loadFailedDescription": "Не вдалося отримати повідомлення з сервера. Перевірте з’єднання та спробуйте ще раз."
     },
     "actions": {
       "markRead": "Позначити як прочитане",
       "markUnread": "Позначити як непрочитане",
       "toggleStar": "Перемкнути зірочку"
+    }
+  },
+  "navigation": {
+    "groups": {
+      "communication": "Комунікація",
+      "dms": "Документи і справи",
+      "projects": "Проекти",
+      "crmClients": "CRM та Клієнти",
+      "service": "Сервіс",
+      "it": "IT",
+      "trade": "Торгівля",
+      "warehouse": "Склад",
+      "finance": "Фінанси",
+      "hrAssets": "Кадри та Ресурси"
+    },
+    "documents": "Документи",
+    "correspondence": "Кореспонденція",
+    "files": "CloudFile",
+    "cases": "Справи",
+    "contracts": "Договори",
+    "projects": "Проекти",
+    "tasks": "Завдання",
+    "kanban": "Канбан",
+    "polls": "Опитування",
+    "mail": "Пошта",
+    "calendar": "Календар",
+    "liveChat": "LiveChat",
+    "crm": "CRM",
+    "contractors": "Контрагенти",
+    "contactPersons": "Контактні особи",
+    "products": "Продукти",
+    "serviceAndSla": "Сервіс і SLA",
+    "helpManagement": "Заявки",
+    "equipment": "Обладнання",
+    "equipmentUnits": "Одиниці обладнання",
+    "rustdesk": "Віддалений доступ",
+    "spaces": "Простори",
+    "wiki": "База знань",
+    "reports": "Звіти",
+    "salesOrders": "Замовлення продажу",
+    "quotes": "Комерційні пропозиції",
+    "proformas": "Проформи",
+    "purchaseRequests": "Запити на закупівлю",
+    "purchaseOrders": "Замовлення закупівлі",
+    "purchaseReceipts": "Приймання закупівлі",
+    "warehouses": "Склади",
+    "stockPickings": "Складські документи",
+    "stockQuants": "Залишки на складі",
+    "stockLocations": "Розташування",
+    "stockLots": "Партії",
+    "stockInventory": "Інвентаризація",
+    "salesInvoices": "Рахунки продажу",
+    "purchaseInvoices": "Рахунки на закупівлю",
+    "payments": "Платежі",
+    "financeAnalytics": "Фінансова аналітика",
+    "budget": "Бюджети",
+    "accounting": "Бухгалтерія",
+    "leaveRequests": "Заявки на відпустку",
+    "delegations": "Відрядження",
+    "leaveCalendar": "Календар відпусток",
+    "employeeProfiles": "Профілі працівників",
+    "fleet": "Автопарк",
+    "settings": "Налаштування",
+    "dashboard": "Панель"
+  },
+  "dashboard": {
+    "greeting": {
+      "morning": "Доброго ранку",
+      "afternoon": "Доброго дня",
+      "evening": "Доброго вечора",
+      "default": "Вітаємо"
+    },
+    "shortcuts": "Швидкі дії",
+    "allModules": "Усі модулі",
+    "search": {
+      "placeholder": "Пошук модуля..."
+    }
+  },
+  "drawer": {
+    "searchPlaceholder": "Пошук модуля...",
+    "logout": "Вийти",
+    "version": "Версія"
+  },
+  "modules": {
+    "placeholder": {
+      "title": "Незабаром у мобільному застосунку",
+      "description": "Цей модуль буде доступний у мобільному застосунку в наступних оновленнях.",
+      "goBack": "Назад"
+    }
+  },
+  "errors": {
+    "boundary": {
+      "title": "Щось пішло не так",
+      "description": "Сталася неочікувана помилка. Спробуйте ще раз.",
+      "retry": "Спробувати ще раз"
     }
   }
 }

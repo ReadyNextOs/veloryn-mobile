@@ -64,7 +64,7 @@ export default function MailIndex() {
     (folder: MailFolder) => {
       if (!firstAccountId) return;
       router.push({
-        pathname: '/(tabs)/mail/[folderId]/index',
+        pathname: '/(app)/(tabs)/mail/[folderId]/index',
         params: {
           folderId: folder.id,
           accountId: firstAccountId,
@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
   },
   retryText: {
     fontSize: 14,
-    color: '#1976d2',
+    color: '#7a24a1',
     fontWeight: '600',
   },
   emptyText: {

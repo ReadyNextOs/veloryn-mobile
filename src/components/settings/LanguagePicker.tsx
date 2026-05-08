@@ -44,7 +44,7 @@ export function LanguagePicker() {
           <Text style={styles.flag}>{lang.flag}</Text>
           <Text style={styles.label}>{lang.label}</Text>
           {currentLang === lang.code && (
-            <MaterialCommunityIcons name="check" size={20} color="#1976d2" />
+            <MaterialCommunityIcons name="check" size={20} color="#7a24a1" />
           )}
         </TouchableOpacity>
       ))}

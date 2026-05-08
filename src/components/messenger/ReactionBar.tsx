@@ -56,8 +56,8 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(0,0,0,0.1)',
   },
   bubbleActive: {
-    backgroundColor: '#e3f2fd',
-    borderColor: '#1976d2',
+    backgroundColor: '#f3e5f7',
+    borderColor: '#7a24a1',
   },
   emoji: {
     fontSize: 13,
@@ -69,6 +69,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   countActive: {
-    color: '#1976d2',
+    color: '#7a24a1',
   },
 });

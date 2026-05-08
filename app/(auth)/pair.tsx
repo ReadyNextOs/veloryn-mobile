@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: '600',
-    color: '#1976d2',
+    color: '#7a24a1',
     marginBottom: 12,
     textAlign: 'center',
   },
@@ -139,19 +139,19 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     overflow: 'hidden',
     borderWidth: 2,
-    borderColor: '#1976d2',
+    borderColor: '#7a24a1',
   },
   camera: { flex: 1 },
   pairingOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(25, 118, 210, 0.15)',
+    backgroundColor: 'rgba(122, 36, 161, 0.15)',
     alignItems: 'center',
     justifyContent: 'center',
   },
   pairingText: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#1976d2',
+    color: '#7a24a1',
   },
   instructions: {
     marginTop: 16,
@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   permissionButton: {
-    backgroundColor: '#1976d2',
+    backgroundColor: '#7a24a1',
     paddingVertical: 12,
     paddingHorizontal: 24,
     borderRadius: 8,
@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   backButtonText: {
-    color: '#1976d2',
+    color: '#7a24a1',
     fontSize: 14,
     fontWeight: '600',
   },

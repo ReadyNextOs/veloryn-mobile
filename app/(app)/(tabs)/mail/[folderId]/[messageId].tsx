@@ -197,7 +197,7 @@ export default function MessageDetailScreen() {
   * { box-sizing: border-box; }
   body { font-family: -apple-system, system-ui, sans-serif; font-size: 16px; line-height: 1.5; padding: 12px; margin: 0; color: #212121; word-wrap: break-word; }
   img { max-width: 100%; height: auto; display: block; }
-  a { color: #1976d2; }
+  a { color: #7a24a1; }
   table { max-width: 100%; }
   pre, code { white-space: pre-wrap; word-wrap: break-word; overflow-x: auto; }
 </style></head><body>${message.body_html}</body></html>`,

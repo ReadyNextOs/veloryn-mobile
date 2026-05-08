@@ -1,0 +1,13 @@
+<svg width="200" height="40" viewBox="0 0 200 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="veloryn-hz-bg" x1="2" y1="2" x2="38" y2="38" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#4C1D95"/>
+      <stop offset="0.5" stop-color="#6D28D9"/>
+      <stop offset="1" stop-color="#A855F7"/>
+    </linearGradient>
+  </defs>
+  <rect x="2" y="2" width="36" height="36" rx="11" fill="url(#veloryn-hz-bg)"/>
+  <path d="M11 11L17.5 29C17.9 30.2 19.6 30.2 20 29L26.5 11" stroke="#FAF5FF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M24.5 11L29.5 24C30.1 25.6 29.2 27.4 27.6 27.8L21.7 29.5" stroke="#E9D5FF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/>
+  <text x="48" y="27" fill="#1F1637" font-family="'Plus Jakarta Sans', sans-serif" font-size="20" font-weight="700" letter-spacing="3">VELORYN</text>
+</svg>

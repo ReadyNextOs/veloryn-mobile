@@ -7,4 +7,4 @@ Tu trafiaja:
 - `splash.png` — 1284×2778, ekran startowy
 - `favicon.png` — 48×48, dla web bundlera
 
-**Aktualnie pliki nie istnieja** — Expo CLI wygeneruje placeholdery przy `npx expo prebuild` lub `npx expo install --fix`. Docelowo zastapic wygenerowane przez assety zgodne z brand guidelines Veloryn (kolor #1976d2 zgodny z `tokens.css`).
+**Pliki obecne** — placeholdery wygenerowane przez Expo CLI. Docelowo zastapic assetami zgodnymi z brand guidelines Veloryn (kolor #7a24a1 zgodny z `--color-primary` w `frontend/src/index.css`).

@@ -79,7 +79,7 @@ function handleNotificationResponse(response: Notifications.NotificationResponse
   try {
     if (data.type === 'mail') {
       router.push({
-        pathname: '/(tabs)/mail/[folderId]/[messageId]',
+        pathname: '/(app)/(tabs)/mail/[folderId]/[messageId]',
         params: {
           folderId: data.folder_id,
           messageId: data.message_id,
@@ -87,7 +87,7 @@ function handleNotificationResponse(response: Notifications.NotificationResponse
       });
     } else if (data.type === 'messenger.dm' || data.type === 'messenger.mention') {
       router.push({
-        pathname: '/(tabs)/messenger/[threadId]',
+        pathname: '/(app)/(tabs)/messenger/[threadId]',
         params: { threadId: data.thread_id },
       });
     }

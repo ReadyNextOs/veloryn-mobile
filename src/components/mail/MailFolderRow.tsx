@@ -36,7 +36,7 @@ export function MailFolderRow({ folder, folderLabel, onPress }: Props) {
 
   return (
     <TouchableOpacity style={styles.row} onPress={onPress} activeOpacity={0.7}>
-      <MaterialCommunityIcons name={icon} size={22} color="#1976d2" style={styles.icon} />
+      <MaterialCommunityIcons name={icon} size={22} color="#7a24a1" style={styles.icon} />
       <Text style={styles.label} numberOfLines={1}>
         {folderLabel}
       </Text>
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
     color: 'rgba(0,0,0,0.87)',
   },
   badge: {
-    backgroundColor: '#1976d2',
+    backgroundColor: '#7a24a1',
     borderRadius: 10,
     minWidth: 20,
     height: 20,

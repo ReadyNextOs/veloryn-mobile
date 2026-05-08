@@ -4,6 +4,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { formatDistance } from 'date-fns';
 import { pl } from 'date-fns/locale';
 import type { MailListItem } from '@/types/mail';
+import { getDeterministicColor } from '@/lib/colors';
 
 interface Props {
   item: MailListItem;
@@ -46,19 +47,9 @@ function formatRelativeDate(isoDate: string): string {
   }
 }
 
-const AVATAR_COLORS = ['#1976d2', '#388e3c', '#7b1fa2', '#f57c00', '#c62828'];
-
-function getAvatarColor(email: string): string {
-  let hash = 0;
-  for (let i = 0; i < email.length; i++) {
-    hash = (hash * 31 + email.charCodeAt(i)) | 0;
-  }
-  return AVATAR_COLORS[Math.abs(hash) % AVATAR_COLORS.length] ?? '#1976d2';
-}
-
 export function MailListItemComponent({ item, onPress, onLongPress }: Props) {
   const initials = getInitials(item.from.name, item.from.email);
-  const avatarColor = getAvatarColor(item.from.email);
+  const avatarColor = getDeterministicColor(item.from.email);
   const relativeDate = formatRelativeDate(item.received_at);
   const senderName = item.from.name ?? item.from.email;
 
@@ -132,7 +123,7 @@ const styles = StyleSheet.create({
     borderBottomColor: 'rgba(0,0,0,0.08)',
   },
   rowUnread: {
-    backgroundColor: '#e8f0fe',
+    backgroundColor: '#f3e5f7',
   },
   avatar: {
     width: 42,
@@ -203,7 +194,7 @@ const styles = StyleSheet.create({
     width: 8,
     height: 8,
     borderRadius: 4,
-    backgroundColor: '#1976d2',
+    backgroundColor: '#7a24a1',
     marginLeft: 8,
     flexShrink: 0,
   },

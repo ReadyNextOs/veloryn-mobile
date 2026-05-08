@@ -172,12 +172,108 @@
       "notConfigured": "La cuenta de correo no está configurada. Configúrala en la web.",
       "noAccounts": "Aún no tienes buzones vinculados.",
       "networkError": "No hay conexión con el servidor. Inténtalo de nuevo.",
-      "unknownError": "Algo salió mal. Inténtalo de nuevo."
+      "unknownError": "Algo salió mal. Inténtalo de nuevo.",
+      "loadFailedDescription": "No se pudieron obtener los mensajes del servidor. Verifica tu conexión e inténtalo de nuevo."
     },
     "actions": {
       "markRead": "Marcar como leído",
       "markUnread": "Marcar como no leído",
       "toggleStar": "Alternar destacado"
+    }
+  },
+  "navigation": {
+    "groups": {
+      "communication": "Comunicación",
+      "dms": "Documentos y casos",
+      "projects": "Proyectos",
+      "crmClients": "CRM y clientes",
+      "service": "Servicio",
+      "it": "TI",
+      "trade": "Comercio",
+      "warehouse": "Almacén",
+      "finance": "Finanzas",
+      "hrAssets": "RR.HH. y activos"
+    },
+    "documents": "Documentos",
+    "correspondence": "Correspondencia",
+    "files": "Archivos",
+    "cases": "Casos",
+    "contracts": "Contratos",
+    "projects": "Proyectos",
+    "tasks": "Tareas",
+    "kanban": "Kanban",
+    "polls": "Encuestas",
+    "mail": "Correo",
+    "calendar": "Calendario",
+    "liveChat": "Chat en vivo",
+    "crm": "CRM",
+    "contractors": "Contratistas",
+    "contactPersons": "Personas de contacto",
+    "products": "Productos",
+    "serviceAndSla": "Servicio y SLA",
+    "helpManagement": "Helpdesk",
+    "equipment": "Equipos",
+    "equipmentUnits": "Unidades de equipos",
+    "rustdesk": "Escritorio remoto",
+    "spaces": "Espacios",
+    "wiki": "Wiki",
+    "reports": "Informes",
+    "salesOrders": "Pedidos de venta",
+    "quotes": "Presupuestos",
+    "proformas": "Proformas",
+    "purchaseRequests": "Solicitudes de compra",
+    "purchaseOrders": "Pedidos de compra",
+    "purchaseReceipts": "Recepciones",
+    "warehouses": "Almacenes",
+    "stockPickings": "Documentos de stock",
+    "stockQuants": "Niveles de stock",
+    "stockLocations": "Ubicaciones",
+    "stockLots": "Lotes",
+    "stockInventory": "Inventario",
+    "salesInvoices": "Facturas de venta",
+    "purchaseInvoices": "Facturas de compra",
+    "payments": "Pagos",
+    "financeAnalytics": "Analítica financiera",
+    "budget": "Presupuesto",
+    "accounting": "Contabilidad",
+    "leaveRequests": "Solicitudes de ausencia",
+    "delegations": "Delegaciones",
+    "leaveCalendar": "Calendario de ausencias",
+    "employeeProfiles": "Perfiles de empleados",
+    "fleet": "Flota",
+    "settings": "Ajustes",
+    "dashboard": "Panel"
+  },
+  "dashboard": {
+    "greeting": {
+      "morning": "Buenos días",
+      "afternoon": "Buenas tardes",
+      "evening": "Buenas noches",
+      "default": "Bienvenido"
+    },
+    "shortcuts": "Accesos directos",
+    "allModules": "Todos los módulos",
+    "search": {
+      "placeholder": "Buscar módulo..."
+    }
+  },
+  "drawer": {
+    "searchPlaceholder": "Buscar módulo...",
+    "logout": "Cerrar sesión",
+    "version": "Versión"
+  },
+  "modules": {
+    "placeholder": {
+      "title": "Próximamente en la aplicación móvil",
+      "description": "Este módulo estará disponible en la aplicación móvil en próximas actualizaciones.",
+      "goBack": "Volver"
+    }
+  },
+  "errors": {
+    "boundary": {
+      "title": "Algo salió mal",
+      "description": "Ocurrió un error inesperado. Inténtalo de nuevo.",
+      "retry": "Reintentar"
     }
   }
 }

@@ -21,7 +21,7 @@ export const ThreadRow = React.memo(function ThreadRow({ thread, onPress, onLong
   const handleLongPress = useCallback(() => onLongPress(thread), [onLongPress, thread]);
 
   const displayName = thread.name
-    ?? (thread.type === 'direct' && thread.participants?.[0]?.user.display_name)
+    ?? (thread.type === 'direct' && thread.participants?.[0]?.user?.display_name)
     ?? t('messenger.threads.defaultName');
 
   function formatRelativeDate(iso: string): string {
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
     borderBottomColor: 'rgba(0,0,0,0.08)',
   },
   rowUnread: {
-    backgroundColor: '#e8f0fe',
+    backgroundColor: '#f3e5f7',
   },
   content: {
     flex: 1,
@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
     minWidth: 20,
     height: 20,
     borderRadius: 10,
-    backgroundColor: '#1976d2',
+    backgroundColor: '#7a24a1',
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 5,

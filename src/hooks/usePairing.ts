@@ -45,7 +45,7 @@ export function usePairing() {
         tenant: data.tenant,
         apiHost: null, // apiHost trzymamy w secureStorage, nie w zustand
       });
-      router.replace('/(tabs)/messenger');
+      router.replace('/(app)/dashboard');
     },
     onError: async (err) => {
       // Nic nie zostało zapisane do SecureStore — czyszczenie nie jest potrzebne

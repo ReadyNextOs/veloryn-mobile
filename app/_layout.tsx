@@ -1,3 +1,5 @@
+import 'react-native-gesture-handler';
+import '../global.css'; // NativeWind — Tailwind utilities dla rn-reusables
 import '@/lib/i18n'; // i18next init — musi być przed renderowaniem
 import { useEffect, useState } from 'react';
 import { AppState, type AppStateStatus } from 'react-native';
@@ -118,7 +120,7 @@ function AppShell() {
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="index" />
         <Stack.Screen name="(auth)" />
-        <Stack.Screen name="(tabs)" />
+        <Stack.Screen name="(app)" />
         <Stack.Screen name="locked" />
       </Stack>
     </>

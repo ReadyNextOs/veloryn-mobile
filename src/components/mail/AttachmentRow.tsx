@@ -80,7 +80,7 @@ export function AttachmentRow({ attachment }: Props) {
       <MaterialCommunityIcons
         name={icon}
         size={28}
-        color="#1976d2"
+        color="#7a24a1"
         style={styles.icon}
       />
       <View style={styles.info}>
@@ -90,9 +90,9 @@ export function AttachmentRow({ attachment }: Props) {
         <Text style={styles.size}>{formatBytes(attachment.size_bytes)}</Text>
       </View>
       {downloading ? (
-        <ActivityIndicator size="small" color="#1976d2" />
+        <ActivityIndicator size="small" color="#7a24a1" />
       ) : attachment.can_download ? (
-        <MaterialCommunityIcons name="download-outline" size={20} color="#1976d2" />
+        <MaterialCommunityIcons name="download-outline" size={20} color="#7a24a1" />
       ) : null}
     </TouchableOpacity>
   );

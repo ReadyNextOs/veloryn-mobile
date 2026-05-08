@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import {
   ActivityIndicator,
+  Image,
+  ImageBackground,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
@@ -11,11 +13,13 @@ import {
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { useLogin } from '@/hooks/useLogin';
 import { ApiError } from '@/api/client';
+
+const loginBackground = require('../../assets/login-background.png');
+const veloryMark = require('../../assets/icon.png');
 
 const DEFAULT_HOST = process.env.EXPO_PUBLIC_API_URL ?? 'https://dev.veloryn.pl';
 
@@ -86,11 +90,10 @@ export default function LoginScreen() {
   }
 
   return (
-    <LinearGradient
-      colors={['#1976d2', '#1565c0', '#0d47a1']}
+    <ImageBackground
+      source={loginBackground}
       style={styles.gradient}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 1, y: 1 }}
+      resizeMode="cover"
     >
       <SafeAreaView style={styles.safeArea} edges={['top', 'bottom']}>
         <KeyboardAvoidingView
@@ -103,6 +106,7 @@ export default function LoginScreen() {
             showsVerticalScrollIndicator={false}
           >
             <View style={styles.brandHeader}>
+              <Image source={veloryMark} style={styles.brandMark} resizeMode="contain" />
               <Text style={styles.brandTitle}>VELORYN</Text>
               <Text style={styles.brandSubtitle}>{t('auth.login.title')}</Text>
             </View>
@@ -188,7 +192,7 @@ export default function LoginScreen() {
           </ScrollView>
         </KeyboardAvoidingView>
       </SafeAreaView>
-    </LinearGradient>
+    </ImageBackground>
   );
 }
 
@@ -205,6 +209,11 @@ const styles = StyleSheet.create({
   brandHeader: {
     alignItems: 'center',
     marginBottom: 24,
+  },
+  brandMark: {
+    width: 96,
+    height: 96,
+    marginBottom: 12,
   },
   brandTitle: {
     fontSize: 32,
@@ -254,13 +263,13 @@ const styles = StyleSheet.create({
   },
   primaryButton: {
     marginTop: 20,
-    backgroundColor: '#1976d2',
+    backgroundColor: '#a54cc7',
     paddingVertical: 14,
     borderRadius: 6,
     alignItems: 'center',
   },
   primaryButtonDisabled: {
-    backgroundColor: 'rgba(25, 118, 210, 0.6)',
+    backgroundColor: 'rgba(165, 76, 199, 0.6)',
   },
   primaryButtonText: {
     color: '#ffffff',
@@ -287,13 +296,13 @@ const styles = StyleSheet.create({
   },
   secondaryButton: {
     borderWidth: 1,
-    borderColor: '#1976d2',
+    borderColor: '#7a24a1',
     paddingVertical: 12,
     borderRadius: 6,
     alignItems: 'center',
   },
   secondaryButtonText: {
-    color: '#1976d2',
+    color: '#7a24a1',
     fontSize: 14,
     fontWeight: '600',
   },

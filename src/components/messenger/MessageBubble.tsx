@@ -6,22 +6,13 @@ import { getDateFnsLocale } from '@/lib/dateFnsLocale';
 import { useAuthStore } from '@/store/auth';
 import { useToggleReaction } from '@/hooks/messenger';
 import type { Message, Reaction } from '@/types/messenger';
+import { getDeterministicColor } from '@/lib/colors';
 import { ReactionBar } from './ReactionBar';
 import { EmojiPicker } from './EmojiPicker';
 
 interface Props {
   message: Message;
   threadId: string;
-}
-
-const AVATAR_COLORS = ['#1976d2', '#388e3c', '#7b1fa2', '#f57c00', '#c62828'];
-
-function getAvatarColor(id: string): string {
-  let hash = 0;
-  for (let i = 0; i < id.length; i++) {
-    hash = (hash * 31 + id.charCodeAt(i)) | 0;
-  }
-  return AVATAR_COLORS[Math.abs(hash) % AVATAR_COLORS.length] ?? '#1976d2';
 }
 
 function getInitials(name: string | undefined): string {
@@ -48,7 +39,7 @@ export const MessageBubble = React.memo(function MessageBubble({ message, thread
   const isSendFailed = isFailed(message.id);
 
   const authorName = message.author?.display_name ?? t('common.error');
-  const avatarColor = getAvatarColor(message.author_id);
+  const avatarColor = getDeterministicColor(message.author_id);
   const initials = getInitials(message.author?.display_name);
 
   let dateStr = '';
@@ -191,7 +182,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
   },
   bubbleOwn: {
-    backgroundColor: '#1976d2',
+    backgroundColor: '#7a24a1',
     borderBottomRightRadius: 4,
   },
   bubbleOther: {

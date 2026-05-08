@@ -172,12 +172,108 @@
       "notConfigured": "Poštovní účet není nakonfigurován. Nastavte ho na webu.",
       "noAccounts": "Zatím nemáte žádné spárované schránky.",
       "networkError": "Nelze se připojit k serveru. Zkuste to znovu.",
-      "unknownError": "Něco se pokazilo. Zkuste to znovu."
+      "unknownError": "Něco se pokazilo. Zkuste to znovu.",
+      "loadFailedDescription": "Nepodařilo se načíst zprávy ze serveru. Zkontrolujte připojení a zkuste to znovu."
     },
     "actions": {
       "markRead": "Označit jako přečtené",
       "markUnread": "Označit jako nepřečtené",
       "toggleStar": "Přepnout hvězdičku"
+    }
+  },
+  "navigation": {
+    "groups": {
+      "communication": "Komunikace",
+      "dms": "Dokumenty a záležitosti",
+      "projects": "Projekty",
+      "crmClients": "CRM a Klienti",
+      "service": "Servis",
+      "it": "IT",
+      "trade": "Obchod",
+      "warehouse": "Sklad",
+      "finance": "Finance",
+      "hrAssets": "HR a Majetek"
+    },
+    "documents": "Dokumenty",
+    "correspondence": "Korespondence",
+    "files": "CloudFile",
+    "cases": "Případy",
+    "contracts": "Smlouvy",
+    "projects": "Projekty",
+    "tasks": "Úkoly",
+    "kanban": "Kanban",
+    "polls": "Ankety",
+    "mail": "Pošta",
+    "calendar": "Kalendář",
+    "liveChat": "LiveChat",
+    "crm": "CRM",
+    "contractors": "Dodavatelé",
+    "contactPersons": "Kontaktní osoby",
+    "products": "Produkty",
+    "serviceAndSla": "Servis a SLA",
+    "helpManagement": "Tikety",
+    "equipment": "Vybavení",
+    "equipmentUnits": "Jednotky vybavení",
+    "rustdesk": "Vzdálený přístup",
+    "spaces": "Przestrzenie",
+    "wiki": "Znalostní základna",
+    "reports": "Reporty",
+    "salesOrders": "Objednávky prodeje",
+    "quotes": "Nabídky",
+    "proformas": "Proformy",
+    "purchaseRequests": "Požadavky na nákup",
+    "purchaseOrders": "Nákupní objednávky",
+    "purchaseReceipts": "Příjmy zakupu",
+    "warehouses": "Sklady",
+    "stockPickings": "Skladové doklady",
+    "stockQuants": "Stav zásob",
+    "stockLocations": "Lokace",
+    "stockLots": "Šarže",
+    "stockInventory": "Inventura",
+    "salesInvoices": "Faktury prodeje",
+    "purchaseInvoices": "Nákupní faktury",
+    "payments": "Platby",
+    "financeAnalytics": "Finanční analytika",
+    "budget": "Rozpočty",
+    "accounting": "Účetnictví",
+    "leaveRequests": "Žádosti o dovolenou",
+    "delegations": "Služební cesty",
+    "leaveCalendar": "Kalendář dovolených",
+    "employeeProfiles": "Profily zaměstnanců",
+    "fleet": "Vozový park",
+    "settings": "Nastavení",
+    "dashboard": "Přehled"
+  },
+  "dashboard": {
+    "greeting": {
+      "morning": "Dobré ráno",
+      "afternoon": "Dobrý den",
+      "evening": "Dobrý večer",
+      "default": "Vítejte"
+    },
+    "shortcuts": "Zkratky",
+    "allModules": "Všechny moduly",
+    "search": {
+      "placeholder": "Hledat modul..."
+    }
+  },
+  "drawer": {
+    "searchPlaceholder": "Hledat modul...",
+    "logout": "Odhlásit se",
+    "version": "Verze"
+  },
+  "modules": {
+    "placeholder": {
+      "title": "Brzy v mobilní aplikaci",
+      "description": "Tento modul bude v mobilní aplikaci k dispozici v dalších aktualizacích.",
+      "goBack": "Zpět"
+    }
+  },
+  "errors": {
+    "boundary": {
+      "title": "Něco se pokazilo",
+      "description": "Došlo k neočekávané chybě. Zkuste to znovu.",
+      "retry": "Zkusit znovu"
     }
   }
 }

@@ -172,12 +172,108 @@
       "notConfigured": "Mail account is not configured. Set it up on the web.",
       "noAccounts": "You have no paired mailboxes yet.",
       "networkError": "Cannot connect to server. Please try again.",
-      "unknownError": "Something went wrong. Please try again."
+      "unknownError": "Something went wrong. Please try again.",
+      "loadFailedDescription": "Failed to fetch messages from the server. Check your connection and try again."
     },
     "actions": {
       "markRead": "Mark as read",
       "markUnread": "Mark as unread",
       "toggleStar": "Toggle star"
+    }
+  },
+  "navigation": {
+    "groups": {
+      "communication": "Communication",
+      "dms": "Documents and Affairs",
+      "projects": "Projects",
+      "crmClients": "CRM & Clients",
+      "service": "Service",
+      "it": "IT",
+      "trade": "Trade",
+      "warehouse": "Warehouse",
+      "finance": "Finance",
+      "hrAssets": "HR & Assets"
+    },
+    "documents": "Documents",
+    "correspondence": "Correspondence",
+    "files": "CloudFile",
+    "cases": "Cases",
+    "contracts": "Contracts",
+    "projects": "Projects",
+    "tasks": "Tasks",
+    "kanban": "Kanban",
+    "polls": "Polls",
+    "mail": "Mail",
+    "calendar": "Calendar",
+    "liveChat": "LiveChat",
+    "crm": "CRM",
+    "contractors": "Contractors",
+    "contactPersons": "Contact Persons",
+    "products": "Products",
+    "serviceAndSla": "Service & SLA",
+    "helpManagement": "Tickets",
+    "equipment": "Equipment",
+    "equipmentUnits": "Equipment Units",
+    "rustdesk": "Remote access",
+    "spaces": "Spaces",
+    "wiki": "Knowledge base",
+    "reports": "Reports",
+    "salesOrders": "Sales Orders",
+    "quotes": "Quotes",
+    "proformas": "Proformas",
+    "purchaseRequests": "Purchase Requests",
+    "purchaseOrders": "Purchase Orders",
+    "purchaseReceipts": "Purchase Receipts",
+    "warehouses": "Warehouses",
+    "stockPickings": "Stock Pickings",
+    "stockQuants": "Stock Levels",
+    "stockLocations": "Stock Locations",
+    "stockLots": "Stock Lots",
+    "stockInventory": "Stock Inventory",
+    "salesInvoices": "Sales Invoices",
+    "purchaseInvoices": "Purchase invoices",
+    "payments": "Payments",
+    "financeAnalytics": "Finance Analytics",
+    "budget": "Budgets",
+    "accounting": "Accounting",
+    "leaveRequests": "Leave Requests",
+    "delegations": "Delegations",
+    "leaveCalendar": "Leave Calendar",
+    "employeeProfiles": "Employee Profiles",
+    "fleet": "Fleet",
+    "settings": "Settings",
+    "dashboard": "Dashboard"
+  },
+  "dashboard": {
+    "greeting": {
+      "morning": "Good morning",
+      "afternoon": "Good afternoon",
+      "evening": "Good evening",
+      "default": "Welcome"
+    },
+    "shortcuts": "Shortcuts",
+    "allModules": "All modules",
+    "search": {
+      "placeholder": "Search module..."
+    }
+  },
+  "drawer": {
+    "searchPlaceholder": "Search module...",
+    "logout": "Sign out",
+    "version": "Version"
+  },
+  "modules": {
+    "placeholder": {
+      "title": "Coming soon in mobile",
+      "description": "This module will be available in the mobile app in upcoming updates.",
+      "goBack": "Go back"
+    }
+  },
+  "errors": {
+    "boundary": {
+      "title": "Something went wrong",
+      "description": "An unexpected error occurred. Please try again.",
+      "retry": "Try again"
     }
   }
 }

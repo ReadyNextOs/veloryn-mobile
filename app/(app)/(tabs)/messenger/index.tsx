@@ -14,7 +14,7 @@ export default function MessengerIndex() {
 
   const handlePress = useCallback((thread: Thread) => {
     router.push({
-      pathname: '/(tabs)/messenger/[threadId]',
+      pathname: '/(app)/(tabs)/messenger/[threadId]',
       params: { threadId: thread.id },
     });
   }, []);
@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
   },
   retryText: {
     fontSize: 14,
-    color: '#1976d2',
+    color: '#7a24a1',
     marginTop: 8,
   },
 });

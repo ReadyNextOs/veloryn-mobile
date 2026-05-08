@@ -19,7 +19,7 @@ export default function AuthLayout() {
           title: '',
           headerShown: true,
           headerTransparent: true,
-          headerTintColor: '#1976d2',
+          headerTintColor: '#7a24a1',
           headerBackTitle: '',
         }}
       />

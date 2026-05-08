@@ -1,27 +1,23 @@
 import { Stack } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 
-export default function MailLayout() {
+export default function MessengerLayout() {
   const { t } = useTranslation('common');
 
   return (
     <Stack
       screenOptions={{
-        headerStyle: { backgroundColor: '#1976d2' },
+        headerStyle: { backgroundColor: '#7a24a1' },
         headerTintColor: '#ffffff',
         headerTitleStyle: { fontWeight: '600' },
       }}
     >
       <Stack.Screen
         name="index"
-        options={{ title: t('tabs.mail'), headerShown: true }}
+        options={{ title: t('tabs.messenger'), headerShown: true }}
       />
       <Stack.Screen
-        name="[folderId]/index"
-        options={{ headerShown: true }}
-      />
-      <Stack.Screen
-        name="[folderId]/[messageId]"
+        name="[threadId]"
         options={{ headerShown: true }}
       />
     </Stack>

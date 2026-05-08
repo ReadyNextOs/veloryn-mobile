@@ -1,0 +1,18 @@
+<svg width="280" height="72" viewBox="0 0 280 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="vlrn-logo-bg" x1="4" y1="4" x2="68" y2="68" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#4C1D95"/>
+      <stop offset="0.5" stop-color="#6D28D9"/>
+      <stop offset="1" stop-color="#A855F7"/>
+    </linearGradient>
+    <linearGradient id="vlrn-logo-v" x1="20" y1="36" x2="52" y2="36" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FAF5FF"/>
+      <stop offset="0.5" stop-color="#F5F3FF"/>
+      <stop offset="1" stop-color="#E9D5FF"/>
+    </linearGradient>
+  </defs>
+  <rect x="4" y="4" width="64" height="64" rx="16" fill="url(#vlrn-logo-bg)"/>
+  <path d="M20 20L36 52L52 20" stroke="url(#vlrn-logo-v)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="58" cy="15" r="2" fill="#F5D0FE" opacity="0.9"/>
+  <text x="88" y="46" fill="#1F1637" font-family="'Plus Jakarta Sans', 'Inter', sans-serif" font-size="30" font-weight="800" letter-spacing="3">VELORYN</text>
+</svg>

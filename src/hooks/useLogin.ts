@@ -95,7 +95,7 @@ export function useLogin() {
         apiHost: persistedHost,
       });
 
-      router.replace('/(tabs)/messenger');
+      router.replace('/(app)/dashboard');
     },
     onError: () => {
       // Nic nie zostało zapisane do SecureStore — czyszczenie nie jest konieczne.

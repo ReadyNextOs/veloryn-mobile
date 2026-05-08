@@ -172,12 +172,108 @@
       "notConfigured": "Konto pocztowe nie jest skonfigurowane. Skonfiguruj na webie.",
       "noAccounts": "Nie masz jeszcze sparowanych skrzynek pocztowych.",
       "networkError": "Brak połączenia z serwerem. Spróbuj ponownie.",
-      "unknownError": "Coś poszło nie tak. Spróbuj ponownie."
+      "unknownError": "Coś poszło nie tak. Spróbuj ponownie.",
+      "loadFailedDescription": "Nie udało się pobrać wiadomości z serwera. Sprawdź połączenie i spróbuj ponownie."
     },
     "actions": {
       "markRead": "Oznacz jako przeczytane",
       "markUnread": "Oznacz jako nieprzeczytane",
       "toggleStar": "Dodaj/usuń gwiazdkę"
+    }
+  },
+  "navigation": {
+    "groups": {
+      "communication": "Komunikacja",
+      "dms": "Dokumenty i Sprawy",
+      "projects": "Projekty",
+      "crmClients": "CRM i Klienci",
+      "service": "Serwis",
+      "it": "IT",
+      "trade": "Handel",
+      "warehouse": "Magazyn",
+      "finance": "Finanse",
+      "hrAssets": "Kadry i Zasoby"
+    },
+    "documents": "Dokumenty",
+    "correspondence": "Korespondencja",
+    "files": "CloudFile",
+    "cases": "Sprawy",
+    "contracts": "Umowy",
+    "projects": "Projekty",
+    "tasks": "Zadania",
+    "kanban": "Kanban",
+    "polls": "Ankiety",
+    "mail": "Poczta",
+    "calendar": "Kalendarz",
+    "liveChat": "LiveChat",
+    "crm": "CRM",
+    "contractors": "Kontrahenci",
+    "contactPersons": "Osoby kontaktowe",
+    "products": "Produkty",
+    "serviceAndSla": "Serwis i SLA",
+    "helpManagement": "Helpdesk",
+    "equipment": "Sprzęt",
+    "equipmentUnits": "Jednostki sprzętu",
+    "rustdesk": "Zdalny dostęp",
+    "spaces": "Workspace'y",
+    "wiki": "Wiki",
+    "reports": "Raporty",
+    "salesOrders": "Zamówienia sprzedaży",
+    "quotes": "Oferty",
+    "proformas": "Proformy",
+    "purchaseRequests": "Zapotrzebowania",
+    "purchaseOrders": "Zamówienia zakupu",
+    "purchaseReceipts": "Przyjęcia zakupu",
+    "warehouses": "Magazyny",
+    "stockPickings": "Dokumenty magazynowe",
+    "stockQuants": "Stany magazynowe",
+    "stockLocations": "Lokalizacje",
+    "stockLots": "Partie",
+    "stockInventory": "Inwentaryzacja",
+    "salesInvoices": "Faktury sprzedaży",
+    "purchaseInvoices": "Faktury zakupu",
+    "payments": "Płatności",
+    "financeAnalytics": "Analityka finansowa",
+    "budget": "Budżety",
+    "accounting": "Księgowość",
+    "leaveRequests": "Wnioski urlopowe",
+    "delegations": "Delegacje",
+    "leaveCalendar": "Kalendarz urlopów",
+    "employeeProfiles": "Profile pracowników",
+    "fleet": "Flota",
+    "settings": "Ustawienia",
+    "dashboard": "Pulpit"
+  },
+  "dashboard": {
+    "greeting": {
+      "morning": "Dzień dobry",
+      "afternoon": "Dzień dobry",
+      "evening": "Dobry wieczór",
+      "default": "Witaj"
+    },
+    "shortcuts": "Skróty",
+    "allModules": "Wszystkie moduły",
+    "search": {
+      "placeholder": "Szukaj modułu..."
+    }
+  },
+  "drawer": {
+    "searchPlaceholder": "Szukaj modułu...",
+    "logout": "Wyloguj się",
+    "version": "Wersja"
+  },
+  "modules": {
+    "placeholder": {
+      "title": "Wkrótce w aplikacji mobilnej",
+      "description": "Ten moduł będzie dostępny w aplikacji mobilnej w kolejnych aktualizacjach.",
+      "goBack": "Wróć"
+    }
+  },
+  "errors": {
+    "boundary": {
+      "title": "Coś poszło nie tak",
+      "description": "Wystąpił nieoczekiwany błąd. Spróbuj ponownie.",
+      "retry": "Spróbuj ponownie"
     }
   }
 }

@@ -60,12 +60,18 @@ export default function MailFolderScreen() {
     [debouncedSearch, filterUnread, filterStarred, filterAttachments],
   );
 
-  const { data, isLoading, isFetchingNextPage, fetchNextPage, hasNextPage, refetch } =
+  const { data, isLoading, isError, error, isFetchingNextPage, fetchNextPage, hasNextPage, refetch } =
     useMailMessages({
       accountId: accountId ?? null,
       folderId: folderId ?? null,
       filters,
     });
+
+  useEffect(() => {
+    if (isError && __DEV__) {
+      console.warn('[mail][folder]', error);
+    }
+  }, [isError, error]);
 
   const { mutate: markRead } = useMarkRead();
   const { mutate: toggleFlag } = useToggleFlag();
@@ -91,7 +97,7 @@ export default function MailFolderScreen() {
     (item: MailListItem) => {
       if (!accountId || !folderId) return;
       router.push({
-        pathname: '/(tabs)/mail/[folderId]/[messageId]',
+        pathname: '/(app)/(tabs)/mail/[folderId]/[messageId]',
         params: {
           folderId,
           messageId: item.id,
@@ -210,6 +216,23 @@ export default function MailFolderScreen() {
 
       {isLoading && allMessages.length === 0 ? (
         <MailMessageSkeleton />
+      ) : isError && allMessages.length === 0 ? (
+        <View style={styles.errorCenter}>
+          <MaterialCommunityIcons name="email-alert-outline" size={48} color="rgba(0,0,0,0.25)" />
+          <Text style={styles.errorTitle}>{t('mail.errors.loadFailed')}</Text>
+          <Text style={styles.errorDescription}>
+            {error instanceof Error && error.message
+              ? error.message
+              : t('mail.errors.loadFailedDescription')}
+          </Text>
+          <TouchableOpacity
+            style={styles.retryButton}
+            onPress={() => void refetch()}
+            activeOpacity={0.75}
+          >
+            <Text style={styles.retryButtonText}>{t('common.retry')}</Text>
+          </TouchableOpacity>
+        </View>
       ) : (
         <FlatList
           data={allMessages}
@@ -283,8 +306,8 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(0,0,0,0.2)',
   },
   chipActive: {
-    backgroundColor: '#1976d2',
-    borderColor: '#1976d2',
+    backgroundColor: '#7a24a1',
+    borderColor: '#7a24a1',
   },
   chipText: {
     fontSize: 12,
@@ -305,6 +328,38 @@ const styles = StyleSheet.create({
     color: 'rgba(0,0,0,0.4)',
     marginTop: 12,
     textAlign: 'center',
+  },
+  errorCenter: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 32,
+  },
+  errorTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: 'rgba(0,0,0,0.87)',
+    marginTop: 12,
+    textAlign: 'center',
+  },
+  errorDescription: {
+    fontSize: 13,
+    color: 'rgba(0,0,0,0.55)',
+    marginTop: 6,
+    marginBottom: 18,
+    textAlign: 'center',
+    lineHeight: 18,
+  },
+  retryButton: {
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 8,
+    backgroundColor: '#7a24a1',
+  },
+  retryButtonText: {
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: '600',
   },
   footer: {
     padding: 16,

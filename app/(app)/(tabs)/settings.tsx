@@ -208,7 +208,7 @@ const styles = StyleSheet.create({
     width: 54,
     height: 54,
     borderRadius: 27,
-    backgroundColor: '#1976d2',
+    backgroundColor: '#7a24a1',
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 14,
@@ -235,7 +235,7 @@ const styles = StyleSheet.create({
   },
   accountTenant: {
     fontSize: 12,
-    color: '#1976d2',
+    color: '#7a24a1',
     marginTop: 2,
   },
 });

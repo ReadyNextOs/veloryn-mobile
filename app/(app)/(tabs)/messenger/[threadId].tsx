@@ -21,6 +21,7 @@ import { MessageListSkeleton } from '@/components/messenger/MessageListSkeleton'
 import { TypingIndicator } from '@/components/messenger/TypingIndicator';
 import { useMessengerSocket } from '@/hooks/messenger/useMessengerSocket';
 import { useThreads } from '@/hooks/messenger/useThreads';
+import { ErrorBoundary } from '@/components/ErrorBoundary';
 import type { Message } from '@/types/messenger';
 
 export default function ThreadScreen() {
@@ -76,7 +77,7 @@ export default function ThreadScreen() {
   }, [isMuted, subscription, threadId]);
 
   const threadName = thread?.name
-    ?? (thread?.type === 'direct' && thread.participants?.[0]?.user.display_name)
+    ?? (thread?.type === 'direct' && thread.participants?.[0]?.user?.display_name)
     ?? t('tabs.messenger');
 
   if (!threadId) {
@@ -108,7 +109,8 @@ export default function ThreadScreen() {
         }}
       />
 
-      <KeyboardAvoidingView
+      <ErrorBoundary>
+        <KeyboardAvoidingView
         style={styles.flex}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 0}
@@ -154,6 +156,7 @@ export default function ThreadScreen() {
           onSend={handleScrollToBottom}
         />
       </KeyboardAvoidingView>
+      </ErrorBoundary>
     </>
   );
 }
@@ -176,7 +179,7 @@ const styles = StyleSheet.create({
   },
   retryText: {
     fontSize: 14,
-    color: '#1976d2',
+    color: '#7a24a1',
     marginTop: 8,
   },
   messageList: {

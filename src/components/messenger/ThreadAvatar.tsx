@@ -1,16 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import type { Thread } from '@/types/messenger';
-
-const AVATAR_COLORS = ['#1976d2', '#388e3c', '#7b1fa2', '#f57c00', '#c62828', '#0288d1'];
-
-function getAvatarColor(id: string): string {
-  let hash = 0;
-  for (let i = 0; i < id.length; i++) {
-    hash = (hash * 31 + id.charCodeAt(i)) | 0;
-  }
-  return AVATAR_COLORS[Math.abs(hash) % AVATAR_COLORS.length] ?? '#1976d2';
-}
+import { getDeterministicColor } from '@/lib/colors';
 
 function getInitials(name: string | null): string {
   if (!name || name.trim().length === 0) return '?';
@@ -29,11 +20,11 @@ interface Props {
 export function ThreadAvatar({ thread, size = 42 }: Props) {
   const isDM = thread.type === 'direct';
   const displayName = isDM
-    ? thread.participants?.[0]?.user.display_name ?? thread.name ?? '?'
+    ? thread.participants?.[0]?.user?.display_name ?? thread.name ?? '?'
     : thread.name ?? '?';
 
   const initials = getInitials(displayName);
-  const color = getAvatarColor(thread.id);
+  const color = getDeterministicColor(thread.id);
   const radius = size / 2;
 
   return (

@@ -48,7 +48,7 @@ export function SettingsRow(props: Props) {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             name={icon as any}
             size={20}
-            color={isDestructive ? '#d32f2f' : '#1976d2'}
+            color={isDestructive ? '#d32f2f' : '#7a24a1'}
           />
         </View>
       ) : null}
@@ -72,7 +72,7 @@ export function SettingsRow(props: Props) {
           value={(props as ToggleProps).value}
           onValueChange={(props as ToggleProps).onValueChange}
           disabled={(props as ToggleProps).disabled}
-          trackColor={{ true: '#1976d2', false: undefined }}
+          trackColor={{ true: '#7a24a1', false: undefined }}
           style={styles.toggle}
         />
       )}

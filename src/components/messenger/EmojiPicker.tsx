@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   emojiBtnActive: {
-    backgroundColor: '#e3f2fd',
+    backgroundColor: '#f3e5f7',
   },
   emojiText: {
     fontSize: 24,

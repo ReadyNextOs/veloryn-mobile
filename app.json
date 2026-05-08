@@ -10,7 +10,7 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#1976d2"
+      "backgroundColor": "#7a24a1"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -26,7 +26,7 @@
       "package": "pl.veloryn.app",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#1976d2"
+        "backgroundColor": "#7a24a1"
       },
       "intentFilters": [
         {
@@ -61,7 +61,7 @@
           "image": "./assets/splash.png",
           "imageWidth": 200,
           "resizeMode": "contain",
-          "backgroundColor": "#1976d2"
+          "backgroundColor": "#7a24a1"
         }
       ],
       "expo-secure-store",
@@ -76,7 +76,7 @@
         "expo-notifications",
         {
           "icon": "./assets/icon.png",
-          "color": "#1976d2",
+          "color": "#7a24a1",
           "sounds": [],
           "iosDisplayInForeground": true
         }

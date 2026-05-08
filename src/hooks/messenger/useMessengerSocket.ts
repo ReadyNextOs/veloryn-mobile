@@ -208,7 +208,7 @@ export function useMessengerSocket(threadId: string | null): void {
         const threads = queryClient.getQueryData<Thread[]>(THREADS_QUERY_KEY);
         const thread = threads?.find((t) => t.id === threadId);
         const participant = thread?.participants?.find((p) => p.user_id === event.user_id);
-        const displayName = participant?.user.display_name ?? event.user_id;
+        const displayName = participant?.user?.display_name ?? event.user_id;
         addTypingUser(threadId, {
           userId: event.user_id,
           displayName,
