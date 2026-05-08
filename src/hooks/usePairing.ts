@@ -3,12 +3,12 @@
 
 import { Platform } from 'react-native';
 import Constants from 'expo-constants';
-import Device from 'expo-device';
+import * as Device from 'expo-device';
 import { router } from 'expo-router';
 import { useMutation } from '@tanstack/react-query';
 import { pairDevice } from '@/api/auth';
 import { resetClient } from '@/api/client';
-import { clearAllSecure, setSecure, SECURE_KEYS } from '@/lib/secureStorage';
+import { setSecure, SECURE_KEYS } from '@/lib/secureStorage';
 import { useAuthStore } from '@/store/auth';
 import type { QrPayloadV1 } from '@/types';
 import { ApiError } from '@/api/client';
