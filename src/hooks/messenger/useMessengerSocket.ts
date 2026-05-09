@@ -244,6 +244,21 @@ export function useMessengerSocket(threadId: string | null): void {
   const subscribe = useCallback(async () => {
     if (!isPaired || !userId || !isMountedRef.current) return;
 
+    // Guard: jeśli stara instancja Echo wciąż żyje (np. AppState 'active' przyszedł
+    // PRZED tym jak background timeout zdążył ją disconnect), nie twórz drugiej —
+    // odpinaj kanały od istniejącej (Echo getEcho() jest singletonem, ale chcemy
+    // explicite wyczyścić listenery żeby nie podwajać handlerów).
+    if (echoRef.current) {
+      try {
+        echoRef.current.leave(`private-messenger.user.${userId}`);
+        if (threadId) {
+          echoRef.current.leave(`private-messenger.thread.${threadId}`);
+        }
+      } catch {
+        // ignore
+      }
+    }
+
     const echo = await getEcho();
     if (!echo || !isMountedRef.current) return;
 
@@ -276,28 +291,39 @@ export function useMessengerSocket(threadId: string | null): void {
     }
   }, [handleThreadEvent, handleUserEvent, isPaired, threadId, userId]);
 
-  const unsubscribeThread = useCallback(() => {
-    if (!echoRef.current || !threadId) return;
+  const unsubscribeAll = useCallback(() => {
+    const echo = echoRef.current;
+    if (!echo) return;
     try {
-      echoRef.current.leave(`private-messenger.thread.${threadId}`);
+      if (userId) {
+        echo.leave(`private-messenger.user.${userId}`);
+      }
+      if (threadId) {
+        echo.leave(`private-messenger.thread.${threadId}`);
+      }
     } catch {
       // ignore
     }
-  }, [threadId]);
+  }, [threadId, userId]);
 
-  // Connect on mount, reconnect when threadId changes
+  // Connect on mount, reconnect when threadId changes.
+  // Cleanup odpina OBA kanały (user + thread) — wcześniej user channel leakował
+  // jako ghost subscription po unmount/remount.
   useEffect(() => {
     isMountedRef.current = true;
     void subscribe();
 
     return () => {
       isMountedRef.current = false;
-      if (threadId) unsubscribeThread();
+      unsubscribeAll();
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [threadId, isPaired, userId]);
 
-  // Background/foreground lifecycle
+  // Background/foreground lifecycle.
+  // Krytyczne: gdy stan 'active' przyjdzie zanim background timeout odpalił, MUSIMY
+  // wyczyścić timer ZANIM subscribe() utworzy nowe echo — inaczej timer disconnectuje
+  // świeżo utworzone połączenie (race).
   useEffect(() => {
     const sub = AppState.addEventListener('change', (state: AppStateStatus) => {
       if (state === 'active') {
@@ -305,11 +331,12 @@ export function useMessengerSocket(threadId: string | null): void {
           clearTimeout(bgTimerRef.current);
           bgTimerRef.current = null;
         }
-        // Reconnect on foreground
+        // Reconnect on foreground (subscribe() sam zrobi cleanup starych listenerów)
         void subscribe();
       } else if (state === 'background' || state === 'inactive') {
         // Disconnect after 30s to save battery
         bgTimerRef.current = setTimeout(() => {
+          bgTimerRef.current = null;
           if (echoRef.current) {
             try {
               echoRef.current.disconnect();

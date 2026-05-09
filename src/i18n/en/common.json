@@ -105,7 +105,8 @@
       "messages": "Messages",
       "mentions": "Mentions",
       "system": "System",
-      "permissionHint": "To receive notifications, enable permissions in system settings."
+      "permissionHint": "To receive notifications, enable permissions in system settings.",
+      "preferencesComingSoon": "Per-type preferences will arrive in a future update."
     },
     "devices": {
       "title": "Mobile devices",
@@ -127,7 +128,9 @@
     "biometric": {
       "title": "Biometrics",
       "toggle": "Require biometrics",
-      "unavailable": "Biometrics not available on this device"
+      "unavailable": "Biometrics not available on this device",
+      "activeStatus": "Biometrics active",
+      "toggleComingSoon": "The ability to disable will arrive in a future update."
     },
     "about": {
       "title": "About",

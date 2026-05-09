@@ -6,7 +6,8 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 interface Props {
-  error: Error;
+  // Sentry.ErrorBoundary fallback wpuszcza error jako unknown — defensywnie zawęzimy poniżej.
+  error: unknown;
   componentStack: string | null;
   eventId: string;
   resetError: () => void;

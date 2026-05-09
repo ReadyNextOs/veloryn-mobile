@@ -4,10 +4,12 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 type RowVariant = 'navigation' | 'toggle' | 'info' | 'destructive';
 
+type IconName = keyof typeof MaterialCommunityIcons.glyphMap;
+
 interface BaseProps {
   label: string;
   sublabel?: string;
-  icon?: string;
+  icon?: IconName;
   variant?: RowVariant;
   isLast?: boolean;
 }
@@ -45,8 +47,7 @@ export function SettingsRow(props: Props) {
       {icon ? (
         <View style={styles.iconWrapper}>
           <MaterialCommunityIcons
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            name={icon as any}
+            name={icon}
             size={20}
             color={isDestructive ? '#d32f2f' : '#7a24a1'}
           />

@@ -1,49 +1,23 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 import { Alert, ScrollView, StyleSheet, Text, View } from 'react-native';
 import Constants from 'expo-constants';
 import * as Linking from 'expo-linking';
-import { router } from 'expo-router';
 import { useTranslation } from 'react-i18next';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAuthStore } from '@/store/auth';
-import { clearAllSecure } from '@/lib/secureStorage';
-import { resetClient, apiDelete, apiGet } from '@/api/client';
-import { authLogoutEmitter } from '@/lib/authEvents';
-import { clearMailCache } from '@/lib/db';
+import { performLogout } from '@/lib/logout';
 import { useBiometricUnlock } from '@/hooks/useBiometricUnlock';
 import { SettingsSection } from '@/components/settings/SettingsSection';
 import { SettingsRow } from '@/components/settings/SettingsRow';
-import { PushPreferenceToggles } from '@/components/settings/PushPreferenceToggles';
 import { DevicesList } from '@/components/settings/DevicesList';
 import { LanguagePicker } from '@/components/settings/LanguagePicker';
 
 const PRIVACY_POLICY_URL = 'https://veloryn.pl/privacy';
 
-interface PushPrefs {
-  mail: boolean;
-  messages: boolean;
-  mentions: boolean;
-  system: boolean;
-}
-
 export default function SettingsScreen() {
   const { t } = useTranslation('common');
   const user = useAuthStore((s) => s.user);
   const tenant = useAuthStore((s) => s.tenant);
-  const resetAuth = useAuthStore((s) => s.resetAuth);
   const { isAvailable: biometricAvailable } = useBiometricUnlock();
-
-  const [pushPrefs, setPushPrefs] = useState<PushPrefs>({
-    mail: true,
-    messages: true,
-    mentions: true,
-    system: true,
-  });
-
-  const handleTogglePush = useCallback((key: keyof PushPrefs, value: boolean) => {
-    setPushPrefs((prev) => ({ ...prev, [key]: value }));
-    // Sprint 4: POST /api/profile/push-preferences
-  }, []);
 
   const handleLogout = useCallback(() => {
     Alert.alert(
@@ -54,22 +28,13 @@ export default function SettingsScreen() {
         {
           text: t('settings.account.logoutConfirmYes'),
           style: 'destructive',
-          onPress: async () => {
-            try {
-              await apiDelete('/api/auth/mobile-tokens/current');
-            } catch {
-              // Best-effort revoke — proceed anyway
-            }
-            resetClient();
-            await clearAllSecure();
-            await clearMailCache().catch(() => undefined);
-            resetAuth();
-            authLogoutEmitter.emit('auth:logout');
+          onPress: () => {
+            void performLogout({ revokeOnServer: true });
           },
         },
       ],
     );
-  }, [resetAuth, t]);
+  }, [t]);
 
   const handlePrivacyPolicy = useCallback(() => {
     void Linking.openURL(PRIVACY_POLICY_URL);
@@ -122,15 +87,15 @@ export default function SettingsScreen() {
         />
       </SettingsSection>
 
-      {/* Notifications */}
+      {/* Notifications — preferencje per-typ pojawią się w Sprint 4. */}
       <SettingsSection title={t('settings.notifications.title')}>
-        <PushPreferenceToggles
-          preferences={pushPrefs}
-          onToggle={handleTogglePush}
-        />
         <SettingsRow
           variant="info"
           label={t('settings.notifications.permissionHint')}
+        />
+        <SettingsRow
+          variant="info"
+          label={t('settings.notifications.preferencesComingSoon')}
           isLast
         />
       </SettingsSection>
@@ -145,15 +110,15 @@ export default function SettingsScreen() {
         <LanguagePicker />
       </SettingsSection>
 
-      {/* Biometrics */}
+      {/* Biometrics — przełącznik enable/disable pojawi się w Sprint 4.
+          Obecnie biometria jest aktywna automatycznie gdy hardware dostępny. */}
       <SettingsSection title={t('settings.biometric.title')}>
         {biometricAvailable ? (
           <SettingsRow
-            variant="toggle"
-            label={t('settings.biometric.toggle')}
+            variant="info"
+            label={t('settings.biometric.activeStatus')}
+            sublabel={t('settings.biometric.toggleComingSoon')}
             icon="fingerprint"
-            value={biometricAvailable}
-            onValueChange={() => undefined /* Sprint 4: persisted preference */}
             isLast
           />
         ) : (

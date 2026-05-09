@@ -10,15 +10,13 @@ import {
   View,
 } from 'react-native';
 import { router } from 'expo-router';
+import type { DrawerContentComponentProps } from '@react-navigation/drawer';
 import { useTranslation } from 'react-i18next';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Constants from 'expo-constants';
 import { useAuthStore } from '@/store/auth';
-import { clearAllSecure } from '@/lib/secureStorage';
-import { resetClient, apiDelete } from '@/api/client';
-import { authLogoutEmitter } from '@/lib/authEvents';
-import { clearMailCache } from '@/lib/db';
+import { performLogout } from '@/lib/logout';
 import {
   MODULE_GROUPS,
   MODULES,
@@ -27,24 +25,11 @@ import {
   type ModuleConfig,
 } from '@/config/modules';
 
-interface DrawerNavigation {
-  closeDrawer: () => void;
-  openDrawer: () => void;
-  navigate: (...args: unknown[]) => void;
-}
-
-interface DrawerProps {
-  navigation: DrawerNavigation;
-  state?: unknown;
-  descriptors?: unknown;
-}
-
-export function AppDrawerContent(props: DrawerProps) {
+export function AppDrawerContent(props: DrawerContentComponentProps) {
   const { t } = useTranslation('common');
   const insets = useSafeAreaInsets();
   const user = useAuthStore((s) => s.user);
   const tenant = useAuthStore((s) => s.tenant);
-  const resetAuth = useAuthStore((s) => s.resetAuth);
 
   const [search, setSearch] = useState('');
   const [collapsedGroups, setCollapsedGroups] = useState<Record<string, boolean>>({});
@@ -102,17 +87,8 @@ export function AppDrawerContent(props: DrawerProps) {
         {
           text: t('settings.account.logoutConfirmYes'),
           style: 'destructive',
-          onPress: async () => {
-            try {
-              await apiDelete('/api/auth/mobile-tokens/current');
-            } catch {
-              // best-effort
-            }
-            resetClient();
-            await clearAllSecure();
-            await clearMailCache().catch(() => undefined);
-            resetAuth();
-            authLogoutEmitter.emit('auth:logout');
+          onPress: () => {
+            void performLogout({ revokeOnServer: true });
           },
         },
       ],

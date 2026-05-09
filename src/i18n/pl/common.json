@@ -105,7 +105,8 @@
       "messages": "Wiadomości",
       "mentions": "Wzmianki",
       "system": "Systemowe",
-      "permissionHint": "Aby otrzymywać powiadomienia, włącz uprawnienia w ustawieniach systemu."
+      "permissionHint": "Aby otrzymywać powiadomienia, włącz uprawnienia w ustawieniach systemu.",
+      "preferencesComingSoon": "Preferencje per-typ pojawią się w kolejnej aktualizacji."
     },
     "devices": {
       "title": "Urządzenia mobilne",
@@ -127,7 +128,9 @@
     "biometric": {
       "title": "Biometria",
       "toggle": "Wymagaj biometrii",
-      "unavailable": "Biometria niedostępna na tym urządzeniu"
+      "unavailable": "Biometria niedostępna na tym urządzeniu",
+      "activeStatus": "Biometria aktywna",
+      "toggleComingSoon": "Możliwość wyłączenia pojawi się w kolejnej aktualizacji."
     },
     "about": {
       "title": "O aplikacji",

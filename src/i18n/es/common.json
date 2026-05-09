@@ -105,7 +105,8 @@
       "messages": "Mensajes",
       "mentions": "Menciones",
       "system": "Sistema",
-      "permissionHint": "Para recibir notificaciones, habilita los permisos en la configuración del sistema."
+      "permissionHint": "Para recibir notificaciones, habilita los permisos en la configuración del sistema.",
+      "preferencesComingSoon": "Las preferencias por tipo llegarán en una actualización futura."
     },
     "devices": {
       "title": "Dispositivos móviles",
@@ -127,7 +128,9 @@
     "biometric": {
       "title": "Biometría",
       "toggle": "Requerir biometría",
-      "unavailable": "Biometría no disponible en este dispositivo"
+      "unavailable": "Biometría no disponible en este dispositivo",
+      "activeStatus": "Biometría activa",
+      "toggleComingSoon": "La opción de desactivarla llegará en una actualización futura."
     },
     "about": {
       "title": "Acerca de",

@@ -6,16 +6,17 @@ import { useEffect, useState } from 'react';
 import { AppState, type AppStateStatus } from 'react-native';
 import * as Notifications from 'expo-notifications';
 import * as SplashScreen from 'expo-splash-screen';
-import { Stack, router } from 'expo-router';
+import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { QueryClientProvider } from '@tanstack/react-query';
 import { Sentry } from '@/lib/sentry';
 import { RootErrorFallback } from '@/components/RootErrorFallback';
 import { authLogoutEmitter } from '@/lib/authEvents';
 import { useAuthStore } from '@/store/auth';
 import { useBiometricUnlock } from '@/hooks/useBiometricUnlock';
-import { clearMailCache } from '@/lib/db';
+import { performLogout } from '@/lib/logout';
+import { queryClient } from '@/lib/queryClient';
 import { usePushRegistration } from '@/hooks/usePushRegistration';
 
 // Trzymaj splash dopóki Zustand persist nie zakończy hydratacji z SecureStore.
@@ -32,13 +33,6 @@ Notifications.setNotificationHandler({
     shouldShowBanner: true,
     shouldShowList: true,
   }),
-});
-
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: { retry: 1 },
-    mutations: { retry: 0 },
-  },
 });
 
 function RootLayout() {
@@ -84,42 +78,42 @@ function AppShell() {
   // Push registration — po sparowaniu rejestruje Expo Push Token
   usePushRegistration();
 
-  const resetAuth = useAuthStore((s) => s.resetAuth);
   const isPaired = useAuthStore((s) => s.isPaired);
   const isUnlocked = useAuthStore((s) => s.isUnlocked);
   const setUnlocked = useAuthStore((s) => s.setUnlocked);
-  const lastBackgroundedAt = useAuthStore((s) => s.lastBackgroundedAt);
   const setLastBackgroundedAt = useAuthStore((s) => s.setLastBackgroundedAt);
   const { isAvailable } = useBiometricUnlock();
 
-  // Obsługa logout z interceptora 401
+  // Obsługa logout z interceptora 401 — token już nieważny, nie revokeOnServer.
+  // emitEvent=false, bo TO jest listener tego eventu — uniknąć rekursji.
   useEffect(() => {
     return authLogoutEmitter.on(() => {
-      resetAuth(); // zeruje też isUnlocked + lastBackgroundedAt
-      clearMailCache().catch(console.error); // wyczysć cache — nie blokuj logout przy błędzie
-      router.replace('/(auth)/login');
+      void performLogout({ revokeOnServer: false, emitEvent: false });
     });
-  }, [resetAuth]);
+  }, []);
 
-  // Biometric lock po powrocie z tła po 5 min
+  // Biometric lock po powrocie z tła po 5 min.
+  // KRYTYCZNE: lastBackgroundedAt czytany z getState() w handlerze (nie z closure),
+  // żeby uniknąć stale-state race przy szybkim bg→fg→bg→fg.
   useEffect(() => {
     const sub = AppState.addEventListener('change', (nextState: AppStateStatus) => {
       if (nextState === 'background' || nextState === 'inactive') {
         setLastBackgroundedAt(Date.now());
-        // Natychmiastowe zablokowanie przy przejściu do tła
         setUnlocked(false);
-      } else if (nextState === 'active' && lastBackgroundedAt !== null) {
-        const elapsed = Date.now() - lastBackgroundedAt;
-        if (elapsed < LOCK_TIMEOUT_MS) {
-          // Krótkie tło (< 5 min) — odblokuj bez biometrii
-          setUnlocked(true);
+      } else if (nextState === 'active') {
+        const ts = useAuthStore.getState().lastBackgroundedAt;
+        if (ts !== null) {
+          const elapsed = Date.now() - ts;
+          if (elapsed < LOCK_TIMEOUT_MS) {
+            setUnlocked(true);
+          }
+          // Jeśli >= 5 min — zostaje locked, locked screen pojawi się przy renderze
+          setLastBackgroundedAt(null);
         }
-        // Jeśli >= 5 min — zostaje locked (isUnlocked=false), locked screen pojawi się
-        setLastBackgroundedAt(null);
       }
     });
     return () => sub.remove();
-  }, [isPaired, isAvailable, lastBackgroundedAt, setLastBackgroundedAt, setUnlocked]);
+  }, [setLastBackgroundedAt, setUnlocked]);
 
   // Nie renderuj nic przed zakończeniem hydratacji — zapobiega błędnym przekierowaniom
   // i API calls bez tokenu Bearer gdy SecureStore jeszcze czyta stan.

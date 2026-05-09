@@ -32,7 +32,11 @@ export function usePairing() {
       return pairDevice(payload, deviceInfo);
     },
     onSuccess: async (data, payload) => {
-      // Zapisz credentials DOPIERO po potwierdzonym sparowaniu
+      // Zapisz credentials DOPIERO po potwierdzonym sparowaniu.
+      // payload.token to długoterminowy Sanctum Bearer wygenerowany na webie i zapakowany
+      // w QR — backend NIE zwraca nowego tokenu w pair response (tylko user/tenant/abilities),
+      // bo token jest już wprost przekazany przez QR. Pair endpoint pełni rolę handshake'u
+      // (rejestracja device_info + walidacja że token nie wygasł), nie token exchange.
       await setSecure(SECURE_KEYS.apiHost, payload.host);
       await setSecure(SECURE_KEYS.apiToken, payload.token);
       await setSecure(SECURE_KEYS.tenantId, payload.tenant_id);

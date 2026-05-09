@@ -105,7 +105,8 @@
       "messages": "Zprávy",
       "mentions": "Zmínky",
       "system": "Systémová",
-      "permissionHint": "Chcete-li dostávat oznámení, povolte je v nastavení systému."
+      "permissionHint": "Chcete-li dostávat oznámení, povolte je v nastavení systému.",
+      "preferencesComingSoon": "Předvolby podle typu přijdou v některé z dalších aktualizací."
     },
     "devices": {
       "title": "Mobilní zařízení",
@@ -127,7 +128,9 @@
     "biometric": {
       "title": "Biometrie",
       "toggle": "Vyžadovat biometrii",
-      "unavailable": "Biometrie není na tomto zařízení dostupná"
+      "unavailable": "Biometrie není na tomto zařízení dostupná",
+      "activeStatus": "Biometrie aktivní",
+      "toggleComingSoon": "Možnost vypnutí přijde v některé z dalších aktualizací."
     },
     "about": {
       "title": "O aplikaci",

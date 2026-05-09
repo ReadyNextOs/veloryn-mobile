@@ -1,6 +1,7 @@
 import React from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Drawer } from 'expo-router/drawer';
+import type { DrawerContentComponentProps } from '@react-navigation/drawer';
 import { useTranslation } from 'react-i18next';
 import { AppDrawerContent } from '@/components/shell/AppDrawerContent';
 
@@ -10,8 +11,9 @@ export default function AppDrawerLayout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <Drawer
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        drawerContent={(props: any) => <AppDrawerContent {...props} />}
+        drawerContent={(props: DrawerContentComponentProps) => (
+          <AppDrawerContent {...props} />
+        )}
         screenOptions={{
           headerStyle: { backgroundColor: '#7a24a1' },
           headerTintColor: '#fff',
