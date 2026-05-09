@@ -82,9 +82,8 @@
           "iosDisplayInForeground": true
         }
       ],
-      "@sentry/react-native/expo",
-      "expo-font",
       "@sentry/react-native",
+      "expo-font",
       "expo-sharing",
       "expo-sqlite"
     ],
