@@ -245,7 +245,6 @@ const styles = StyleSheet.create({
   brandTitle: {
     fontSize: 32,
     fontWeight: '700',
-    letterSpacing: 4,
     color: '#ffffff',
   },
   brandSubtitle: {
@@ -317,7 +316,6 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     fontSize: 15,
     fontWeight: '600',
-    letterSpacing: 0.5,
   },
   dividerRow: {
     flexDirection: 'row',
@@ -334,7 +332,6 @@ const styles = StyleSheet.create({
     color: 'rgba(0, 0, 0, 0.5)',
     fontSize: 12,
     textTransform: 'uppercase',
-    letterSpacing: 1,
   },
   secondaryButton: {
     borderWidth: 1,
