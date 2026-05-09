@@ -24,14 +24,14 @@ interface SheetContextValue {
 const SheetContext = React.createContext<SheetContextValue | null>(null);
 
 function useSheet(): SheetContextValue {
-  const ctx = React.useContext(SheetContext);
+  const ctx = React.use(SheetContext);
   if (!ctx) throw new Error('Sheet components must be used inside <Sheet />');
   return ctx;
 }
 
 export function Sheet({ open, onOpenChange, children }: SheetProps) {
   return (
-    <SheetContext.Provider value={{ open, onOpenChange }}>{children}</SheetContext.Provider>
+    <SheetContext value={{ open, onOpenChange }}>{children}</SheetContext>
   );
 }
 
@@ -84,29 +84,29 @@ export function SheetHeader({ className, ...props }: ViewProps & { className?: s
   return <View className={cn('mb-4 gap-1', className)} {...props} />;
 }
 
-export const SheetTitle = React.forwardRef<
-  React.ComponentRef<typeof Text>,
-  React.ComponentPropsWithoutRef<typeof Text>
->(({ className, ...props }, ref) => (
-  <Text
-    ref={ref}
-    className={cn('text-lg font-semibold text-foreground', className)}
-    {...props}
-  />
-));
-SheetTitle.displayName = 'SheetTitle';
+type SheetTextProps = React.ComponentPropsWithoutRef<typeof Text> & {
+  ref?: React.Ref<React.ComponentRef<typeof Text>>;
+};
 
-export const SheetDescription = React.forwardRef<
-  React.ComponentRef<typeof Text>,
-  React.ComponentPropsWithoutRef<typeof Text>
->(({ className, ...props }, ref) => (
-  <Text
-    ref={ref}
-    className={cn('text-sm text-muted-foreground', className)}
-    {...props}
-  />
-));
-SheetDescription.displayName = 'SheetDescription';
+export function SheetTitle({ className, ref, ...props }: SheetTextProps) {
+  return (
+    <Text
+      ref={ref}
+      className={cn('text-lg font-semibold text-foreground', className)}
+      {...props}
+    />
+  );
+}
+
+export function SheetDescription({ className, ref, ...props }: SheetTextProps) {
+  return (
+    <Text
+      ref={ref}
+      className={cn('text-sm text-muted-foreground', className)}
+      {...props}
+    />
+  );
+}
 
 export function SheetFooter({ className, ...props }: ViewProps & { className?: string }) {
   return (

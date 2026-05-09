@@ -52,32 +52,38 @@ interface ButtonProps
     VariantProps<typeof buttonVariants> {
   className?: string;
   textClassName?: string;
+  ref?: React.Ref<View>;
 }
 
-export const Button = React.forwardRef<View, ButtonProps>(
-  ({ className, textClassName, variant, size, children, ...props }, ref) => {
-    const renderChildren = () => {
-      if (typeof children === 'string') {
-        return (
-          <Text className={cn(buttonTextVariants({ variant, size }), textClassName)}>
-            {children}
-          </Text>
-        );
-      }
-      return children;
-    };
+export function Button({
+  className,
+  textClassName,
+  variant,
+  size,
+  children,
+  ref,
+  ...props
+}: ButtonProps) {
+  const renderChildren = () => {
+    if (typeof children === 'string') {
+      return (
+        <Text className={cn(buttonTextVariants({ variant, size }), textClassName)}>
+          {children}
+        </Text>
+      );
+    }
+    return children;
+  };
 
-    return (
-      <Pressable
-        ref={ref as React.Ref<View>}
-        className={cn(buttonVariants({ variant, size }), className)}
-        {...props}
-      >
-        {renderChildren()}
-      </Pressable>
-    );
-  },
-);
-Button.displayName = 'Button';
+  return (
+    <Pressable
+      ref={ref as React.Ref<View>}
+      className={cn(buttonVariants({ variant, size }), className)}
+      {...props}
+    >
+      {renderChildren()}
+    </Pressable>
+  );
+}
 
 export { buttonVariants, buttonTextVariants };
