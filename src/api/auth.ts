@@ -1,7 +1,7 @@
 // Auth API helpers — pair device + login + me endpoint.
 
 import axios from 'axios';
-import { ApiError } from '@/api/client';
+import { apiGet, ApiError } from '@/api/client';
 import type {
   MobileLoginRequest,
   MobileLoginResponse,
@@ -57,8 +57,6 @@ export async function pairDevice(
 
 /** Pobierz zalogowanego usera (wymaga sparowanego klienta axios z Bearer). */
 export async function getMe(): Promise<User> {
-  // Importujemy dynamicznie żeby uniknąć circular dep przy pierwszym para
-  const { apiGet } = await import('@/api/client');
   return apiGet<User>('/api/me');
 }
 

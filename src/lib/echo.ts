@@ -1,10 +1,12 @@
 // Laravel Echo — lazy singleton z Reverb (Pusher-compatible WebSocket).
 // Init po pierwszym sparowaniu. Reset na auth:logout.
 
+import Echo from 'laravel-echo';
+import Pusher from 'pusher-js/react-native';
+import { getClient } from '@/api/client';
 import { authLogoutEmitter } from '@/lib/authEvents';
 import { getSecure, SECURE_KEYS } from '@/lib/secureStorage';
 
-// Dynamic imports to avoid breaking in environments where these are not available
 let _echo: unknown = null;
 let _cleanupLogout: (() => void) | null = null;
 
@@ -22,12 +24,6 @@ export async function getEcho(): Promise<unknown> {
   if (!reverbKey || !reverbHost) return null;
 
   try {
-    // Dynamic imports to avoid bundler issues when deps not installed
-    const [{ default: Echo }, { default: Pusher }] = await Promise.all([
-      import('laravel-echo'),
-      import('pusher-js/react-native'),
-    ]);
-
     // pusher-js/react-native needs global Pusher
     (globalThis as Record<string, unknown>)['Pusher'] = Pusher;
 
@@ -43,7 +39,6 @@ export async function getEcho(): Promise<unknown> {
         authorize: (socketId: string, callback: (error: Error | null, authData: { auth: string; channel_data?: string; shared_secret?: string } | null) => void): void => {
           void (async () => {
             try {
-              const { getClient } = await import('@/api/client');
               const client = await getClient();
               const res = await client.post<{ auth: string; channel_data?: string; shared_secret?: string }>(
                 '/api/broadcasting/auth',
