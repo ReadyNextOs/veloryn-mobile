@@ -9,6 +9,7 @@ import { useMutation } from '@tanstack/react-query';
 import { loginWithCredentials } from '@/api/auth';
 import { resetClient } from '@/api/client';
 import { setSecure, SECURE_KEYS } from '@/lib/secureStorage';
+import { Sentry } from '@/lib/sentry';
 import { useAuthStore } from '@/store/auth';
 
 interface LoginInput {
@@ -77,17 +78,30 @@ export function useLogin() {
       return { ...data, requestedHost: host };
     },
     onSuccess: async (data) => {
+      Sentry.addBreadcrumb({ category: 'auth', message: 'login:success', level: 'info' });
+
       // Backend zwraca canonical host w `data.host` (config('app.url')).
       // Zapisujemy host z którym mobile faktycznie się komunikuje (requestedHost),
       // żeby kolejne requesty trafiały na ten sam endpoint co login.
       const persistedHost = data.requestedHost || data.host;
 
-      await setSecure(SECURE_KEYS.apiHost, persistedHost);
-      await setSecure(SECURE_KEYS.apiToken, data.token);
-      await setSecure(SECURE_KEYS.tenantId, data.tenant.id);
-      await setSecure(SECURE_KEYS.userEmail, data.user.email);
+      try {
+        await setSecure(SECURE_KEYS.apiHost, persistedHost);
+        await setSecure(SECURE_KEYS.apiToken, data.token);
+        await setSecure(SECURE_KEYS.tenantId, data.tenant.id);
+        await setSecure(SECURE_KEYS.userEmail, data.user.email);
+      } catch (err) {
+        Sentry.captureException(err, { tags: { source: 'login_setSecure' } });
+        throw err;
+      }
 
       resetClient();
+
+      // User context dla wszystkich kolejnych eventow Sentry — kluczowe do diagnozy
+      // crashy ktore zdarzaja sie po loginu (latwiej zgrupowac per-user/per-tenant).
+      Sentry.setUser({ id: data.user.id, email: data.user.email });
+      Sentry.setTag('tenant_id', data.tenant.id);
+      Sentry.setTag('tenant_code', data.tenant.code);
 
       setAuthState({
         isPaired: true,
@@ -96,6 +110,7 @@ export function useLogin() {
         apiHost: persistedHost,
       });
 
+      Sentry.addBreadcrumb({ category: 'nav', message: 'replace:/(app)/dashboard', level: 'info' });
       router.replace('/(app)/dashboard');
     },
     onError: () => {

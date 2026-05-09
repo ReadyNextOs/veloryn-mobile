@@ -4,10 +4,20 @@
 import { useCallback, useEffect, useRef } from 'react';
 import * as Notifications from 'expo-notifications';
 import { type EventSubscription } from 'expo-modules-core';
+import Constants from 'expo-constants';
 import { router } from 'expo-router';
 import { z } from 'zod';
 import { apiPost } from '@/api/client';
+import { Sentry } from '@/lib/sentry';
 import { useAuthStore } from '@/store/auth';
+
+/**
+ * Push notifications wymagaja na Androidzie poprawnego google-services.json
+ * w kompilacji EAS. Bez tego getExpoPushTokenAsync() potrafi natywnie crashowac
+ * apke. Aktualnie projekt NIE ma jeszcze Firebase setupu — wlaczamy push tylko
+ * gdy explicite ustawiono `EXPO_PUBLIC_PUSH_ENABLED=1` w eas.json profilu.
+ */
+const PUSH_ENABLED = process.env.EXPO_PUBLIC_PUSH_ENABLED === '1';
 
 interface DeviceRegistrationPayload {
   token: string;
@@ -41,28 +51,49 @@ const NotificationDataSchema = z.discriminatedUnion('type', [
 type ValidatedNotificationData = z.infer<typeof NotificationDataSchema>;
 
 async function registerPushToken(): Promise<void> {
-  const { status: existingStatus } = await Notifications.getPermissionsAsync();
+  Sentry.addBreadcrumb({ category: 'push', message: 'register:start', level: 'info' });
 
-  let finalStatus = existingStatus;
-  if (existingStatus !== 'granted') {
-    const { status } = await Notifications.requestPermissionsAsync();
-    finalStatus = status;
-  }
-
-  if (finalStatus !== 'granted') {
+  if (!PUSH_ENABLED) {
+    Sentry.addBreadcrumb({ category: 'push', message: 'register:skipped (PUSH_ENABLED=0)', level: 'info' });
     return;
   }
 
   try {
-    const tokenResult = await Notifications.getExpoPushTokenAsync();
+    const { status: existingStatus } = await Notifications.getPermissionsAsync();
+
+    let finalStatus = existingStatus;
+    if (existingStatus !== 'granted') {
+      const { status } = await Notifications.requestPermissionsAsync();
+      finalStatus = status;
+    }
+
+    if (finalStatus !== 'granted') {
+      Sentry.addBreadcrumb({ category: 'push', message: `register:permission_denied (${finalStatus})`, level: 'info' });
+      return;
+    }
+
+    const projectId = Constants.expoConfig?.extra?.['eas']?.projectId
+      ?? Constants.easConfig?.projectId;
+
+    if (!projectId) {
+      Sentry.captureMessage('push:no_project_id', { level: 'warning' });
+      return;
+    }
+
+    Sentry.addBreadcrumb({ category: 'push', message: 'register:fetching_token', level: 'info' });
+    const tokenResult = await Notifications.getExpoPushTokenAsync({ projectId });
+    Sentry.addBreadcrumb({ category: 'push', message: 'register:token_received', level: 'info' });
+
     const payload: DeviceRegistrationPayload = {
       token: tokenResult.data,
       platform: 'expo',
     };
     await apiPost<void>('/api/mobile/devices', payload);
+    Sentry.addBreadcrumb({ category: 'push', message: 'register:done', level: 'info' });
   } catch (err) {
-    // Registration failure is non-critical — log and continue
-    console.warn('[PushRegistration] Failed to register push token:', err);
+    // Non-critical: caught here so apka sie nie wywala. Sentry zlapie kontekst
+    // do diagnozy (najczesciej brak google-services.json => natywny error z FCM).
+    Sentry.captureException(err, { tags: { source: 'push_registration' } });
   }
 }
 

@@ -24,16 +24,27 @@ import { usePushRegistration } from '@/hooks/usePushRegistration';
 // → user widzi biały ekran przez kilka sekund.
 SplashScreen.preventAutoHideAsync().catch(() => undefined);
 
-// Konfiguracja obsługi powiadomień w foreground
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: true,
-    shouldSetBadge: true,
-    shouldShowBanner: true,
-    shouldShowList: true,
-  }),
-});
+// Konfiguracja obsługi powiadomień w foreground.
+// Owijamy try/catch + Sentry — w niektorych wersjach expo-notifications na Androidzie
+// bez google-services.json setNotificationHandler crashuje natywnie i zatyka apke.
+try {
+  Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+      shouldShowAlert: true,
+      shouldPlaySound: true,
+      shouldSetBadge: true,
+      shouldShowBanner: true,
+      shouldShowList: true,
+    }),
+  });
+} catch (err) {
+  Sentry.captureException(err, { tags: { source: 'setNotificationHandler' } });
+}
+
+// Cold-start ping — jesli ten event nie pojawi sie w Sentry oznacza ze SDK Sentry
+// nie wstaje (np. zly DSN, network blokuje sentry.io). Pomaga zwerifikowac czy
+// brak crash-eventow to brak crashy czy brak Sentry.
+Sentry.captureMessage('app:cold-start', { level: 'info' });
 
 function RootLayout() {
   return (
