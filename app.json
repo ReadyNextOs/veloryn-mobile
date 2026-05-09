@@ -93,6 +93,7 @@
       "expo-sharing",
       "expo-sqlite"
     ],
+    "newArchEnabled": false,
     "experiments": {
       "typedRoutes": true
     },

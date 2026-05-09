@@ -33,7 +33,7 @@ export const ICON_MAP: Record<string, string> = {
   ClipboardList: 'clipboard-list-outline',
   PackageCheck: 'package-variant-closed-check',
   Warehouse: 'warehouse',
-  PackageSearch: 'package-search',
+  PackageSearch: 'package-variant',
   Boxes: 'package-variant-closed',
   MapPin: 'map-marker-outline',
   Tags: 'tag-multiple-outline',
