@@ -8,7 +8,7 @@ import {
   View,
 } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { File as EFSFile, Paths } from 'expo-file-system';
+import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
 import { useTranslation } from 'react-i18next';
 import type { MailAttachment } from '@/types/mail';
@@ -54,11 +54,12 @@ export function AttachmentRow({ attachment }: Props) {
     if (!attachment.download_url || !attachment.can_download) return;
     setDownloading(true);
     try {
-      const dest = new EFSFile(Paths.cache, attachment.filename);
-      const downloaded = await EFSFile.downloadFileAsync(attachment.download_url, dest);
+      const safeName = attachment.filename.replace(/[^\w.\-]/g, '_');
+      const dest = `${FileSystem.cacheDirectory}${safeName}`;
+      const { uri } = await FileSystem.downloadAsync(attachment.download_url, dest);
       const canShare = await Sharing.isAvailableAsync();
       if (canShare) {
-        await Sharing.shareAsync(downloaded.uri, {
+        await Sharing.shareAsync(uri, {
           mimeType: attachment.mime_type,
           dialogTitle: attachment.filename,
         });
