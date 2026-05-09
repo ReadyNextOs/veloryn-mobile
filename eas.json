@@ -9,7 +9,10 @@
       "distribution": "internal",
       "channel": "development",
       "env": {
-        "EXPO_PUBLIC_API_URL": "https://dev.veloryn.pl"
+        "EXPO_PUBLIC_API_URL": "https://dev.veloryn.pl",
+        "EXPO_PUBLIC_SENTRY_DSN": "https://92f91bc671189905ea9a3eeac7cac638@o4508923852488704.ingest.de.sentry.io/4511358594449489",
+        "SENTRY_ORG": "veloryn",
+        "SENTRY_PROJECT": "veloryn-mobile"
       }
     },
     "preview": {
@@ -22,14 +25,20 @@
         "buildType": "apk"
       },
       "env": {
-        "EXPO_PUBLIC_API_URL": "https://dev.veloryn.pl"
+        "EXPO_PUBLIC_API_URL": "https://dev.veloryn.pl",
+        "EXPO_PUBLIC_SENTRY_DSN": "https://92f91bc671189905ea9a3eeac7cac638@o4508923852488704.ingest.de.sentry.io/4511358594449489",
+        "SENTRY_ORG": "veloryn",
+        "SENTRY_PROJECT": "veloryn-mobile"
       }
     },
     "production": {
       "channel": "production",
       "autoIncrement": true,
       "env": {
-        "EXPO_PUBLIC_API_URL": "https://app.veloryn.pl"
+        "EXPO_PUBLIC_API_URL": "https://app.veloryn.pl",
+        "EXPO_PUBLIC_SENTRY_DSN": "https://92f91bc671189905ea9a3eeac7cac638@o4508923852488704.ingest.de.sentry.io/4511358594449489",
+        "SENTRY_ORG": "veloryn",
+        "SENTRY_PROJECT": "veloryn-mobile"
       }
     }
   },

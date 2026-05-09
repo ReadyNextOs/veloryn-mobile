@@ -1,17 +1,27 @@
+import '@/lib/sentry'; // Sentry init — MUSI być pierwszym importem (native crash reporting)
 import 'react-native-gesture-handler';
 import '../global.css'; // NativeWind — Tailwind utilities dla rn-reusables
 import '@/lib/i18n'; // i18next init — musi być przed renderowaniem
 import { useEffect, useState } from 'react';
 import { AppState, type AppStateStatus } from 'react-native';
 import * as Notifications from 'expo-notifications';
+import * as SplashScreen from 'expo-splash-screen';
 import { Stack, router } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Sentry } from '@/lib/sentry';
+import { RootErrorFallback } from '@/components/RootErrorFallback';
 import { authLogoutEmitter } from '@/lib/authEvents';
 import { useAuthStore } from '@/store/auth';
 import { useBiometricUnlock } from '@/hooks/useBiometricUnlock';
 import { clearMailCache } from '@/lib/db';
 import { usePushRegistration } from '@/hooks/usePushRegistration';
+
+// Trzymaj splash dopóki Zustand persist nie zakończy hydratacji z SecureStore.
+// Bez tego AppShell zwraca null podczas async load, a splash znika za wcześnie
+// → user widzi biały ekran przez kilka sekund.
+SplashScreen.preventAutoHideAsync().catch(() => undefined);
 
 // Konfiguracja obsługi powiadomień w foreground
 Notifications.setNotificationHandler({
@@ -31,13 +41,21 @@ const queryClient = new QueryClient({
   },
 });
 
-export default function RootLayout() {
+function RootLayout() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <AppShell />
-    </QueryClientProvider>
+    <Sentry.ErrorBoundary fallback={(props) => <RootErrorFallback {...props} />}>
+      <SafeAreaProvider>
+        <QueryClientProvider client={queryClient}>
+          <AppShell />
+        </QueryClientProvider>
+      </SafeAreaProvider>
+    </Sentry.ErrorBoundary>
   );
 }
+
+// Sentry.wrap rejestruje natywne handler'y (Java/ObjC/JS) na wrapped komponencie.
+// Bez tego native crash w runtime nie trafi do Sentry mimo enableNative=true.
+export default Sentry.wrap(RootLayout);
 
 const LOCK_TIMEOUT_MS = 5 * 60 * 1000; // 5 min
 
@@ -54,6 +72,13 @@ function AppShell() {
       return useAuthStore.persist.onFinishHydration(() => setHasHydrated(true));
     }
     return undefined;
+  }, [hasHydrated]);
+
+  // Ukryj splash dopiero gdy hydratacja zakończona — wcześniej AppShell zwraca null.
+  useEffect(() => {
+    if (hasHydrated) {
+      SplashScreen.hideAsync().catch(() => undefined);
+    }
   }, [hasHydrated]);
 
   // Push registration — po sparowaniu rejestruje Expo Push Token

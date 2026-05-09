@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { withTranslation, type WithTranslation } from 'react-i18next';
+import { Sentry } from '@/lib/sentry';
 
 interface Props extends WithTranslation {
   children: React.ReactNode;
@@ -24,6 +25,14 @@ class ErrorBoundaryInner extends React.Component<Props, State> {
     if (__DEV__) {
       console.warn('[ErrorBoundary]', error, info.componentStack);
     }
+    // Raportuj do Sentry — z pełnym componentStack jako extra context.
+    Sentry.captureException(error, {
+      contexts: {
+        react: {
+          componentStack: info.componentStack ?? 'unknown',
+        },
+      },
+    });
   }
 
   handleRetry = (): void => {
