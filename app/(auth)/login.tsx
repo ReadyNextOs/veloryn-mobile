@@ -13,6 +13,7 @@ import {
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { useLogin } from '@/hooks/useLogin';
@@ -29,6 +30,7 @@ export default function LoginScreen() {
   const [host, setHost] = useState<string>(DEFAULT_HOST);
   const [login, setLogin] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [showPassword, setShowPassword] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const { mutateAsync: submitLogin, isPending } = useLogin();
@@ -70,10 +72,18 @@ export default function LoginScreen() {
           setErrorMessage(t('auth.login.errors.invalidCredentials'));
         } else if (err.code === 'MOBILE_LOGIN_INACTIVE_ACCOUNT' || err.status === 403) {
           setErrorMessage(t('auth.login.errors.inactiveAccount'));
+        } else if (err.status === 404 || err.status === 405) {
+          // Endpoint nie istnieje na tym backendzie — najczęściej oznacza ze prod ma
+          // starsza wersje serwera niz wymaga apka mobilna (lub zly host wpisany).
+          setErrorMessage(t('auth.login.errors.endpointUnavailable'));
         } else if (err.status === 429) {
           setErrorMessage(t('auth.login.errors.throttled'));
         } else if (err.status === 422) {
           setErrorMessage(err.message || t('auth.login.errors.validation'));
+        } else if (err.status >= 500 && err.status < 600) {
+          setErrorMessage(t('auth.login.errors.serverError'));
+        } else if (err.status === 502 || err.status === 503 || err.status === 504) {
+          setErrorMessage(t('auth.login.errors.backendUnavailable'));
         } else {
           setErrorMessage(err.message || t('auth.login.errors.serverError'));
         }
@@ -140,20 +150,37 @@ export default function LoginScreen() {
               />
 
               <Text style={styles.fieldLabel}>{t('auth.login.passwordLabel')}</Text>
-              <TextInput
-                value={password}
-                onChangeText={setPassword}
-                placeholder={t('auth.login.passwordPlaceholder')}
-                placeholderTextColor="#9e9e9e"
-                secureTextEntry
-                autoCapitalize="none"
-                autoCorrect={false}
-                textContentType="password"
-                editable={!isPending}
-                onSubmitEditing={handleSubmit}
-                returnKeyType="go"
-                style={styles.input}
-              />
+              <View style={styles.passwordRow}>
+                <TextInput
+                  value={password}
+                  onChangeText={setPassword}
+                  placeholder={t('auth.login.passwordPlaceholder')}
+                  placeholderTextColor="#9e9e9e"
+                  secureTextEntry={!showPassword}
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  textContentType="password"
+                  editable={!isPending}
+                  onSubmitEditing={handleSubmit}
+                  returnKeyType="go"
+                  style={[styles.input, styles.passwordInput]}
+                />
+                <TouchableOpacity
+                  onPress={() => setShowPassword((prev) => !prev)}
+                  style={styles.eyeButton}
+                  accessibilityRole="button"
+                  accessibilityLabel={t(
+                    showPassword ? 'auth.login.hidePassword' : 'auth.login.showPassword',
+                  )}
+                  hitSlop={8}
+                >
+                  <MaterialCommunityIcons
+                    name={showPassword ? 'eye-off-outline' : 'eye-outline'}
+                    size={22}
+                    color="#666"
+                  />
+                </TouchableOpacity>
+              </View>
 
               {errorMessage ? (
                 <Text style={styles.errorText} accessibilityRole="alert">
@@ -254,6 +281,21 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: 'rgba(0, 0, 0, 0.87)',
     backgroundColor: '#fafafa',
+  },
+  passwordRow: {
+    position: 'relative',
+  },
+  passwordInput: {
+    paddingRight: 44,
+  },
+  eyeButton: {
+    position: 'absolute',
+    right: 8,
+    top: 0,
+    bottom: 0,
+    width: 36,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   errorText: {
     color: '#d32f2f',

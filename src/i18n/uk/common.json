@@ -8,6 +8,8 @@
       "loginPlaceholder": "ivan.koval або ivan@firma.ua",
       "passwordLabel": "Пароль",
       "passwordPlaceholder": "Ваш пароль",
+      "showPassword": "Показати пароль",
+      "hidePassword": "Сховати пароль",
       "submit": "Увійти",
       "orDivider": "або",
       "qrFallback": "Увійти за QR-кодом",
@@ -18,6 +20,8 @@
         "invalidLogin": "Введіть логін або e-mail.",
         "passwordRequired": "Введіть пароль.",
         "networkError": "Немає з'єднання з сервером. Перевірте адресу та спробуйте знову.",
+        "backendUnavailable": "Сервер тимчасово недоступний. Спробуйте за хвилину.",
+        "endpointUnavailable": "Ця версія сервера не підтримує мобільний вхід. Зверніться до адміністратора або перевірте адресу.",
         "serverError": "Помилка сервера. Спробуйте пізніше.",
         "throttled": "Забагато спроб. Зачекайте хвилину та спробуйте ще раз.",
         "validation": "Надані дані некоректні."

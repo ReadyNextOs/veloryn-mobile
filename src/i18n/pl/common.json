@@ -8,6 +8,8 @@
       "loginPlaceholder": "jan.kowalski lub jan@firma.pl",
       "passwordLabel": "Hasło",
       "passwordPlaceholder": "Twoje hasło",
+      "showPassword": "Pokaż hasło",
+      "hidePassword": "Ukryj hasło",
       "submit": "Zaloguj się",
       "orDivider": "lub",
       "qrFallback": "Zaloguj kodem QR",
@@ -18,6 +20,8 @@
         "invalidLogin": "Wpisz login lub adres e-mail.",
         "passwordRequired": "Wpisz hasło.",
         "networkError": "Brak połączenia z serwerem. Sprawdź adres i spróbuj ponownie.",
+        "backendUnavailable": "Serwer chwilowo niedostępny. Spróbuj ponownie za chwilę.",
+        "endpointUnavailable": "Wersja serwera nie obsługuje logowania mobilnego. Skontaktuj się z administratorem instancji lub sprawdź wpisany adres.",
         "serverError": "Błąd serwera. Spróbuj ponownie później.",
         "throttled": "Zbyt wiele prób. Odczekaj minutę i spróbuj ponownie.",
         "validation": "Podane dane są nieprawidłowe."

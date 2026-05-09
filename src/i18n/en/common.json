@@ -8,6 +8,8 @@
       "loginPlaceholder": "john.doe or john@company.com",
       "passwordLabel": "Password",
       "passwordPlaceholder": "Your password",
+      "showPassword": "Show password",
+      "hidePassword": "Hide password",
       "submit": "Sign in",
       "orDivider": "or",
       "qrFallback": "Sign in with QR code",
@@ -18,6 +20,8 @@
         "invalidLogin": "Enter your username or e-mail.",
         "passwordRequired": "Enter your password.",
         "networkError": "Cannot reach the server. Check the address and try again.",
+        "backendUnavailable": "Server is temporarily unavailable. Try again in a moment.",
+        "endpointUnavailable": "This server version does not support mobile login. Contact your instance administrator or check the address.",
         "serverError": "Server error. Please try again later.",
         "throttled": "Too many attempts. Wait a minute and try again.",
         "validation": "The data provided is invalid."

@@ -8,6 +8,8 @@
       "loginPlaceholder": "juan.perez o juan@empresa.es",
       "passwordLabel": "Contraseña",
       "passwordPlaceholder": "Tu contraseña",
+      "showPassword": "Mostrar contraseña",
+      "hidePassword": "Ocultar contraseña",
       "submit": "Iniciar sesión",
       "orDivider": "o",
       "qrFallback": "Iniciar sesión con código QR",
@@ -18,6 +20,8 @@
         "invalidLogin": "Introduce tu usuario o correo electrónico.",
         "passwordRequired": "Introduce tu contraseña.",
         "networkError": "No se puede conectar con el servidor. Comprueba la dirección e inténtalo de nuevo.",
+        "backendUnavailable": "El servidor está temporalmente no disponible. Inténtalo en un momento.",
+        "endpointUnavailable": "Esta versión del servidor no admite el inicio de sesión móvil. Contacta con el administrador o comprueba la dirección.",
         "serverError": "Error del servidor. Inténtalo de nuevo más tarde.",
         "throttled": "Demasiados intentos. Espera un minuto e inténtalo de nuevo.",
         "validation": "Los datos proporcionados no son válidos."

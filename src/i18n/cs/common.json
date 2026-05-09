@@ -8,6 +8,8 @@
       "loginPlaceholder": "jan.novak nebo jan@firma.cz",
       "passwordLabel": "Heslo",
       "passwordPlaceholder": "Vaše heslo",
+      "showPassword": "Zobrazit heslo",
+      "hidePassword": "Skrýt heslo",
       "submit": "Přihlásit se",
       "orDivider": "nebo",
       "qrFallback": "Přihlásit se QR kódem",
@@ -18,6 +20,8 @@
         "invalidLogin": "Zadejte uživatelské jméno nebo e-mail.",
         "passwordRequired": "Zadejte heslo.",
         "networkError": "Nelze se připojit k serveru. Zkontrolujte adresu a zkuste to znovu.",
+        "backendUnavailable": "Server je dočasně nedostupný. Zkuste to za chvíli.",
+        "endpointUnavailable": "Verze serveru nepodporuje mobilní přihlášení. Kontaktujte správce instance nebo zkontrolujte adresu.",
         "serverError": "Chyba serveru. Zkuste to prosím později.",
         "throttled": "Příliš mnoho pokusů. Počkejte minutu a zkuste to znovu.",
         "validation": "Zadané údaje jsou neplatné."
