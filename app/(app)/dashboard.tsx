@@ -118,7 +118,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: 'rgba(0,0,0,0.7)',
     textTransform: 'uppercase',
-    letterSpacing: 0.5,
     paddingHorizontal: 16,
     marginBottom: 6,
   },

@@ -324,7 +324,6 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: 'rgba(0,0,0,0.5)',
     textTransform: 'uppercase',
-    letterSpacing: 0.6,
   },
   item: {
     flexDirection: 'row',
