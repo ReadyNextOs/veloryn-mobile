@@ -67,8 +67,15 @@
   "devDependencies": {
     "@babel/core": "^7.25.0",
     "@types/react": "~19.0.0",
-    "eas-cli": "^18.11.0",
     "tailwindcss": "^3.4.17",
     "typescript": "~5.8.3"
+  },
+  "expo": {
+    "doctor": {
+      "reactNativeDirectoryCheck": {
+        "exclude": ["clsx", "laravel-echo", "pusher-js"],
+        "listUnknownPackages": false
+      }
+    }
   }
 }
