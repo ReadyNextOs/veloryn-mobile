@@ -6,8 +6,9 @@ module.exports = function (api) {
       'nativewind/babel',
     ],
     plugins: [
-      // react-native-reanimated/plugin MUSI byc ostatni
-      'react-native-reanimated/plugin',
+      // react-native-worklets/plugin MUSI byc ostatni.
+      // Reanimated 4.x przenioslo plugin do paczki react-native-worklets.
+      'react-native-worklets/plugin',
     ],
   };
 };
