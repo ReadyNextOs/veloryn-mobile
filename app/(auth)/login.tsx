@@ -27,11 +27,11 @@ export default function LoginScreen() {
   const { t } = useTranslation('common');
 
   const [host, setHost] = useState<string>(DEFAULT_HOST);
-  const [email, setEmail] = useState<string>('');
+  const [login, setLogin] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const { mutateAsync: login, isPending } = useLogin();
+  const { mutateAsync: submitLogin, isPending } = useLogin();
 
   function isHostValid(value: string): boolean {
     const trimmed = value.trim();
@@ -52,8 +52,8 @@ export default function LoginScreen() {
       setErrorMessage(t('auth.login.errors.invalidHost'));
       return;
     }
-    if (!email.trim()) {
-      setErrorMessage(t('auth.login.errors.invalidEmail'));
+    if (!login.trim()) {
+      setErrorMessage(t('auth.login.errors.invalidLogin'));
       return;
     }
     if (!password) {
@@ -62,7 +62,7 @@ export default function LoginScreen() {
     }
 
     try {
-      await login({ host, email, password });
+      await submitLogin({ host, login, password });
       // Nawigacja do (tabs)/messenger jest w onSuccess hooka useLogin
     } catch (err: unknown) {
       if (err instanceof ApiError) {
@@ -125,16 +125,16 @@ export default function LoginScreen() {
                 style={styles.input}
               />
 
-              <Text style={styles.fieldLabel}>{t('auth.login.emailLabel')}</Text>
+              <Text style={styles.fieldLabel}>{t('auth.login.loginLabel')}</Text>
               <TextInput
-                value={email}
-                onChangeText={setEmail}
-                placeholder={t('auth.login.emailPlaceholder')}
+                value={login}
+                onChangeText={setLogin}
+                placeholder={t('auth.login.loginPlaceholder')}
                 placeholderTextColor="#9e9e9e"
                 autoCapitalize="none"
                 autoCorrect={false}
-                keyboardType="email-address"
-                textContentType="emailAddress"
+                keyboardType="default"
+                textContentType="username"
                 editable={!isPending}
                 style={styles.input}
               />

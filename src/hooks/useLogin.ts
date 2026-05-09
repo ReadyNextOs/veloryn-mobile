@@ -13,7 +13,8 @@ import { useAuthStore } from '@/store/auth';
 
 interface LoginInput {
   host: string;
-  email: string;
+  /** Username lub e-mail — backend akceptuje oba. */
+  login: string;
   password: string;
 }
 
@@ -69,7 +70,7 @@ export function useLogin() {
       const host = normalizeHost(input.host);
       const deviceInfo = getDeviceInfo();
       const data = await loginWithCredentials(host, {
-        email: input.email.trim(),
+        login: input.login.trim(),
         password: input.password,
         device_info: deviceInfo,
       });

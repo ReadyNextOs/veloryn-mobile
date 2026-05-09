@@ -61,7 +61,8 @@ export interface MobileDeviceRegistration {
 }
 
 export interface MobileLoginRequest {
-  email: string;
+  /** Username LUB e-mail — backend rozpoznaje po obu polach (analogicznie do web login). */
+  login: string;
   password: string;
   device_info: {
     platform: string;
