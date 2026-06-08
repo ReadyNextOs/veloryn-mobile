@@ -28,27 +28,50 @@ interface DeviceRegistrationPayload {
 // ---------------------------------------------------------------------------
 // Zod schema for push notification data — prevents path injection via
 // malformed deep-link payloads (e.g. crafted thread_id with path separators).
+//
+// Backend (kontrakt fcm-data-payload-contract-2026-06-05 §10) wysyla w `data`:
+//   type       — kanoniczny typ (mail, messenger.dm, ...)
+//   route      — glowny dyskryminator nawigacji (emailDetail, documentDetail, ...)
+//   entity_id  — UUID encji docelowej
+//   thread_id  — UUID watku (DM / wzmianka)
+// Pola trafiajace do sciezki nawigacji (thread_id/folder_id/message_id) walidujemy
+// jako UUID. entity_id nie jest dzis uzywany w sciezce (brak ekranow detalu na
+// mobile poza mail/messenger) — modul otwieramy po slugu, nie po entity_id.
 // ---------------------------------------------------------------------------
 
-const NotificationDataSchema = z.discriminatedUnion('type', [
-  z.object({
-    type: z.literal('mail'),
-    message_id: z.string().uuid(),
-    account_id: z.string().uuid(),
-    folder_id: z.string().uuid(),
-  }),
-  z.object({
-    type: z.literal('messenger.dm'),
-    thread_id: z.string().uuid(),
-  }),
-  z.object({
-    type: z.literal('messenger.mention'),
-    thread_id: z.string().uuid(),
-    message_id: z.string().uuid(),
-  }),
-]);
+const uuid = z.string().uuid();
+
+const NotificationDataSchema = z.object({
+  type: z.string().optional(),
+  route: z.string().optional(),
+  entity_id: z.string().optional(),
+  thread_id: uuid.optional(),
+  message_id: uuid.optional(),
+  account_id: uuid.optional(),
+  folder_id: uuid.optional(),
+});
 
 type ValidatedNotificationData = z.infer<typeof NotificationDataSchema>;
+
+// Mapa `route` -> slug modulu (src/config/modules.ts) dla encji bez natywnego
+// ekranu detalu. Tap otwiera liste/placeholder modulu — najblizszy realny ekran,
+// zgodnie z fallbackiem ze spec (fcm-mobile-navigation-spec-2026-06-08 §3).
+// route'y bez slugu (briefingDetail, salesPlanDetail) -> fallback do dashboardu.
+const ROUTE_TO_MODULE_SLUG: Record<string, string> = {
+  documentDetail: 'documents',
+  caseDetail: 'cases',
+  taskDetail: 'tasks',
+  calendarEvent: 'calendar',
+  resourceBookingDetail: 'calendar',
+  dealDetail: 'crm',
+  leadDetail: 'crm',
+  contractDetail: 'contracts',
+  purchaseInvoiceDetail: 'purchase-invoices',
+  salesInvoiceDetail: 'sales-invoices',
+  delegationDetail: 'delegations',
+  ticketDetail: 'tickets',
+  purchaseRequestDetail: 'purchase-requests',
+};
 
 async function registerPushToken(): Promise<void> {
   Sentry.addBreadcrumb({ category: 'push', message: 'register:start', level: 'info' });
@@ -97,6 +120,33 @@ async function registerPushToken(): Promise<void> {
   }
 }
 
+// Natywne ekrany detalu (mail/messenger). Zwraca true jesli obsluzono.
+function navigateToNativeScreen(data: ValidatedNotificationData): boolean {
+  // Mail — wymaga folder_id + message_id (UUID) do deep-linku w natywnym ekranie.
+  if ((data.route === 'emailDetail' || data.type === 'mail') && data.folder_id && data.message_id) {
+    router.push({
+      pathname: '/(app)/(tabs)/mail/[folderId]/[messageId]',
+      params: { folderId: data.folder_id, messageId: data.message_id },
+    });
+    return true;
+  }
+
+  // Messenger (DM / wzmianka) — wymaga thread_id (UUID).
+  const isMessenger =
+    data.route === 'messengerConversation' ||
+    data.type === 'messenger.dm' ||
+    data.type === 'messenger.mention';
+  if (isMessenger && data.thread_id) {
+    router.push({
+      pathname: '/(app)/(tabs)/messenger/[threadId]',
+      params: { threadId: data.thread_id },
+    });
+    return true;
+  }
+
+  return false;
+}
+
 function handleNotificationResponse(response: Notifications.NotificationResponse): void {
   const raw = response.notification.request.content.data;
   const result = NotificationDataSchema.safeParse(raw);
@@ -108,20 +158,19 @@ function handleNotificationResponse(response: Notifications.NotificationResponse
   const data: ValidatedNotificationData = result.data;
 
   try {
-    if (data.type === 'mail') {
-      router.push({
-        pathname: '/(app)/(tabs)/mail/[folderId]/[messageId]',
-        params: {
-          folderId: data.folder_id,
-          messageId: data.message_id,
-        },
-      });
-    } else if (data.type === 'messenger.dm' || data.type === 'messenger.mention') {
-      router.push({
-        pathname: '/(app)/(tabs)/messenger/[threadId]',
-        params: { threadId: data.thread_id },
-      });
+    // 1) Natywne ekrany (mail/messenger) — deep-link z pelnym kompletem parametrow.
+    if (navigateToNativeScreen(data)) return;
+
+    // 2) Pozostale encje — nawigacja po `route` do listy/placeholdera modulu.
+    const slug = data.route ? ROUTE_TO_MODULE_SLUG[data.route] : undefined;
+    if (slug) {
+      router.push({ pathname: '/(app)/modules/[slug]', params: { slug } });
+      return;
     }
+
+    // 3) Fallback — nieznany route / brak danych: otworz dashboard (nie crashuj).
+    console.warn('[PushRegistration] Unhandled notification, route=', data.route, 'type=', data.type);
+    router.push('/(app)/dashboard');
   } catch (err) {
     console.warn('[PushRegistration] Deep link navigation failed:', err);
   }
