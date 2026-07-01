@@ -34,14 +34,11 @@ function getDeviceInfo(): {
 }
 
 /**
- * Veloryn nginx domyślnie hostuje backend pod prefiksem `/backend/api/...`
- * (alias w sites-enabled). Klient mobile akceptuje sam hostname (np.
- * "https://prod.veloryn.pl") — auto-dopisujemy "/backend" jeśli URL nie
- * ma jeszcze pathu, żeby user nie musiał o tym pamiętać.
- *
- * Reguły:
- * - jeśli user wpisze pełny URL z pathem ("/backend", "/api", "/foo") — szanujemy go
- * - jeśli user wpisze sam host (bez pathu lub z pojedynczym "/") — dodajemy "/backend"
+ * Znormalizuj host wpisany przez usera: dodaj protokół `https://` jeśli go brak
+ * i utnij końcowe `/`. Świadomie NIE zgadujemy ścieżki API (`/backend`) — układ
+ * różni się per-deployment, więc dobór ścieżki (root vs `/backend`) robi
+ * `loginWithCredentials` przez fallback na 404/405. Dzięki temu user podaje samą
+ * domenę (np. "prod.veloryn.pl"), podczas gdy w wariancie QR host jest jednoznaczny.
  */
 function normalizeHost(host: string): string {
   const trimmed = host.trim();
@@ -49,18 +46,7 @@ function normalizeHost(host: string): string {
     return trimmed;
   }
   const withProtocol = /^https?:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`;
-  const stripped = withProtocol.replace(/\/+$/, '');
-
-  try {
-    const url = new URL(stripped);
-    const hasPath = url.pathname && url.pathname !== '' && url.pathname !== '/';
-    if (!hasPath) {
-      return `${url.origin}/backend`;
-    }
-    return stripped;
-  } catch {
-    return stripped;
-  }
+  return withProtocol.replace(/\/+$/, '');
 }
 
 export function useLogin() {
@@ -70,12 +56,14 @@ export function useLogin() {
     mutationFn: async (input: LoginInput) => {
       const host = normalizeHost(input.host);
       const deviceInfo = getDeviceInfo();
-      const data = await loginWithCredentials(host, {
+      const { data, effectiveHost } = await loginWithCredentials(host, {
         login: input.login.trim(),
         password: input.password,
         device_info: deviceInfo,
       });
-      return { ...data, requestedHost: host };
+      // effectiveHost = baza pod którą endpoint faktycznie odpowiedział (root lub /backend).
+      // Zapisujemy ją, żeby kolejne requesty (client.ts) trafiały na ten sam prefix.
+      return { ...data, requestedHost: effectiveHost };
     },
     onSuccess: async (data) => {
       Sentry.addBreadcrumb({ category: 'auth', message: 'login:success', level: 'info' });
@@ -105,6 +93,7 @@ export function useLogin() {
 
       setAuthState({
         isPaired: true,
+        isUnlocked: true,
         user: data.user,
         tenant: data.tenant,
         apiHost: persistedHost,

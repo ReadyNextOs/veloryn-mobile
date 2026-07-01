@@ -1,6 +1,6 @@
 // Auth API helpers — pair device + login + me endpoint.
 
-import axios from 'axios';
+import { create, isAxiosError } from 'axios';
 import { apiGet, ApiError } from '@/api/client';
 import type {
   MobileLoginRequest,
@@ -27,7 +27,7 @@ export async function pairDevice(
   deviceInfo: DeviceInfo,
 ): Promise<PairResponse> {
   // Pair używa osobnego klienta bez Bearer — token jest w body, jak PIN
-  const client = axios.create({
+  const client = create({
     baseURL: payload.host,
     timeout: 15_000,
     headers: {
@@ -44,7 +44,7 @@ export async function pairDevice(
     });
     return response.data;
   } catch (err) {
-    if (axios.isAxiosError(err) && err.response) {
+    if (isAxiosError(err) && err.response) {
       const data = err.response.data as Record<string, unknown> | undefined;
       const message =
         typeof data?.['message'] === 'string' ? data['message'] : `HTTP ${err.response.status}`;
@@ -60,6 +60,34 @@ export async function getMe(): Promise<User> {
   return apiGet<User>('/api/me');
 }
 
+/** Zbuduj ApiError z odpowiedzi błędu backendu (envelope `{ error: { code, message } }`). */
+function toLoginApiError(status: number, body: unknown): ApiError {
+  const data = body as Record<string, unknown> | undefined;
+  const errorObj = (data?.['error'] ?? null) as Record<string, unknown> | null;
+  const message =
+    (typeof errorObj?.['message'] === 'string' ? errorObj['message'] : undefined) ??
+    (typeof data?.['message'] === 'string' ? data['message'] : undefined) ??
+    `HTTP ${status}`;
+  const code = typeof errorObj?.['code'] === 'string' ? errorObj['code'] : undefined;
+  return new ApiError(status, message, code);
+}
+
+/** Czy URL zawiera już konkretną ścieżkę (inną niż root "/")? */
+function urlHasPath(rawUrl: string): boolean {
+  try {
+    const { pathname } = new URL(rawUrl);
+    return Boolean(pathname && pathname !== '/');
+  } catch {
+    return false;
+  }
+}
+
+/** Wynik logowania + baza URL, pod którą endpoint faktycznie odpowiedział. */
+export interface LoginResult {
+  data: MobileLoginResponse;
+  effectiveHost: string;
+}
+
 /**
  * Zaloguj urządzenie mobilne za pomocą e-mail + hasło.
  *
@@ -67,41 +95,60 @@ export async function getMe(): Promise<User> {
  * Bearer token z ability=mobile (od razu sparowany). Tenant rozpoznawany jest
  * z subdomeny hosta po stronie backendu.
  *
- * @param host  Pełny URL serwera klienta (np. "https://firma.veloryn.pl"). Bez końcowego "/".
+ * Ścieżka API różni się per-deployment: część serwerów wystawia API z roota
+ * (`/api/...`), część spod aliasu nginx (`/backend/api/...`). Przy logowaniu QR
+ * host jest w payloadzie (jednoznaczny), ale tu user wpisuje samą domenę — więc
+ * próbujemy najpierw host tak jak podany, a przy 404/405 fallback z `/backend`.
+ * Zwracamy `effectiveHost` (bazę, która zadziałała), żeby zapisać ją do kolejnych
+ * requestów. Błędy inne niż 404/405 (401/403/422/429/5xx) oznaczają, że endpoint
+ * istnieje — przerywamy próby i propagujemy błąd usera.
+ *
+ * @param host  URL serwera klienta (np. "https://firma.veloryn.pl"). Bez końcowego "/".
  * @throws ApiError przy 401/403/422/429.
  */
 export async function loginWithCredentials(
   host: string,
   payload: MobileLoginRequest,
-): Promise<MobileLoginResponse> {
-  const baseURL = host.replace(/\/+$/, '');
+): Promise<LoginResult> {
+  const base = host.replace(/\/+$/, '');
+  // Jeśli user podał już konkretną ścieżkę — szanujemy ją, bez fallbacku.
+  const candidates = urlHasPath(base) ? [base] : [base, `${base}/backend`];
 
-  const client = axios.create({
-    baseURL,
-    timeout: 15_000,
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-  });
+  let attempt = 0;
+  for (const candidate of candidates) {
+    attempt += 1;
+    const isLast = attempt === candidates.length;
 
-  try {
-    const response = await client.post<{ success: boolean; data: MobileLoginResponse }>(
-      '/api/auth/mobile-tokens/login',
-      payload,
-    );
-    return response.data.data;
-  } catch (err) {
-    if (axios.isAxiosError(err) && err.response) {
-      const data = err.response.data as Record<string, unknown> | undefined;
-      const errorObj = (data?.['error'] ?? null) as Record<string, unknown> | null;
-      const message =
-        (typeof errorObj?.['message'] === 'string' ? errorObj['message'] : undefined) ??
-        (typeof data?.['message'] === 'string' ? data['message'] : undefined) ??
-        `HTTP ${err.response.status}`;
-      const code = typeof errorObj?.['code'] === 'string' ? errorObj['code'] : undefined;
-      throw new ApiError(err.response.status, message, code);
+    const client = create({
+      baseURL: candidate,
+      timeout: 15_000,
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    });
+
+    try {
+      const response = await client.post<{ success: boolean; data: MobileLoginResponse }>(
+        '/api/auth/mobile-tokens/login',
+        payload,
+      );
+      return { data: response.data.data, effectiveHost: candidate };
+    } catch (err) {
+      if (isAxiosError(err) && err.response) {
+        const status = err.response.status;
+        // 404/405 = endpoint nie istnieje pod tą ścieżką → spróbuj kolejnego kandydata.
+        if ((status === 404 || status === 405) && !isLast) {
+          continue;
+        }
+        // Endpoint znaleziony (lub wyczerpaliśmy kandydatów) — to błąd usera/serwera.
+        throw toLoginApiError(status, err.response.data);
+      }
+      // Network/timeout — ta sama domena, druga ścieżka też nie odpowie. Przerywamy.
+      throw err;
     }
-    throw err;
   }
+
+  // Nieosiągalne (pętla zawsze zwraca lub rzuca), ale TS wymaga jawnego wyjścia.
+  throw new ApiError(0, 'login: no candidates');
 }
