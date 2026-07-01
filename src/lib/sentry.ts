@@ -24,6 +24,9 @@ if (dsn) {
     environment: __DEV__ ? 'development' : 'production',
     // Release tag — żeby grupować eventy per wersja apki.
     release: Constants.expoConfig?.version ?? '0.0.0',
+    // Projekt 26 w GlitchTip jest współdzielony z apką Flutter (veloryn_crm) —
+    // ten tag pozwala odfiltrować issues React Native od Flutter.
+    initialScope: { tags: { app: 'veloryn-mobile-rn' } },
     // Diagnostyka po-loginowych crashy: bez source map upload Sentry RN
     // czasem traci natywne wyjatki. Globalny ErrorUtils handler zapewnia
     // ze KAZDY uncaught JS error idzie do Sentry zanim apka rzuci RN red box.

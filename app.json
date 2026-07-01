@@ -85,8 +85,9 @@
       [
         "@sentry/react-native/expo",
         {
+          "url": "https://errors.veloryn.pl",
           "organization": "veloryn",
-          "project": "veloryn-mobile"
+          "project": "veloryn-mobile-prod"
         }
       ],
       "expo-font",

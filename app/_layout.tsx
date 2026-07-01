@@ -1,4 +1,5 @@
-import '@/lib/sentry'; // Sentry init — MUSI być pierwszym importem (native crash reporting)
+import '@/lib/fixLetterSpacingCrash'; // monkey-patch Text — workaround RN 0.83 letterSpacing crash
+import { Sentry } from '@/lib/sentry'; // Sentry init — musi być przed renderowaniem
 import 'react-native-gesture-handler';
 import '../global.css'; // NativeWind — Tailwind utilities dla rn-reusables
 import '@/lib/i18n'; // i18next init — musi być przed renderowaniem
@@ -10,7 +11,6 @@ import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { QueryClientProvider } from '@tanstack/react-query';
-import { Sentry } from '@/lib/sentry';
 import { RootErrorFallback } from '@/components/RootErrorFallback';
 import { authLogoutEmitter } from '@/lib/authEvents';
 import { useAuthStore } from '@/store/auth';
@@ -18,6 +18,7 @@ import { useBiometricUnlock } from '@/hooks/useBiometricUnlock';
 import { performLogout } from '@/lib/logout';
 import { queryClient } from '@/lib/queryClient';
 import { usePushRegistration } from '@/hooks/usePushRegistration';
+import { getMe } from '@/api/auth';
 
 // Trzymaj splash dopóki Zustand persist nie zakończy hydratacji z SecureStore.
 // Bez tego AppShell zwraca null podczas async load, a splash znika za wcześnie
@@ -42,7 +43,7 @@ try {
 }
 
 // Cold-start ping — jesli ten event nie pojawi sie w Sentry oznacza ze SDK Sentry
-// nie wstaje (np. zly DSN, network blokuje sentry.io). Pomaga zwerifikowac czy
+// nie wstaje (np. zly DSN, network blokuje errors.veloryn.pl). Pomaga zwerifikowac czy
 // brak crash-eventow to brak crashy czy brak Sentry.
 Sentry.captureMessage('app:cold-start', { level: 'info' });
 
@@ -91,9 +92,43 @@ function AppShell() {
 
   const isPaired = useAuthStore((s) => s.isPaired);
   const isUnlocked = useAuthStore((s) => s.isUnlocked);
+  const user = useAuthStore((s) => s.user);
+  const setAuthState = useAuthStore((s) => s.setAuthState);
   const setUnlocked = useAuthStore((s) => s.setUnlocked);
   const setLastBackgroundedAt = useAuthStore((s) => s.setLastBackgroundedAt);
-  const { isAvailable } = useBiometricUnlock();
+  const { isAvailable, isChecking: isCheckingBiometrics } = useBiometricUnlock();
+  const [isBootstrappingSession, setIsBootstrappingSession] = useState(false);
+
+  // Starsze instalacje mialy utrwalone tylko isPaired. Po hydratacji dociagnij usera,
+  // zeby realtime i optimistic UI mialy author_id bez czekania na ponowny login.
+  useEffect(() => {
+    if (!hasHydrated || !isPaired || user) {
+      setIsBootstrappingSession(false);
+      return;
+    }
+
+    let cancelled = false;
+    setIsBootstrappingSession(true);
+
+    void getMe()
+      .then((nextUser) => {
+        if (!cancelled) {
+          setAuthState({ user: nextUser });
+        }
+      })
+      .catch((err) => {
+        Sentry.captureException(err, { tags: { source: 'session_bootstrap' } });
+      })
+      .finally(() => {
+        if (!cancelled) {
+          setIsBootstrappingSession(false);
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [hasHydrated, isPaired, setAuthState, user]);
 
   // Obsługa logout z interceptora 401 — token już nieważny, nie revokeOnServer.
   // emitEvent=false, bo TO jest listener tego eventu — uniknąć rekursji.
@@ -128,7 +163,7 @@ function AppShell() {
 
   // Nie renderuj nic przed zakończeniem hydratacji — zapobiega błędnym przekierowaniom
   // i API calls bez tokenu Bearer gdy SecureStore jeszcze czyta stan.
-  if (!hasHydrated) {
+  if (!hasHydrated || isCheckingBiometrics || isBootstrappingSession) {
     return null;
   }
 

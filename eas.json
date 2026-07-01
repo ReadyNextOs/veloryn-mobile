@@ -10,9 +10,10 @@
       "channel": "development",
       "env": {
         "EXPO_PUBLIC_API_URL": "https://dev.veloryn.pl",
-        "EXPO_PUBLIC_SENTRY_DSN": "https://92f91bc671189905ea9a3eeac7cac638@o4508923852488704.ingest.de.sentry.io/4511358594449489",
+        "EXPO_PUBLIC_SENTRY_DSN": "https://8204b547f48c41af95f7e734f7eb8251@errors.veloryn.pl/26",
+        "SENTRY_URL": "https://errors.veloryn.pl",
         "SENTRY_ORG": "veloryn",
-        "SENTRY_PROJECT": "veloryn-mobile",
+        "SENTRY_PROJECT": "veloryn-mobile-prod",
         "SENTRY_DISABLE_AUTO_UPLOAD": "true"
       }
     },
@@ -27,9 +28,10 @@
       },
       "env": {
         "EXPO_PUBLIC_API_URL": "https://dev.veloryn.pl",
-        "EXPO_PUBLIC_SENTRY_DSN": "https://92f91bc671189905ea9a3eeac7cac638@o4508923852488704.ingest.de.sentry.io/4511358594449489",
+        "EXPO_PUBLIC_SENTRY_DSN": "https://8204b547f48c41af95f7e734f7eb8251@errors.veloryn.pl/26",
+        "SENTRY_URL": "https://errors.veloryn.pl",
         "SENTRY_ORG": "veloryn",
-        "SENTRY_PROJECT": "veloryn-mobile",
+        "SENTRY_PROJECT": "veloryn-mobile-prod",
         "SENTRY_DISABLE_AUTO_UPLOAD": "true"
       }
     },
@@ -38,9 +40,10 @@
       "autoIncrement": true,
       "env": {
         "EXPO_PUBLIC_API_URL": "https://app.veloryn.pl",
-        "EXPO_PUBLIC_SENTRY_DSN": "https://92f91bc671189905ea9a3eeac7cac638@o4508923852488704.ingest.de.sentry.io/4511358594449489",
+        "EXPO_PUBLIC_SENTRY_DSN": "https://8204b547f48c41af95f7e734f7eb8251@errors.veloryn.pl/26",
+        "SENTRY_URL": "https://errors.veloryn.pl",
         "SENTRY_ORG": "veloryn",
-        "SENTRY_PROJECT": "veloryn-mobile",
+        "SENTRY_PROJECT": "veloryn-mobile-prod",
         "SENTRY_DISABLE_AUTO_UPLOAD": "true"
       }
     }
